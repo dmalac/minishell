@@ -31,7 +31,8 @@ static int	right_value_err(t_token_lst *elem, int *exit_n)
 			return (syntax_error(err_new_line, exit_n));
 		if (elem->next->token_type > 0 && elem->next->token_type != EMPTY)
 			return (syntax_error(elem->next->token_type, exit_n));
-		if (elem->next->token_type == EMPTY)
+		if (elem->next->token_type == EMPTY && (elem->token_type >= GRT_TH \
+		&& elem->token_type < DSML_TH))
 			return (redirect_error(elem->next->content, exit_n));
 	}
 	if (elem->token_type == PIPE)

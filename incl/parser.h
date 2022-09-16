@@ -56,4 +56,6 @@ char		is_empty_variable(char *str);
 int			is_begin_var(char c);
 char		*free_set_null(char *str);
 
+void		**ft_free_mem(char **str_of_str, int count);
+
 #endif

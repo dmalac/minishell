@@ -22,7 +22,7 @@ static char	*variable_proc(char *token, char **str, int i, t_symtab *symtab)
 	variable = var_exp(token + i, st_d_quote, symtab);
 	if (!variable)
 		return (free_set_null(*str));
-	if (i - 1 > 0)
+	if (i > 0)
 	{
 		if (*str != NULL)
 			new_str = ft_strjoinfree(*str, ft_substr(token, 0, i));
@@ -49,7 +49,7 @@ static char	*exit_n_proc(char *token, char **str, int i, int *exit_n)
 	exit_code = ft_itoa(*exit_n);
 	if (!exit_code)
 		return (free_set_null(*str));
-	if (i - 1 > 0)
+	if (i > 0)
 	{
 		if (*str != NULL)
 			new_str = ft_strjoinfree(*str, ft_substr(token, 0, i));
