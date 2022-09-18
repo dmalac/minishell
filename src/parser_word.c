@@ -119,7 +119,7 @@ int	word(char *token, t_state *st, t_symtab *symtab, int *exit_n)
 {
 	char	*ex_word;
 
-	ex_word = extract_word(token + st->pos, symtab, exit_n);
+	ex_word = extract_word(token, symtab, exit_n);
 	if (!ex_word)
 		return (malloc_error(exit_n));
 	if (st->prv_state != st_word || st->buffer == NULL)
