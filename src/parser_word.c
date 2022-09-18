@@ -13,7 +13,7 @@
 #include "parser.h"
 #include "error.h"
 
-static char	*store_previus(char *token, char **str, int i)
+static char	*store_previous(char *token, char **str, int i)
 {
 	char	*new_str;
 
@@ -30,16 +30,16 @@ static char	*store_previus(char *token, char **str, int i)
 	return (*str);
 }
 
-static char	*variable_ext(char *token, char **str, int i, t_symtab *symtab)
+static char	*var_extention(char *token, char **str, int i, t_symtab *symtab)
 {
 	char	*variable;
 
-	variable = var_exp(token + i, st_word, symtab);
+	variable = var_expantion(token + i, st_word, symtab);
 	if (!variable)
 		return (free_set_null(*str));
 	if (i > 0)
 	{	
-		if (!store_previus(token, str, i))
+		if (!store_previous(token, str, i))
 			return (free_set_null(variable));
 	}
 	if (*str == NULL)
@@ -67,7 +67,7 @@ static char	*exit_num_exp(char *token, char **str, int i, int *exit_n)
 	if (!exit_code)
 		return (free_set_null(*str));
 	if (i > 0)
-		if (!store_previus(token, str, i))
+		if (!store_previous(token, str, i))
 			return (free_set_null(exit_code));
 	if (*str == NULL)
 		return (exit_code);
@@ -97,14 +97,14 @@ static char	*extract_word(char *tokn, t_symtab *symtab, int *exit_n)
 			if (tokn[i + 1] == '?')
 				str = exit_num_exp(tokn, &str, i, exit_n);
 			else
-				str = variable_ext(tokn, &str, i, symtab);
+				str = var_extention(tokn, &str, i, symtab);
 			if (!str)
 				return (NULL);
-			tokn += end_variable_set(tokn, &i);
+			tokn += end_var_set(tokn, &i);
 		}
 		i++;
 	}
-	if (str == NULL || (is_empty_variable(str) && i > 0))
+	if (str == NULL || (is_empty_var(str) && i > 0))
 	{	
 		free_set_null(str);
 		return (ft_substr(tokn, 0, i));
@@ -114,7 +114,7 @@ static char	*extract_word(char *tokn, t_symtab *symtab, int *exit_n)
 
 /* save a word token or concatenate it with another word token:	*/
 /* if there is a previus word token and the new one is an just	*/
-/* an empty variable it free the new one						*/
+/* an empty variable it frees the new one						*/
 int	word(char *token, t_state *st, t_symtab *symtab, int *exit_n)
 {
 	char	*ex_word;

@@ -19,7 +19,7 @@ int	ft_isvar(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-int	end_variable_set(char *str, int *prev)
+int	end_var_set(char *str, int *prev)
 {
 	int	i;
 
@@ -63,7 +63,7 @@ static char	*var_search(char *variable, int sz, t_symtab *symtab)
 
 /* if the state is word and the variable is not inside the list it returns	*/
 /* an allocate string with the variable name ex: $not_exist					*/
-char	*var_exp(char *var, int state, t_symtab *symtab)
+char	*var_expantion(char *var, int state, t_symtab *symtab)
 {
 	int		i;
 	char	*content;
@@ -83,7 +83,7 @@ char	*var_exp(char *var, int state, t_symtab *symtab)
 	return (content);
 }
 
-char	is_empty_variable(char *str)
+char	is_empty_var(char *str)
 {
 	return (str[0] == '$' && (ft_isalpha(str[1]) || str[1] == '_'));
 }

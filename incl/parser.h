@@ -48,11 +48,11 @@ int			dub_quote(char *tokn, t_state *state, t_symtab *symtab,
 				int *exit_n);
 int			sin_quote(char *token, t_state *state, int *exit_n);
 int			ft_str_strlen(char **tokens);
-int			end_variable_set(char *str, int *prev);
-char		*var_exp(char *var, int state, t_symtab *symtab);
+int			end_var_set(char *str, int *prev);
+char		*var_expantion(char *var, int state, t_symtab *symtab);
 int			ft_isvar(char c);
 void		double_free(char *str, t_token_lst **head);
-char		is_empty_variable(char *str);
+char		is_empty_var(char *str);
 int			is_begin_var(char c);
 char		*free_set_null(char *str);
 
