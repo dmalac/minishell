@@ -23,7 +23,7 @@ typedef struct s_state{
 
 enum e_state
 {
-	blanck,
+	blank,
 	st_pipe,
 	st_grt_th,
 	st_smlr_th,

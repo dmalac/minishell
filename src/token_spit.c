@@ -90,8 +90,8 @@ static int	count_token(char *line)
 	return (count);
 }
 
-/* split a string into single tokens. A Token is separeted by */
-/* space/tabnewline does not consider space/tab inside quotes */
+/* split a string into single tokens. A Token is separated by	*/
+/* space/tab/newline. Does not consider space/tab inside quotes	*/
 char	**raw_token_split(char *line, int *exit_n)
 {
 	char	**tokens;

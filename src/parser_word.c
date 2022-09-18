@@ -30,8 +30,6 @@ static char	*store_previus(char *token, char **str, int i)
 	return (*str);
 }
 
-/* after expanding the variable (if the variable as a value)		*/
-/* it create the right combination between variable and characters	*/
 static char	*variable_ext(char *token, char **str, int i, t_symtab *symtab)
 {
 	char	*variable;
@@ -39,7 +37,7 @@ static char	*variable_ext(char *token, char **str, int i, t_symtab *symtab)
 	variable = var_exp(token + i, st_word, symtab);
 	if (!variable)
 		return (free_set_null(*str));
-	if (i - 1 > 0)
+	if (i > 0)
 	{	
 		if (!store_previus(token, str, i))
 			return (free_set_null(variable));
@@ -68,7 +66,7 @@ static char	*exit_num_exp(char *token, char **str, int i, int *exit_n)
 	exit_code = ft_itoa(*exit_n);
 	if (!exit_code)
 		return (free_set_null(*str));
-	if (i - 1 > 0)
+	if (i > 0)
 		if (!store_previus(token, str, i))
 			return (free_set_null(exit_code));
 	if (*str == NULL)
@@ -83,8 +81,8 @@ static char	*exit_num_exp(char *token, char **str, int i, int *exit_n)
 	return (*str);
 }
 
-/* an empty variable alone or a sequenze of just empty veriables*/
-/* return without expantion. in other combinations it is erased	*/
+/* an empty variable alone or a sequenze of just empty veriables 	*/
+/* return without expantion. in other combinations it is erased		*/
 static char	*extract_word(char *tokn, t_symtab *symtab, int *exit_n)
 {
 	int		i;
@@ -114,7 +112,9 @@ static char	*extract_word(char *tokn, t_symtab *symtab, int *exit_n)
 	return (ft_strjoinfree(str, ft_substr(tokn, 0, i)));
 }
 
-/*save a word or concatenate it with quotes translate to word*/
+/* save a word token or concatenate it with another word token:	*/
+/* if there is a previus word token and the new one is an just	*/
+/* an empty variable it free the new one						*/
 int	word(char *token, t_state *st, t_symtab *symtab, int *exit_n)
 {
 	char	*ex_word;

@@ -25,18 +25,25 @@ int	end_variable_set(char *str, int *prev)
 
 	i = *prev + 1;
 	if (str[i] == '?')
+	{
+		*prev = -1;
 		return (i + 1);
+	}
 	while (str[i] && ft_isvar(str[i]))
 		i++;
 	*prev = -1;
 	return (i);
 }
 
+/* this function looks for the variable in the symtab and return an allocate */
+/* string with the content of the variable or an allocated empty string '\0' */
 static char	*var_search(char *variable, int sz, t_symtab *symtab)
 {
 	int		size;
 	char	*key;
 
+	if (!symtab)
+		return (ft_strdup(""));
 	key = ft_substr(variable, 0, sz);
 	if (!key)
 		return (NULL);
@@ -54,6 +61,8 @@ static char	*var_search(char *variable, int sz, t_symtab *symtab)
 	return (ft_strdup(""));
 }
 
+/* if the state is word and the variable is not inside the list it returns	*/
+/* an allocate string with the variable name ex: $not_exist					*/
 char	*var_exp(char *var, int state, t_symtab *symtab)
 {
 	int		i;

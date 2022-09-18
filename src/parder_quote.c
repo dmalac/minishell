@@ -92,12 +92,16 @@ static char	*extract_d_quote(char *tokn, t_symtab *symtab, int *exit_n)
 		return (ft_strjoinfree(str, ft_substr(tokn, 0, i)));
 }
 
+/* if the previus token is word it conacatenate it with the content		*/
+/* of the quotes, if the previus token is an empty variable, it ereses	*/
+/* it and save just the content of the quotes, if the quotes are not	*/
+/* close it trow a sitax error											*/
 int	sin_quote(char *token, t_state *st, int *exit_n)
 {
 	char	*str;
 
-        if(*token)
-                return (syntax_error(err_noclose_s, exit_n));
+	if (!*token)
+		return (syntax_error(err_noclose_s, exit_n));
 	while (token[st->pos] != '\'' && token[st->pos])
 		st->pos++;
 	if (!token[st->pos])
@@ -118,12 +122,16 @@ int	sin_quote(char *token, t_state *st, int *exit_n)
 	return (SUCCESS);
 }
 
+/* if the previus token is word it conacatenate it with the content		*/
+/* of the quotes, if the previus token is an empty variable, it ereses	*/
+/* it and save just the content of the quotes, if the quotes are not	*/
+/* close it trow a sitax error											*/
 int	dub_quote(char *token, t_state *st, t_symtab *symtab, int *exit_n)
 {
 	char	*d_word;
-      
-        if(!*token)
-               return (syntax_error(err_noclose_d, exit_n));
+
+	if (!*token)
+		return (syntax_error(err_noclose_d, exit_n));
 	d_word = extract_d_quote(token, symtab, exit_n);
 	if (!d_word)
 		return (malloc_error(exit_n));
