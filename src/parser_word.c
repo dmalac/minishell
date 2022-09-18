@@ -19,7 +19,7 @@ static char	*store_previous(char *token, char **str, int i)
 
 	if (*str == NULL)
 		new_str = ft_substr(token, 0, i);
-	else if (is_empty_variable(*str))
+	else if (is_empty_var(*str))
 	{	
 		free(*str);
 		new_str = ft_substr(token, 0, i);
@@ -44,12 +44,12 @@ static char	*var_extention(char *token, char **str, int i, t_symtab *symtab)
 	}
 	if (*str == NULL)
 		return (variable);
-	else if (!is_empty_variable(*str) && is_empty_variable(variable))
+	else if (!is_empty_var(*str) && is_empty_var(variable))
 	{	
 		free(variable);
 		return (*str);
 	}
-	else if (is_empty_variable(*str) && !is_empty_variable(variable))
+	else if (is_empty_var(*str) && !is_empty_var(variable))
 	{	
 		free(*str);
 		return (variable);
@@ -71,7 +71,7 @@ static char	*exit_num_exp(char *token, char **str, int i, int *exit_n)
 			return (free_set_null(exit_code));
 	if (*str == NULL)
 		return (exit_code);
-	else if (is_empty_variable(*str))
+	else if (is_empty_var(*str))
 	{	
 		free(*str);
 		return (exit_code);
@@ -124,7 +124,7 @@ int	word(char *token, t_state *st, t_symtab *symtab, int *exit_n)
 		return (malloc_error(exit_n));
 	if (st->prv_state != st_word || st->buffer == NULL)
 		st->buffer = ex_word;
-	else if (is_empty_variable(ex_word))
+	else if (is_empty_var(ex_word))
 		free(ex_word);
 	else
 		st->buffer = ft_strjoinfree(st->buffer, ex_word);
@@ -133,7 +133,7 @@ int	word(char *token, t_state *st, t_symtab *symtab, int *exit_n)
 	st->prv_state = st->state;
 	while (st->prv_state == type_of_state(token[st->pos]))
 		st->pos++;
-	if (is_empty_variable(st->buffer))
+	if (is_empty_var(st->buffer))
 		st->prv_state = st_trimmer;
 	return (SUCCESS);
 }
