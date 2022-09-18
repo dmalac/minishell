@@ -42,10 +42,10 @@ static int	matching(int prev_var, int var)
 static int	key_word(char *token, t_state *st, int *exit_n)
 {
 	if (st->prv_state != st->state || !(st->buffer))
-		st->buffer = ft_substr(token + st->pos, 0, 1);
+		st->buffer = ft_substr(token, 0, 1);
 	else
 		st->buffer = ft_strjoinfree(st->buffer,
-				ft_substr(token + st->pos, 0, 1));
+				ft_substr(token, 0, 1));
 	if (st->buffer == NULL)
 		return (malloc_error(exit_n));
 	st->prv_state = st->state;
