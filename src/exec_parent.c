@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/13 15:39:32 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/19 15:35:46 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <string.h>
 
 int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 {
@@ -23,11 +24,17 @@ int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 	if (tools->cmd < tools->total_cmds)
 	{
 		if (pipe(pipe_end[pipe_no]) < 0)
-			return (errno);
+		{
+			strerror(errno);
+			return (1);
+		}
 	}
 	*id = fork();
 	if (*id < 0)
-		return (errno);
+	{
+		strerror(errno);
+		return (1);
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/16 15:59:01 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/19 18:36:37 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ t_token_lst	*process_output_redir1(t_cmd_tools *tools, t_token_lst *node);
 t_token_lst	*process_output_redir2(t_cmd_tools *tools, t_token_lst *node);
 /* get.c */
 void		get_args(t_cmd_tools *tools, t_token_lst *input);
-char		**get_paths(t_symtab *symtab);
-char		**get_env_var(t_symtab *symtab);
+int			get_paths(t_symtab *symtab, t_cmd_tools *tools);
+int			get_env_var(t_symtab *symtab, t_cmd_tools *tools);
 /* heredoc.c */
-void		get_next_heredoc(t_heredoc *hd_list);
-t_heredoc	*check_heredoc(t_token_lst *input);
+int			get_heredoc(t_heredoc *hd_list);
+int			check_heredoc(t_token_lst *input, t_cmd_tools *tools);
 /* exec_errors.c */
 void		free_array(char **array);
 void		child_error_and_exit(int error_code, t_cmd_tools *tools, \

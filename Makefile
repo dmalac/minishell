@@ -29,7 +29,7 @@ word_parsing.c \
 variable.c \
 init.c \
 symtab.c \
-get.c \
+exec_get.c \
 exec_child.c \
 exec_parent.c \
 executor.c \

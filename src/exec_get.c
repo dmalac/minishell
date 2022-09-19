@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get.c                                              :+:    :+:            */
+/*   exec_get.c                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/09 17:09:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/16 16:06:04 by dmalacov      ########   odam.nl         */
+/*   Created: 2022/09/19 13:11:08 by dmalacov      #+#    #+#                 */
+/*   Updated: 2022/09/19 15:18:39 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "libft.h"
 #include "executor.h"
 #include <errno.h>
+#include <string.h>
 
 static size_t	st_count_args(t_token_lst *input)
 {
@@ -49,65 +50,71 @@ void	get_args(t_cmd_tools *tools, t_token_lst *input)
 		tools->cmd_args = NULL;
 }
 
-char	**get_paths(t_symtab *symtab)
+int	st_add_slash_to_paths(t_cmd_tools *tools)
 {
-	char	**paths;
-	char	*all_paths;
 	char	*temp;
 	size_t	i;
+	
+	i = 0;
+	while (tools->paths[i])
+	{
+		temp = tools->paths[i];
+		tools->paths[i] = ft_strjoin(tools->paths[i], "/");
+		free (temp);
+		if (!tools->paths[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
-	paths = NULL;
+int	get_paths(t_symtab *symtab, t_cmd_tools *tools)
+{
+	char	*all_paths;
+
 	all_paths = symtab_get_value(symtab, "PATH");
 	if (all_paths)
 	{
-		paths = ft_split(all_paths, ':');
-		if (paths)
+		tools->paths = ft_split(all_paths, ':');
+		if (tools->paths)
 		{
-			i = -1;
-			while (paths[++i])
-			{
-				temp = paths[i];
-				paths[i] = ft_strjoin(paths[i], "/");
-				if (!paths[i])
-					return (free_array(paths), NULL);
-				free (temp);
-			}
+			if (st_add_slash_to_paths(tools) == 0)
+				return (0);
+		}
+		if (!tools->paths)
+		{
+			strerror(errno);
+			return (1);
 		}
 	}
-	return (paths);
+	else
+		tools->paths = NULL;
+	return (0);
 }
 
-char	**get_env_var(t_symtab *symtab)
+int	get_env_var(t_symtab *symtab, t_cmd_tools *tools)
 {
 	size_t		i;
 	t_symtab	*node;
-	char		**env_var;
+	size_t		total_nodes;
 
-	i = 0;
-	env_var = NULL;
-	node = symtab;
-	while (node)
-	{
-		if (node->value)
-			i++;
-		node = node->next;
-	}
-	env_var = malloc(sizeof(char *) * (i + 1));
-	if (!env_var)
-		return (NULL);
+	total_nodes = symtab_count_nodes(symtab);
+	tools->env_var = malloc(sizeof(char *) * (total_nodes + 1));
+	if (!tools->env_var)
+		return (1);
 	node = symtab;
 	i = 0;
 	while (node)
 	{
 		if (node->value)
 		{
-			env_var[i] = ft_strjoin_env(node->key, node->value, '=');
-			if (!env_var[i])
-				return (free_array(env_var), NULL);
+			tools->env_var[i] = ft_strjoin_env(node->key, node->value, '=');
+			if (!tools->env_var[i])
+				return (1);
 			i++;
-			node = node->next;
 		}
+		node = node->next;
 	}
-	env_var[i] = NULL;
-	return (env_var);
+	tools->env_var[i] = NULL;
+	return (0);
 }

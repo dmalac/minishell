@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/16 15:53:16 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/19 18:13:34 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,10 @@ t_cmd_tools	*st_tools_init(t_token_lst *input, t_symtab *symtab)
 	tools->input_fd = STDIN_FILENO;
 	tools->output_fd = STDOUT_FILENO;
 	tools->cmd_args = NULL;
-	tools->paths = get_paths(symtab);
-	tools->env_var = get_env_var(symtab);
-	if (!tools->env_var)
-		return (free_array(tools->paths), NULL);
-	tools->heredoc = check_heredoc(input);
-	if (tools->heredoc)
-		get_next_heredoc(tools->heredoc);
+	if (get_paths(symtab, tools) == 1 || get_env_var(symtab, tools) == 1)
+		return (cleanup(tools), NULL);
+	if (check_heredoc(input, tools) == 1 || get_heredoc(tools->heredoc) == 1)
+		return (cleanup(tools), NULL);
 	tools->process_tokens[WORD] = process_word;
 	tools->process_tokens[GRT_TH] = process_output_redir1;
 	tools->process_tokens[SMLR_TH] = process_input_redir1;
@@ -79,7 +76,7 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 
 	tools = st_tools_init(input, symtab);
 	if (!tools)
-		return (1);	// or sth else?
+		return (1);
 	node = input;
 	exit_code = 0;
 	while (exit_code == 0 && tools->cmd <= tools->total_cmds)
@@ -93,9 +90,7 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 		tools->cmd++;
 		node = st_goto_nxt_cmd(node);
 	}
-	if (exit_code != 0)
-		return (print_error_message(exit_code, NULL), exit_code); // should it wait here?
-	else if (tools->id > 0)
+	if (exit_code == 0 && tools->id > 0)
 		exit_code = wait_for_last_child(tools->id, tools->total_cmds);
 	cleanup(tools);
 	return (exit_code);
