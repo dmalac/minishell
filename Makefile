@@ -4,7 +4,7 @@ INCLDIR = incl
 OBJDIR = obj
 SRCDIR = src
 LIBFTDIR = libft
-CFLAGS = -Wall -Wextra -Werror  -lreadline -I ${INCLDIR} -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I ${INCLDIR} -g -fsanitize=address
 
 RM = rm -f
 
@@ -12,8 +12,8 @@ NAME = minishell
 
 # LDFLAGS = -L /Users/dmonfrin/.brew/opt/readline/lib
 # CPPFLAGS = -I /Users/dmonfrin/.brew/opt/readline/include
-LDFLAGS = -L /Users/$USER/.brew/opt/readline/lib
-CPPFLAGS = -I /Users/$USER/.brew/opt/readline/include
+LDFLAGS = -L $(shell brew --prefix readline)/lib -lreadline
+CPPFLAGS = -I $(shell brew --prefix readline)/include
 
 LIB_PATH = ${LIBFTDIR}/libft.a
 
@@ -56,7 +56,7 @@ ${NAME} : ${LIB_PATH} ${OBJ}
 	${CC} ${CFLAGS} ${LDFLAGS} ${CPPFLAGS} ${OBJ} ${LIB_PATH} -o ${NAME}
 
 ${OBJDIR}/%.o : ${SRCDIR}/%.c
-	${CC} ${CFLAGS} -c $^ -o $@
+	${CC} ${CFLAGS} ${CPPFLAGS} -c $^ -o $@
 
 ${OBJ} : | ${OBJDIR}
 

@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:50:58 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 18:32:16 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ static t_token_lst	*st_goto_nxt_cmd(t_token_lst *node)
 	return (node);
 }
 
-/* NO NEED TO FORK IF ONE CMD & BUILTIN! */
-
 int	executor(t_token_lst *input, t_symtab *symtab)
 {
 	t_token_lst	*node;
@@ -120,6 +118,6 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 	if (exit_code == -1)
 		exit_code = parent_exec_builtin(tools, input, symtab);
 	cleanup(tools);
-	printf("Executor returning exit code %d\n", exit_code);	// delete
+	// printf("Executor returning exit code %d\n", exit_code);	// delete
 	return (exit_code);
 }

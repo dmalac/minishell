@@ -6,20 +6,14 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:47:02 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 18:29:17 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 
-// clear history
-// clear and free everything (input)
-
-// needs to return something specia (signal-ish?) for the main to know it has 
-// to exit with a particular exit code
-
-// more than 1 arg: error too many arguments
+// TBD: clear history, clear and free everything (input) ?
 
 static int	st_only_digits(char *str)
 {

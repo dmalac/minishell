@@ -15,22 +15,13 @@
 #include <errno.h>
 #include "symtab.h"
 
-// int	bi_pwd(t_symtab *symtab)
 int	bi_pwd(void)
 {
 	char	*pwd;
-	// char	*to_be_freed;
 
-	// to_be_freed = NULL;
-	// pwd = symtab_get_value(symtab, "PWD");
-	// if (!pwd)
-	// {
 	pwd = getcwd(NULL, 1);
 	if (!pwd)
 		return (errno);
-		// else
-			// to_be_freed = pwd;
-	// }
-	printf("%s\n", pwd);
+	printf("%s\n", pwd);	// or ft_putendl?
 	return (0);
 }

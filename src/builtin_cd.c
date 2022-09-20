@@ -30,46 +30,41 @@ static t_symtab	*st_get_old_pwd(t_symtab *symtab)
 	return (oldpwd);
 }
 
-static char	*st_get_address(char **args, t_symtab *symtab)
+int	bi_cd(char *address, t_symtab *symtab)
 {
-	char	*address;
-
-	if (!args[1])
-		address = symtab_get_value(symtab, "HOME");
-	else
-		address = args[1];
-	return (address);
-}
-
-/* char **args to be replaced by char* address (from t_token_lst->content) */
-int	bi_cd(char **args, t_symtab *symtab)
-{
-	char		*address;
 	t_symtab	*pwd;
 	t_symtab	*oldpwd;
 
-	if (!args)
+	if (!address)
 		return (1);
 	pwd = symtab_get_node(symtab, "PWD");
 	oldpwd = st_get_old_pwd(symtab);
-	address = st_get_address(args, symtab);
 	if (address && ft_strncmp(address, "-", 2) == 0)
 	{
 		if (!oldpwd->value)
-		{}
-			//bash: cd: OLDPWD not set
+		{
+			ft_putendl_fd("bash: cd: OLDPWD not set", 2);
+			return (1);
+		}
 		else if (chdir(oldpwd->value) < 0) // non-existing address
-			return (perror("ERROR MESSAGES TO BE EDITED: chdir"), 1);
-			// use errno!
-			// bash: cd: some/nonsense/address: No such file or directory
+		{
+			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd(oldpwd->value, 2);
+			ft_putendl_fd(": No such file or directory", 2);
+			return (1);
+		}
 		printf("%s\n", oldpwd->value);
 		symtab_swap_value(pwd, oldpwd);
 	}
 	else
 	{
 		if (chdir(address) < 0)
-			return (perror("ERROR MESSAGES TO BE EDITED: chdir"), 1);
-			// use errno!
+		{
+			ft_putstr_fd("bash: cd: ", 2);
+			ft_putstr_fd(address, 2);
+			ft_putendl_fd(": No such file or directory", 2);
+			return (1);
+		}
 		symtab_update_pwd(oldpwd, pwd);
 	}
 	return (0);

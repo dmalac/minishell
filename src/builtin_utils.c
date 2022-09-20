@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:48:17 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 18:08:08 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	is_builtin(char *cmd)
 int	execute_builtin(char **args, t_symtab *symtab)
 {
 	if (args[0][0] == 'c')
-		return (bi_cd(args, symtab));
+		return (bi_cd(args[1], symtab));
 	else if (args[0][0] == 'p')
 		return (bi_pwd());
 	else if (args[0][0] == 'u')
