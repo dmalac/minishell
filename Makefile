@@ -4,7 +4,7 @@ INCLDIR = incl
 OBJDIR = obj
 SRCDIR = src
 LIBFTDIR = libft
-CFLAGS = -Wall -Wextra -Werror -I ${INCLDIR} -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror  -lreadline -I ${INCLDIR} -g -fsanitize=address
 
 RM = rm -f
 
@@ -12,21 +12,21 @@ NAME = minishell
 
 # LDFLAGS = -L /Users/dmonfrin/.brew/opt/readline/lib
 # CPPFLAGS = -I /Users/dmonfrin/.brew/opt/readline/include
-LDFLAGS = -L /Users/dmalacov/.brew/opt/readline/lib
-CPPFLAGS = -I /Users/dmalacov/.brew/opt/readline/include
+LDFLAGS = -L /Users/$USER/.brew/opt/readline/lib
+CPPFLAGS = -I /Users/$USER/.brew/opt/readline/include
 
 LIB_PATH = ${LIBFTDIR}/libft.a
 
-FILES_MAIN = error_parsing.c \
-parser.c \
+FILES_MAIN = parser.c \
+parser_quote.c \
+parser_word.c \
+parser_variable.c \
+synt_red_error.c \
+token_list_moves.c \
+token_separation.c \
+token_split.c \
+token_utility.c \
 test.c \
-linked_list_moves.c \
-state_machine.c \
-quote_parsing.c \
-raw_token_ext.c \
-utility.c \
-word_parsing.c \
-variable.c \
 init.c \
 symtab.c \
 get.c \
@@ -53,7 +53,7 @@ SRC = ${FILES_MAIN:%.c=${SRCDIR}/%.c}
 all : ${NAME}
 
 ${NAME} : ${LIB_PATH} ${OBJ}
-	${CC} ${CFLAGS} ${LDFLAGS} ${CPPFLAGS} -lreadline ${OBJ} ${LIB_PATH} -o ${NAME}
+	${CC} ${CFLAGS} ${LDFLAGS} ${CPPFLAGS} ${OBJ} ${LIB_PATH} -o ${NAME}
 
 ${OBJDIR}/%.o : ${SRCDIR}/%.c
 	${CC} ${CFLAGS} -c $^ -o $@

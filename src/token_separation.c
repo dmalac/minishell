@@ -28,23 +28,24 @@ int	type_of_state(char c)
 	return (st_word);
 }
 
-static int	matching(int pr_va, int va)
+static int	matching(int prev_var, int var)
 {
-	if (pr_va == va || pr_va == blanck)
+	if (prev_var == var || prev_var == blank)
 		return (SUCCESS);
-	if ((pr_va == st_word || pr_va == st_trimmer) && (va == st_word
-			|| va == st_s_quote || va == st_d_quote))
+	if ((prev_var == st_word || prev_var == st_trimmer) && (var == st_word
+			|| var == st_s_quote || var == st_d_quote))
 		return (SUCCESS);
 	return (0);
 }
 
+/* key_word includes > < |									*/
 static int	key_word(char *token, t_state *st, int *exit_n)
 {
 	if (st->prv_state != st->state || !(st->buffer))
-		st->buffer = ft_substr(token + st->pos, 0, 1);
+		st->buffer = ft_substr(token, 0, 1);
 	else
 		st->buffer = ft_strjoinfree(st->buffer,
-				ft_substr(token + st->pos, 0, 1));
+				ft_substr(token, 0, 1));
 	if (st->buffer == NULL)
 		return (malloc_error(exit_n));
 	st->prv_state = st->state;
