@@ -4,7 +4,7 @@ INCLDIR = incl
 OBJDIR = obj
 SRCDIR = src
 LIBFTDIR = libft
-CFLAGS = -Wall -Wextra -Werror -I ${INCLDIR} -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror  -lreadline -I ${INCLDIR} -g -fsanitize=address
 
 RM = rm -f
 
@@ -53,7 +53,7 @@ SRC = ${FILES_MAIN:%.c=${SRCDIR}/%.c}
 all : ${NAME}
 
 ${NAME} : ${LIB_PATH} ${OBJ}
-	${CC} ${CFLAGS} ${LDFLAGS} ${CPPFLAGS} -lreadline ${OBJ} ${LIB_PATH} -o ${NAME}
+	${CC} ${CFLAGS} ${LDFLAGS} ${CPPFLAGS} ${OBJ} ${LIB_PATH} -o ${NAME}
 
 ${OBJDIR}/%.o : ${SRCDIR}/%.c
 	${CC} ${CFLAGS} -c $^ -o $@

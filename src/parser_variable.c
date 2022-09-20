@@ -53,7 +53,9 @@ static char	*var_search(char *variable, int sz, t_symtab *symtab)
 		if (ft_strncmp(key, symtab->key, size) == 0)
 		{
 			free(key);
-			return (ft_strdup(symtab->value));
+			if (symtab->value)
+				return (ft_strdup(symtab->value));
+			return (ft_strdup(""));
 		}
 		symtab = symtab->next;
 	}
