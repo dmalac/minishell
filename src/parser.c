@@ -13,6 +13,15 @@
 #include "parser.h"
 #include "error.h"
 
+/* This function is responsable to check the right token combinations	*/
+/* if some combinations are wrong it trow the right error and return -1	*/
+/* wrong combination:													*/
+/* redirect or pipe at the end of the list;								*/
+/* different redirect tipe next to each other							*/
+/* more than 1 pipe or more than 2 redirect next to each other;			*/
+/* pipe and redirect next to each others;								*/
+/* redirect to a not existing variable;									*/
+
 static int	right_value_err(t_token_lst *elem, int *exit_n)
 {
 	if (elem->token_type == PIPE && ft_strlen(elem->content) > 1)
@@ -29,15 +38,14 @@ static int	right_value_err(t_token_lst *elem, int *exit_n)
 	{
 		if (elem->next == NULL)
 			return (syntax_error(err_new_line, exit_n));
-		if (elem->next->token_type > 0 && elem->next->token_type != EMPTY)
-			return (syntax_error(elem->next->token_type, exit_n));
-		if (elem->next->token_type == EMPTY && (elem->token_type >= GRT_TH \
-		&& elem->token_type < DSML_TH))
-			return (redirect_error(elem->next->content, exit_n));
-	}
-	if (elem->token_type == PIPE)
 		if (elem->next->token_type == PIPE)
 			return (syntax_error(err_pip, exit_n));
+		if (elem->next->token_type > 0 && elem->next->token_type != EMPTY)
+			return (syntax_error(elem->next->token_type, exit_n));
+		if (elem->next->token_type == EMPTY && (elem->token_type >= GRT_TH
+				&& elem->token_type < DSML_TH))
+			return (redirect_error(elem->next->content, exit_n));
+	}	
 	return (SUCCESS);
 }
 
@@ -74,6 +82,9 @@ static void	unfold_token_list(char **tokens, t_token_lst **head,
 	}
 }
 
+/* This function is responsable to start the token separation,	*/
+/* to check syntax error and gives a working list of token		*/
+/* or an empty (NULL) list in case of error						*/
 t_token_lst	**parser(t_token_lst **head, char *string,
 		t_symtab *symtab, int *exit_n)
 {
