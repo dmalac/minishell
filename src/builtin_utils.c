@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:30:34 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 15:22:36 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,17 @@ int	execute_builtin(char **args, t_symtab *symtab)
 {
 	if (args[0][0] == 'c')
 		return (bi_cd(args, symtab));
-	if (args[0][0] == 'p')
+	else if (args[0][0] == 'p')
 		return (bi_pwd());
-	if (args[0][0] == 'u')
+	else if (args[0][0] == 'u')
 		return (bi_unset(args, symtab));
-	if (args[0][0] == 'e' && args[0][1] == 'c')
+	else if (args[0][0] == 'e' && args[0][1] == 'c')
 		return (bi_echo(args));
-	if (args[0][0] == 'e' && args[0][1] == 'n')
+	else if (args[0][0] == 'e' && args[0][1] == 'n')
 		return (bi_env(symtab));
-	if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'p')
+	else if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'p')
 		return (bi_export(args, symtab));
-	if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'i')
-		printf("Here I'd call exit, if it existed...\n");
-		// return (bi_exit());
-	return (0);	// delete
+	else if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'i')
+		return (bi_exit(args));
+	return (0);
 }

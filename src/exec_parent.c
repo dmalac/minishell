@@ -6,11 +6,12 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/19 15:35:46 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 16:45:59 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+#include "builtin.h"
 #include <errno.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -29,11 +30,16 @@ int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 			return (1);
 		}
 	}
-	*id = fork();
-	if (*id < 0)
+	if (tools->total_cmds == 1 && tools->builtin_only == 1)
+		return (-1);
+	else
 	{
-		strerror(errno);
-		return (1);
+		*id = fork();
+		if (*id < 0)
+		{
+			strerror(errno);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -60,6 +66,28 @@ void	close_unnecessary_pipes(t_cmd_tools *tools, int pipe_end[2][2])
 			node = node->next;
 		}
 	}
+}
+
+static void	st_get_tools(t_cmd_tools *tools, t_token_lst *input)
+{
+	t_token_lst	*node;
+
+	get_args(tools, input);
+	node = input;
+	while (node && node->token_type != PIPE && tools->input_fd != -1 && \
+	tools->output_fd != -1)
+		node = tools->process_tokens[node->token_type](tools, node);
+}
+
+int	parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
+t_symtab *symtab)
+{
+	st_get_tools(tools, input);
+	if (tools->input_fd < 0 || tools->output_fd < 0)
+		return (1);
+	dup2(tools->input_fd, STDIN_FILENO);
+	dup2(tools->output_fd, STDOUT_FILENO);
+	return (execute_builtin(tools->cmd_args, symtab));
 }
 
 int	wait_for_last_child(int id, size_t total_cmds)

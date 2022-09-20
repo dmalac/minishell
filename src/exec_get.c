@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 13:11:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/19 15:18:39 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 16:38:20 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ static size_t	st_count_args(t_token_lst *input)
 	{
 		if (input->token_type == WORD)
 			words++;
+		else if (input->token_type == GRT_TH || input->token_type == DGRT_TH || \
+		input->token_type == SMLR_TH || input->token_type == DSMLR_TH)
+			input = input->next;
 		input = input->next;
 	}
 	return (words);
@@ -50,11 +53,11 @@ void	get_args(t_cmd_tools *tools, t_token_lst *input)
 		tools->cmd_args = NULL;
 }
 
-int	st_add_slash_to_paths(t_cmd_tools *tools)
+static int	st_add_slash_to_paths(t_cmd_tools *tools)
 {
 	char	*temp;
 	size_t	i;
-	
+
 	i = 0;
 	while (tools->paths[i])
 	{

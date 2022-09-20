@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 18:32:48 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/16 15:19:35 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 15:13:17 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 
+long long	ft_atol(const char *str);
 void	ft_bzero(void *s, size_t n);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);

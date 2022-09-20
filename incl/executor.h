@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/19 18:36:37 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 16:35:10 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_cmd_tools
 	char		**paths;
 	char		**env_var;
 	t_heredoc	*heredoc;
+	int			builtin_only;
 	t_token_lst	*(*process_tokens[6])(struct s_cmd_tools *tools, \
 	t_token_lst *input);
 }				t_cmd_tools;
@@ -58,6 +59,8 @@ int			executor(t_token_lst *input, t_symtab *symtab);
 /* exec_parent.c */
 int			pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2]);
 void		close_unnecessary_pipes(t_cmd_tools *tools, int pipe_end[2][2]);
+int	parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
+t_symtab *symtab);
 int			wait_for_last_child(int id, size_t total_cmds);
 /* exec_child.c */
 void		perform_cmd(t_cmd_tools *tools, t_token_lst *input, \

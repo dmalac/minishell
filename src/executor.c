@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/19 18:13:34 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 16:48:01 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include "libft.h"
 #include "executor.h"
 #include "symtab.h"
+#include "builtin.h"
 #include <errno.h>
 #include <stdio.h>
 #include <unistd.h>
 
-size_t	st_count_cmds(t_token_lst *input)
+static size_t	st_count_cmds(t_token_lst *input)
 {
 	size_t	count;
 
@@ -32,7 +33,28 @@ size_t	st_count_cmds(t_token_lst *input)
 	return (count + 1);
 }
 
-t_cmd_tools	*st_tools_init(t_token_lst *input, t_symtab *symtab)
+static int	st_check_if_cmd_builtin(t_token_lst *input, t_cmd_tools *tools)
+{
+	if (tools->total_cmds > 1)
+		return (0);
+	while (input && input->token_type != PIPE)
+	{
+		if (input->token_type == WORD)
+		{
+			if (is_builtin(input->content))
+				return (1);
+			else
+				return (0);
+		}
+		else if (input->token_type == GRT_TH || input->token_type == DGRT_TH || \
+		input->token_type == SMLR_TH || input->token_type == DSMLR_TH)
+			input = input->next;
+		input = input->next;
+	}	
+	return (0);
+}
+
+static t_cmd_tools	*st_tools_init(t_token_lst *input, t_symtab *symtab)
 {
 	t_cmd_tools	*tools;
 
@@ -49,6 +71,7 @@ t_cmd_tools	*st_tools_init(t_token_lst *input, t_symtab *symtab)
 		return (cleanup(tools), NULL);
 	if (check_heredoc(input, tools) == 1 || get_heredoc(tools->heredoc) == 1)
 		return (cleanup(tools), NULL);
+	tools->builtin_only = st_check_if_cmd_builtin(input, tools);
 	tools->process_tokens[WORD] = process_word;
 	tools->process_tokens[GRT_TH] = process_output_redir1;
 	tools->process_tokens[SMLR_TH] = process_input_redir1;
@@ -58,7 +81,7 @@ t_cmd_tools	*st_tools_init(t_token_lst *input, t_symtab *symtab)
 	return (tools);
 }
 
-t_token_lst	*st_goto_nxt_cmd(t_token_lst *node)
+static t_token_lst	*st_goto_nxt_cmd(t_token_lst *node)
 {
 	while (node && node->token_type != PIPE)
 		node = node->next;
@@ -66,6 +89,8 @@ t_token_lst	*st_goto_nxt_cmd(t_token_lst *node)
 		node = node->next;
 	return (node);
 }
+
+/* NO NEED TO FORK IF ONE CMD & BUILTIN! */
 
 int	executor(t_token_lst *input, t_symtab *symtab)
 {
@@ -92,6 +117,9 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 	}
 	if (exit_code == 0 && tools->id > 0)
 		exit_code = wait_for_last_child(tools->id, tools->total_cmds);
+	if (exit_code == -1)
+		exit_code = parent_exec_builtin(tools, input, symtab);
 	cleanup(tools);
+	printf("Executor returning exit code %d\n", exit_code);	// delete
 	return (exit_code);
 }

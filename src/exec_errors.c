@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 12:13:15 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/16 15:57:03 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 17:01:54 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	cleanup(t_cmd_tools *tools)
 
 	if (tools)
 	{
-		free_array(tools->cmd_args);
+		// free_array(tools->cmd_args);
 		free_array(tools->paths);
 		free_array(tools->env_var);
 		node = tools->heredoc;
@@ -53,7 +53,7 @@ int	print_error_message(int error_code, char *name)
 {
 	char	*error_message;	
 
-	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd("Error: ", 2);		// do we want to change this?
 	if (error_code == CMD_ERROR)
 	{
 		error_code = 127;

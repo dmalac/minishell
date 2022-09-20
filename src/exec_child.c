@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/16 15:59:57 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 15:42:12 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,7 @@ t_symtab *symtab)
 	if (!tools->cmd_args)
 		child_error_and_exit(NO_ERROR, tools, NULL);
 	if (is_builtin(tools->cmd_args[0]) > 0)
-	{
-		printf("About to execute a builtin...\n");
 		exit_code = execute_builtin(tools->cmd_args, symtab);
-	}
 	else if (execve(tools->cmd_args[0], tools->cmd_args, tools->env_var) < 0)
 	{
 		close_pipes_child(tools, pipe_end, AFTER);
@@ -117,5 +114,5 @@ t_symtab *symtab)
 			child_error_and_exit(errno, tools, tools->cmd_args[0]);
 	}
 	close_pipes_child(tools, pipe_end, AFTER);
-	child_error_and_exit(exit_code, tools, NULL);
+	child_error_and_exit(NO_ERROR, tools, NULL);
 }

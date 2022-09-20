@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/12 12:33:23 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/19 18:44:06 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 16:39:15 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <readline/readline.h>
 #include <fcntl.h>	// delete
 
-t_heredoc	*st_heredoc_new(t_token_lst *node, size_t cmd_no)
+static t_heredoc	*st_heredoc_new(t_token_lst *node, size_t cmd_no)
 {
 	t_heredoc	*new;
 
@@ -33,7 +33,7 @@ t_heredoc	*st_heredoc_new(t_token_lst *node, size_t cmd_no)
 	return (new);
 }
 
-void	st_heredoc_add_back(t_heredoc **top, t_heredoc *new)
+static void	st_heredoc_add_back(t_heredoc **top, t_heredoc *new)
 {
 	t_heredoc	*node;
 

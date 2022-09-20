@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/15 14:22:13 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/20 17:35:06 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 #include "symtab.h"
 #include "libft.h"
 
-void	st_sort_export_list(t_symtab **export_list)
+/* To do: finalise error handling & exit codes */
+
+static void	st_sort_export_list(t_symtab **export_list)
 {
 	size_t		i;
 	size_t		j;
@@ -39,7 +41,7 @@ void	st_sort_export_list(t_symtab **export_list)
 	}
 }
 
-void	st_print_export_list(t_symtab **export_list)
+static void	st_print_export_list(t_symtab **export_list)
 {
 	size_t	i;
 
@@ -55,7 +57,7 @@ void	st_print_export_list(t_symtab **export_list)
 	}
 }
 
-void	st_display_export_list(t_symtab *symtab)
+static void	st_display_export_list(t_symtab *symtab)
 {
 	t_symtab	**export_list;
 	t_symtab	*node;
@@ -80,11 +82,26 @@ void	st_display_export_list(t_symtab *symtab)
 	free(export_list);
 }
 
-int	st_is_valid_var_name(char *var_name)
+static int	st_is_valid_var_name(char *var_name)
 {
-	/* ... */
-	if (var_name)	// delete
-		return (1);
+	size_t	i;
+
+	i = 0;
+	if (!(var_name[i] == '_' || ft_isalpha(var_name[i])))
+	{
+		printf("export: \'%s\': not a valid identifier\n", var_name);
+		return (0);
+	}
+	i++;
+	while (var_name[i])
+	{
+		if (ft_isalnum(var_name[i]) == 0 && var_name[i] != '_')
+		{
+			printf("export: \'%s\': not a valid identifier\n", var_name);
+			return (0);
+		}
+		i++;
+	}
 	return (1);
 }
 
@@ -110,7 +127,7 @@ char	*get_var_value(char *arg)
 		len_var_name++;
 	if (arg[len_var_name] == '=')
 		var_value = ft_substr(arg, len_var_name + 1, \
-		ft_strlen(arg - len_var_name - 1));
+		ft_strlen(arg) - len_var_name - 1);
 		// if (!var_value -> malloc error?? how does it differ from no '='?)
 	else
 		var_value = NULL;
@@ -123,8 +140,10 @@ int	bi_export(char **args, t_symtab *symtab)
 	char		*var_name;
 	char		*var_value;
 	t_symtab	*node;
+	int			exit_code;
 
 	i = 1;
+	exit_code = 0;
 	// HOW DO I KNOW IT WORKED? EXIT CODES...
 	while (args[i])
 	{
@@ -132,14 +151,14 @@ int	bi_export(char **args, t_symtab *symtab)
 		// if (!var_name -> malloc error)
 		printf("var_name is %s\n", var_name);
 		if (st_is_valid_var_name(var_name) == 0)
-			printf("export: \'%s\': not a valid identifier\n", var_name);
+			exit_code = 1;
 		else
 		{
 			var_value = get_var_value(args[i]);
+			printf("\tVar value of %s is %s\n", var_name, var_value);
 			node = symtab_get_node(symtab, var_name);
 			if (!node)
 				symtab = symtab_add_variable(symtab, args[i]);
-				// check that it really adds NULL if no '='
 			else if (node && var_value)
 				symtab_update_value(node, var_value);
 		}
@@ -147,5 +166,5 @@ int	bi_export(char **args, t_symtab *symtab)
 	}
 	if (!args[1])
 		st_display_export_list(symtab);
-	return (0);	// adjust
+	return (exit_code);	// adjust
 }

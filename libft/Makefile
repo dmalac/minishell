@@ -1,6 +1,7 @@
 NAME = libft.a
 
-SRC = ft_bzero.c \
+SRC = ft_atol.c \
+ft_bzero.c \
 ft_isalnum.c \
 ft_isalpha.c \
 ft_itoa.c \
