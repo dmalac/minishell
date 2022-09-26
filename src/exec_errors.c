@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 12:13:15 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:48:48 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/26 15:25:56 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	cleanup(t_cmd_tools *tools)
 
 	if (tools)
 	{
-		// free_array(tools->cmd_args);
 		free_array(tools->paths);
 		free_array(tools->env_var);
 		node = tools->heredoc;
@@ -51,24 +50,20 @@ void	cleanup(t_cmd_tools *tools)
 
 int	print_error_message(int error_code, char *name)
 {
-	char	*error_message;	
-
-	ft_putstr_fd("Error: ", 2);		// do we want to change this?
+	if (error_code != 12)
+		ft_putstr_fd("bash: ", 2);
+	if (name)
+	{
+		ft_putstr_fd(name, 2);
+		write(2, ": ", 2);
+	}
 	if (error_code == CMD_ERROR)
 	{
 		error_code = 127;
 		ft_putstr_fd("Command not found", 2);
 	}
 	else
-	{
-		error_message = strerror(error_code);
-		ft_putstr_fd(error_message, 2);
-	}
-	if (name)
-	{
-		write(2, ": ", 2);
-		ft_putstr_fd(name, 2);
-	}
+		ft_putstr_fd(strerror(error_code), 2);
 	write(2, "\n", 1);
 	if (error_code == 13)
 		error_code = 126;

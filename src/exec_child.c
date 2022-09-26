@@ -6,11 +6,11 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:48:32 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/26 15:55:04 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "minishell.h"
 #include "libft.h"
 #include "executor.h"
 #include "symtab.h"
@@ -54,9 +54,11 @@ int pipe_end[2][2])
 		node = tools->process_tokens[node->token_type](tools, node);
 	if (tools->input_fd == -1 || tools->output_fd == -1)
 		return ;
-	if (tools->input_fd == STDIN_FILENO && tools->total_cmds > 1)
+	if (tools->input_fd == STDIN_FILENO && tools->total_cmds > 1 && \
+	tools->cmd > 1)
 		tools->input_fd = pipe_end[tools->cmd % 2 == 1][R];
-	if (tools->output_fd == STDOUT_FILENO && tools->total_cmds > 1)
+	if (tools->output_fd == STDOUT_FILENO && tools->total_cmds > 1 && \
+	tools->cmd != tools->total_cmds)
 		tools->output_fd = pipe_end[tools->cmd % 2 == 0][W];
 	if (tools->cmd_args && is_builtin(tools->cmd_args[0]) == 0)
 		tools->cmd_args[0] = st_prepare_cmd(tools->cmd_args[0], tools->paths);

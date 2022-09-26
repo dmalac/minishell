@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "main.h"
+#include "minishell.h"
 #include "libft.h"
 #include <stdio.h>
 #include <string.h>
@@ -55,7 +55,7 @@ int	get_heredoc(t_heredoc *hd_list)
 	while (hd_list)
 	{
 		if (pipe(hd_list->hd_pipe) < 0)
-			return (strerror(errno), 1);
+			return (strerror(errno), 1);	// adjust (doesn't print anything itself)
 		line = NULL;
 		while (!line || ft_strncmp(line, hd_list->limiter, \
 		ft_strlen(hd_list->limiter) + 1) != 0)
@@ -88,7 +88,7 @@ int	check_heredoc(t_token_lst *input, t_cmd_tools *tools)
 	{
 		if (node->token_type == PIPE)
 			cmd_no++;
-		if (node->token_type == DSMLR_TH)
+		if (node->token_type == DSML_TH)
 		{
 			node = node->next;
 			new = st_heredoc_new(node, cmd_no);

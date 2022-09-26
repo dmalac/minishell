@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:44:15 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/26 15:54:48 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define EXECUTOR_H
 
 # include <stdlib.h>
-# include "main.h"
+# include "minishell.h"
 # include "symtab.h"
 
 typedef struct s_heredoc
@@ -59,7 +59,7 @@ int			executor(t_token_lst *input, t_symtab *symtab);
 /* exec_parent.c */
 int			pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2]);
 void		close_unnecessary_pipes(t_cmd_tools *tools, int pipe_end[2][2]);
-int	parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
+int			parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
 t_symtab *symtab);
 int			wait_for_last_child(int id, size_t total_cmds);
 /* exec_child.c */
@@ -84,5 +84,7 @@ void		child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name);
 int			print_error_message(int error_code, char *name);
 void		cleanup(t_cmd_tools *tools);
+/* init.c */
+t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab);
 
 #endif
