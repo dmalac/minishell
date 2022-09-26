@@ -114,5 +114,5 @@ t_symtab *symtab)
 			child_error_and_exit(errno, tools, tools->cmd_args[0]);
 	}
 	close_pipes_child(tools, pipe_end, AFTER);
-	child_error_and_exit(NO_ERROR, tools, NULL);
+	child_error_and_exit(exit_code, tools, NULL);
 }

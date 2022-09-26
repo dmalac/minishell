@@ -70,18 +70,18 @@ int	print_error_message(int error_code, char *name)
 		ft_putstr_fd(name, 2);
 	}
 	write(2, "\n", 1);
+	if (error_code == 13)
+		error_code = 126;
 	return (error_code);
 }
 
 void	child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name)
 {
-	if (error_code > 0 || error_code == CMD_ERROR)
+	if ((error_code > 0 && name) || error_code == CMD_ERROR)
 		error_code = print_error_message(error_code, name);
 	cleanup(tools);
 	if (error_code < 0)
 		error_code = 1;
-	if (error_code == 13)
-		error_code = 126;
 	exit(error_code);
 }
