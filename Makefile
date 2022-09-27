@@ -28,7 +28,9 @@ token_split.c \
 token_utility.c \
 test.c \
 init.c \
-symtab.c \
+symtab_add.c \
+symtab_operations.c \
+symtab_remove.c \
 exec_get.c \
 exec_child.c \
 exec_parent.c \
@@ -41,6 +43,8 @@ builtin_echo.c \
 builtin_env.c \
 builtin_pwd.c \
 builtin_export.c \
+builtin_export_var.c \
+builtin_export_lst.c \
 builtin_unset.c \
 builtin_exit.c \
 builtin_utils.c

@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 18:08:08 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/27 15:57:28 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,44 @@
 #include "builtin.h"
 #include "libft.h"
 #include <stdio.h>
+#include <string.h>
+
+void	builtin_error(char *bi_name, char *error_cause, char *error_msg)
+{
+	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd(bi_name, 2);
+	ft_putstr_fd(": ", 2);
+	if (error_cause)
+	{
+		ft_putstr_fd("`", 2);
+		ft_putstr_fd(error_cause, 2);
+		ft_putstr_fd("': ", 2);
+	}
+	ft_putendl_fd(error_msg, 2);
+}
+
+int	is_valid_var_name(char *bi_name, char *identifier)
+{
+	size_t	i;
+
+	i = 0;
+	if (!(identifier[i] == '_' || ft_isalpha(identifier[i])))
+	{
+		builtin_error(bi_name, identifier, "not a valid identifier");
+		return (FALSE);
+	}
+	i++;
+	while (identifier[i])
+	{
+		if (ft_isalnum(identifier[i]) == 0 && identifier[i] != '_')
+		{
+			builtin_error(bi_name, identifier, "not a valid identifier");
+			return (FALSE);
+		}
+		i++;
+	}
+	return (TRUE);
+}
 
 int	is_builtin(char *cmd)
 {
@@ -21,9 +59,9 @@ int	is_builtin(char *cmd)
 	ft_strncmp(cmd, "pwd", 4) == 0 || ft_strncmp(cmd, "export", 7) == 0 || \
 	ft_strncmp(cmd, "unset", 6) == 0 || ft_strncmp(cmd, "exit", 5) == 0 || \
 	ft_strncmp(cmd, "env", 4) == 0)
-		return (1);
+		return (TRUE);
 	else
-		return (0);
+		return (FALSE);
 }
 
 int	execute_builtin(char **args, t_symtab *symtab)

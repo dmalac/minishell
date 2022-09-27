@@ -40,9 +40,11 @@ t_symtab	*init_symbol_table(void)
 		}
 		symtab_add_back(&top, new);
 	}
-	// DO THIS ONLY IF NECESSARY!!
-	new = symtab_new("OLDPWD");
-	symtab_add_back(&top, new);
+	if (!symtab_get_node(top, "OLDPWD"))
+	{
+		new = symtab_new("OLDPWD");
+		symtab_add_back(&top, new);
+	}
 	return (top);
 }
 
@@ -67,12 +69,7 @@ static int	st_check_if_cmd_builtin(t_token_lst *input, t_cmd_tools *tools)
 	while (input && input->token_type != PIPE)
 	{
 		if (input->token_type == WORD)
-		{
-			if (is_builtin(input->content))
-				return (1);
-			else
-				return (0);
-		}
+			return (is_builtin(input->content));
 		else if (input->token_type == GRT_TH || input->token_type == DGRT_TH || \
 		input->token_type == SMLR_TH || input->token_type == DSML_TH)
 			input = input->next;

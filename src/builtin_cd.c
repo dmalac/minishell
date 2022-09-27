@@ -63,29 +63,18 @@ int	bi_cd(char *address, t_symtab *symtab)
 	if (address && ft_strncmp(address, "-", 2) == 0)
 	{
 		if (!oldpwd->value)
-		{
-			ft_putendl_fd("bash: cd: OLDPWD not set", 2);
-			return (1);
-		}
+			return (builtin_error("cd", NULL, "OLDPWD not set"), 1);
 		else if (chdir(oldpwd->value) < 0) // non-existing address
-		{
-			ft_putstr_fd("bash: cd: ", 2);
-			ft_putstr_fd(oldpwd->value, 2);
-			ft_putendl_fd(": No such file or directory", 2);
-			return (1);
-		}
+			return (builtin_error("cd", oldpwd->value, \
+			"No such file or directory"), 1);
 		printf("%s\n", oldpwd->value);
 		st_symtab_swap_value(pwd, oldpwd);
 	}
 	else
 	{
 		if (chdir(address) < 0)
-		{
-			ft_putstr_fd("bash: cd: ", 2);
-			ft_putstr_fd(address, 2);
-			ft_putendl_fd(": No such file or directory", 2);
-			return (1);
-		}
+			return (builtin_error("cd", address, "No such file or directory"), \
+			1);
 		st_symtab_update_pwd(oldpwd, pwd);
 	}
 	return (0);

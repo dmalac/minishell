@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/26 15:55:04 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/27 15:12:06 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int pipe_end[2][2])
 	if (tools->output_fd == STDOUT_FILENO && tools->total_cmds > 1 && \
 	tools->cmd != tools->total_cmds)
 		tools->output_fd = pipe_end[tools->cmd % 2 == 0][W];
-	if (tools->cmd_args && is_builtin(tools->cmd_args[0]) == 0)
+	if (tools->cmd_args && is_builtin(tools->cmd_args[0]) == FALSE)
 		tools->cmd_args[0] = st_prepare_cmd(tools->cmd_args[0], tools->paths);
 }
 
@@ -105,7 +105,7 @@ t_symtab *symtab)
 	dup2(tools->output_fd, STDOUT_FILENO);
 	if (!tools->cmd_args)
 		child_error_and_exit(NO_ERROR, tools, NULL);
-	if (is_builtin(tools->cmd_args[0]) > 0)
+	if (is_builtin(tools->cmd_args[0]) == TRUE)
 		exit_code = execute_builtin(tools->cmd_args, symtab);
 	else if (execve(tools->cmd_args[0], tools->cmd_args, tools->env_var) < 0)
 	{
