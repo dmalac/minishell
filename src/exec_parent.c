@@ -6,12 +6,13 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:50:33 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/26 15:50:22 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "builtin.h"
+#include "libft.h"
 #include <errno.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -21,25 +22,22 @@ int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 {
 	int	pipe_no;
 
+	if (tools->total_cmds == 1 && tools->builtin_only == 1)
+		return (-1);
 	pipe_no = (tools->cmd % 2 == 0);
 	if (tools->cmd < tools->total_cmds)
 	{
 		if (pipe(pipe_end[pipe_no]) < 0)
 		{
-			strerror(errno);
+			ft_putendl_fd(strerror(errno), 2);
 			return (1);
 		}
 	}
-	if (tools->total_cmds == 1 && tools->builtin_only == 1)
-		return (-1);
-	else
+	*id = fork();
+	if (*id < 0)
 	{
-		*id = fork();
-		if (*id < 0)
-		{
-			strerror(errno);
-			return (1);
-		}
+		ft_putendl_fd(strerror(errno), 2);
+		return (1);
 	}
 	return (0);
 }

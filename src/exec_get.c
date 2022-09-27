@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 13:11:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 17:50:03 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/26 15:57:39 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static size_t	st_count_args(t_token_lst *input)
 		if (input->token_type == WORD)
 			words++;
 		else if (input->token_type == GRT_TH || input->token_type == DGRT_TH || \
-		input->token_type == SMLR_TH || input->token_type == DSMLR_TH)
+		input->token_type == SMLR_TH || input->token_type == DSML_TH)
 			input = input->next;
 		input = input->next;
 	}

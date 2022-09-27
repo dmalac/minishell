@@ -22,6 +22,6 @@ int	bi_pwd(void)
 	pwd = getcwd(NULL, 1);
 	if (!pwd)
 		return (errno);
-	printf("%s\n", pwd);	// or ft_putendl?
+	printf("%s\n", pwd);
 	return (0);
 }

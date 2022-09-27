@@ -30,6 +30,27 @@ static t_symtab	*st_get_old_pwd(t_symtab *symtab)
 	return (oldpwd);
 }
 
+/* swaps values of two variables (useful for builtin function cd) */
+static void	st_symtab_swap_value(t_symtab *node1, t_symtab *node2)
+{
+	char	*tmp;
+
+	tmp = node1->value;
+	node1->value = node2->value;
+	node2->value = tmp;
+}
+
+/* updates the PWD and OLDPWD variables */
+static void	st_symtab_update_pwd(t_symtab *oldpwd, t_symtab *pwd)
+{
+	char	*new_address;
+
+	new_address = getcwd(NULL, 1);
+	free(oldpwd->value);
+	oldpwd->value = pwd->value;
+	pwd->value = new_address;
+}
+
 int	bi_cd(char *address, t_symtab *symtab)
 {
 	t_symtab	*pwd;
@@ -54,7 +75,7 @@ int	bi_cd(char *address, t_symtab *symtab)
 			return (1);
 		}
 		printf("%s\n", oldpwd->value);
-		symtab_swap_value(pwd, oldpwd);
+		st_symtab_swap_value(pwd, oldpwd);
 	}
 	else
 	{
@@ -65,7 +86,7 @@ int	bi_cd(char *address, t_symtab *symtab)
 			ft_putendl_fd(": No such file or directory", 2);
 			return (1);
 		}
-		symtab_update_pwd(oldpwd, pwd);
+		st_symtab_update_pwd(oldpwd, pwd);
 	}
 	return (0);
 }
