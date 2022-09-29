@@ -20,6 +20,17 @@
 #include "symtab.h"
 #include "libft.h"
 
+static void	st_update_shlvl(t_symtab *symtab)
+{
+	t_symtab	*node;
+	long long	no;
+
+	node = symtab_get_node(symtab, "SHLVL");
+	no = ft_atol(node->value);	// do we want to include atoi just for this?
+	free(node->value);
+	node->value = ft_itoa(no + 1);
+}
+
 t_symtab	*init_symbol_table(void)
 {
 	extern char	**environ;
@@ -40,9 +51,10 @@ t_symtab	*init_symbol_table(void)
 		}
 		symtab_add_back(&top, new);
 	}
-	// DO THIS ONLY IF NECESSARY!!
-	new = symtab_new("OLDPWD");
-	symtab_add_back(&top, new);
+	if (!symtab_get_node(top, "OLDPWD"))
+		symtab_add_node(&top, "OLDPWD");
+	symtab_add_node(&top, "PS1=minishell> ");
+	st_update_shlvl(top);
 	return (top);
 }
 
@@ -67,12 +79,7 @@ static int	st_check_if_cmd_builtin(t_token_lst *input, t_cmd_tools *tools)
 	while (input && input->token_type != PIPE)
 	{
 		if (input->token_type == WORD)
-		{
-			if (is_builtin(input->content))
-				return (1);
-			else
-				return (0);
-		}
+			return (is_builtin(input->content));
 		else if (input->token_type == GRT_TH || input->token_type == DGRT_TH || \
 		input->token_type == SMLR_TH || input->token_type == DSML_TH)
 			input = input->next;
@@ -94,9 +101,11 @@ t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 	tools->input_fd = STDIN_FILENO;
 	tools->output_fd = STDOUT_FILENO;
 	tools->cmd_args = NULL;
-	if (get_paths(symtab, tools) == 1 || get_env_var(symtab, tools) == 1)
+	if (get_paths(symtab, tools) == EXIT_FAILURE || \
+	get_env_var(symtab, tools) == EXIT_FAILURE)
 		return (cleanup(tools), NULL);
-	if (check_heredoc(input, tools) == 1 || get_heredoc(tools->heredoc) == 1)
+	if (check_heredoc(input, tools) == EXIT_FAILURE || \
+	get_heredoc(tools->heredoc) == EXIT_FAILURE)
 		return (cleanup(tools), NULL);
 	tools->builtin_only = st_check_if_cmd_builtin(input, tools);
 	tools->process_tokens[WORD] = process_word;

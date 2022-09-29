@@ -11,16 +11,21 @@
 /* ************************************************************************** */
 
 #include "symtab.h"
+#include "builtin.h"
 
 int	bi_unset(char **args, t_symtab *symtab)
 {
 	size_t		i;
+	int			exit_code;
 
 	i = 1;
 	while (args[i])
 	{
-		symtab_remove_node(&symtab, args[i]);
+		if (is_valid_var_name("unset", args[i]) == FALSE)
+			exit_code = EXIT_FAILURE;
+		else
+			symtab_remove_node(&symtab, args[i]);
 		i++;
 	}
-	return (0);
+	return (exit_code);
 }

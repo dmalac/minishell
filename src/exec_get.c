@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 13:11:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/26 15:57:39 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/27 11:40:02 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	get_paths(t_symtab *symtab, t_cmd_tools *tools)
 		}
 		if (!tools->paths)
 		{
-			strerror(errno);
+			ft_putendl_fd(strerror(errno), 2);
 			return (1);
 		}
 	}

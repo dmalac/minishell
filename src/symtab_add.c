@@ -56,16 +56,29 @@ void	symtab_add_back(t_symtab **top, t_symtab *new)
 	}
 }
 
-int	symtab_add_variable(t_symtab *symtab, char *str)
+void	symtab_add_node(t_symtab **top, char *str)
 {
 	t_symtab	*new;
 
 	new = symtab_new(str);
+	if (new)
+		symtab_add_back(top, new);
+}
+
+/* adds new variables to the symbol table (used by the export builtin) */
+int	symtab_add_var(t_symtab *symtab, char *var_name, char *var_val)
+{
+	t_symtab	*new;
+
+	new = malloc(sizeof(t_symtab));
 	if (!new)
 	{
 		ft_putendl_fd(strerror(errno), 2);
-		return (1);
+		return (EXIT_FAILURE);
 	}
+	new->key = var_name;
+	new->value = var_val;
+	new->next = NULL;
 	symtab_add_back(&symtab, new);
-	return (0);
+	return (EXIT_SUCCESS);
 }

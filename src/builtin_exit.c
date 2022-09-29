@@ -6,12 +6,12 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 18:29:17 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/27 15:10:30 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include "builtin.h"
 
 // TBD: clear history, clear and free everything (input) ?
 
@@ -60,8 +60,8 @@ static int	st_is_long(char *str)
 
 static int	st_is_valid_num_arg(char *arg)
 {
-	if (st_only_digits(arg) == 0)
-		return (0);
+	if (st_only_digits(arg) == FALSE)
+		return (FALSE);
 	else
 		return (st_is_long(arg));
 }
@@ -73,11 +73,9 @@ int	bi_exit(char **args)
 	ft_putendl_fd("exit", 2);
 	if (!args[1])
 		exit(0);
-	else if (st_is_valid_num_arg(args[1]) == 0)
+	else if (st_is_valid_num_arg(args[1]) == FALSE)
 	{
-		ft_putstr_fd("bash: exit: ", 2);
-		ft_putstr_fd(args[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);
+		builtin_error("exit", args[1], "numeric argument required");
 		exit(255);
 	}
 	else if (!args[2])
@@ -86,6 +84,6 @@ int	bi_exit(char **args)
 		exit((exit_code % 256 + 256) % 256);
 	}
 	else
-		ft_putendl_fd("bash: exit: too many arguments", 2);
+		builtin_error("exit", NULL, "too many arguments");
 	return (1);
 }

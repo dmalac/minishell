@@ -33,13 +33,6 @@ enum e_basic_exit{
 	SUCCESS = 1,
 };
 
-// typedef struct s_symtab{
-// 	char			*key;
-// 	char			*value;
-// 	int				is_env;
-// 	struct s_symtab	*next;
-// }	t_symtab;
-
 typedef struct s_token_lst{
 	char				*content;
 	int					token_type;
