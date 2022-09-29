@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/27 15:12:06 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/29 16:12:19 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static char	*st_prepare_cmd(char *cmd, char **paths)
 	int		i;
 	char	*full_cmd;
 
-	if (access(cmd, F_OK) == 0)
-		return (cmd);
 	i = 0;
 	while (paths && paths[i])
 	{
@@ -39,6 +37,8 @@ static char	*st_prepare_cmd(char *cmd, char **paths)
 		else
 			free (full_cmd);
 	}
+	// if (access(cmd, F_OK) == 0)
+	// 	return (cmd);
 	return (cmd);
 }
 

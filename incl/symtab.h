@@ -27,6 +27,7 @@ t_symtab	*init_symbol_table(void);
 /* symtab_add.c */
 t_symtab	*symtab_new(char *str);
 void		symtab_add_back(t_symtab **top, t_symtab *new);
+void		symtab_add_node(t_symtab **top, char *str);
 int			symtab_add_var(t_symtab *symtab, char *var_name, char *var_val);
 /* symtab_remove.c */
 t_symtab	*symtab_remove_node(t_symtab **top, char *key);

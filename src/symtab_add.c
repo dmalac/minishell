@@ -56,6 +56,15 @@ void	symtab_add_back(t_symtab **top, t_symtab *new)
 	}
 }
 
+void	symtab_add_node(t_symtab **top, char *str)
+{
+	t_symtab	*new;
+
+	new = symtab_new(str);
+	if (new)
+		symtab_add_back(top, new);
+}
+
 /* adds new variables to the symbol table (used by the export builtin) */
 int	symtab_add_var(t_symtab *symtab, char *var_name, char *var_val)
 {
