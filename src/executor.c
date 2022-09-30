@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/26 15:53:50 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/09/29 18:01:37 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 // #include "symtab.h"	is in minishell.h
 #include "builtin.h"
 #include <errno.h>
+#include <readline/readline.h>
+#include <signal.h>
 // #include <stdio.h>	is in minishell.h
 // #include <unistd.h>	is in minishell.h
 
@@ -46,6 +48,29 @@ t_symtab *symtab, int exit_code)
 	return (exit_code);
 }
 
+// void	exec_signal_handler(int sig)
+// {
+// 	dprintf(2, "Received a signal %d\n", sig);
+// 	if (sig == SIGINT)
+// 	{
+// 		rl_replace_line("",0);
+// 		write(1, "\n", 1);
+// 		rl_on_new_line();
+// 		// rl_done = 1;
+// 		// rl_redisplay();
+// 	}
+// 	if (sig == SIGCHLD)
+// 	{
+// 		rl_replace_line("",0);
+// 		write(1, "\n", 1);
+// 		rl_on_new_line();
+// 		// rl_done = 1;
+// 	}
+// 	g_is_interupt = sig;
+// 	dprintf(2, "global var is now %d\n", g_is_interupt);
+// }
+
+// int	executor(t_token_lst *input, t_symtab *symtab, struct sigaction *sa)
 int	executor(t_token_lst *input, t_symtab *symtab)
 {
 	t_token_lst	*node;
@@ -55,7 +80,11 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 
 	tools = tools_init(input, symtab);
 	if (!tools)
-		return (1);
+	{
+		if (g_is_interupt == SIGINT)
+			g_is_interupt = 0;
+		return (EXIT_FAILURE);
+	}
 	node = input;
 	exit_code = 0;
 	while (exit_code == 0 && tools->cmd <= tools->total_cmds)

@@ -15,10 +15,12 @@
 #include "libft.h"
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 #include <errno.h>
 #include <unistd.h>
 #include <readline/readline.h>
-#include <fcntl.h>	// delete
+#include <sys/wait.h>
+// #include <termios.h>
 
 static t_heredoc	*st_heredoc_new(t_token_lst *node, size_t cmd_no)
 {
@@ -48,31 +50,65 @@ static void	st_heredoc_add_back(t_heredoc **top, t_heredoc *new)
 	}
 }
 
-int	get_heredoc(t_heredoc *hd_list)
+static int	st_heredoc_open_pipes(t_heredoc *hd_list)
 {
-	char	*line;
-
 	while (hd_list)
 	{
 		if (pipe(hd_list->hd_pipe) < 0)
-			return (strerror(errno), 1);	// adjust (doesn't print anything itself)
-		line = NULL;
-		while (!line || ft_strncmp(line, hd_list->limiter, \
-		ft_strlen(hd_list->limiter) + 1) != 0)
 		{
-			if (line)
-			{
-				write(hd_list->hd_pipe[W], line, ft_strlen(line));
-				write(hd_list->hd_pipe[W], "\n", 1);
-				free(line);
-			}
-			line = readline("> ");
+			ft_putendl_fd(strerror(errno), 2);
+			return (EXIT_FAILURE);
 		}
-		free(line);
-		close(hd_list->hd_pipe[W]);
 		hd_list = hd_list->next;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
+}
+
+int	get_heredoc(t_heredoc *hd_list)
+{
+	pid_t			id;
+	int				exit_code;
+	int				wait_status;
+	// struct termios	original_termios;
+
+	if (!hd_list)
+		return (EXIT_SUCCESS);
+	if (st_heredoc_open_pipes(hd_list) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	// tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
+	// tcgetattr(STDIN_FILENO, &original_termios);
+	id = fork();
+	if (id < 0)
+	{
+		ft_putendl_fd(strerror(errno), 2);
+		return (1);
+	}
+	if (id == 0)
+	{
+		heredoc_child_receive_input(hd_list);
+		return (EXIT_SUCCESS);
+	}
+	else
+	{
+		exit_code = EXIT_SUCCESS;
+		waitpid(id, &wait_status, 0);
+		if (WIFEXITED(wait_status))
+			exit_code = WEXITSTATUS(wait_status);
+		// printf("child exited with code %d\n", exit_code);
+		// if (exit_code == SIGINT)
+			// printf("[%d]\n", isatty(STDIN_FILENO));
+			// rl_outstream = stderr;
+			// rl_done = 0;
+			// tcgetattr(STDIN_FILENO, &original_termios);
+		while (hd_list)
+		{
+			close(hd_list->hd_pipe[W]);
+			hd_list = hd_list->next;
+		}
+		if (exit_code > EXIT_SUCCESS)
+			exit_code = EXIT_FAILURE;
+		return (exit_code);
+	}
 }
 
 int	check_heredoc(t_token_lst *input, t_cmd_tools *tools)
@@ -93,10 +129,10 @@ int	check_heredoc(t_token_lst *input, t_cmd_tools *tools)
 			node = node->next;
 			new = st_heredoc_new(node, cmd_no);
 			if (!new)
-				return (1);
+				return (EXIT_FAILURE);
 			st_heredoc_add_back(&tools->heredoc, new);
 		}
 		node = node->next;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

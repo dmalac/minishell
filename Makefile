@@ -37,6 +37,7 @@ exec_parent.c \
 executor.c \
 exec_errors.c \
 heredoc.c \
+heredoc_child.c \
 token_processing.c \
 builtin_cd.c \
 builtin_echo.c \

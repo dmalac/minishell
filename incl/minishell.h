@@ -18,6 +18,8 @@
 # include <stdlib.h>
 # include <stdio.h>
 
+extern int	g_is_interupt;
+
 enum e_token_type{
 	WORD,
 	GRT_TH,

@@ -13,7 +13,7 @@
 #ifndef ERROR_H
 # define ERROR_H
 # include "libft.h" 
-# include "minishell.h"
+// # include "minishell.h"
 
 enum e_error{
 	err_new_line,
