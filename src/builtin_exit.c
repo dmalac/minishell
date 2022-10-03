@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/27 15:10:30 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 11:38:36 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,12 @@ static int	st_is_valid_num_arg(char *arg)
 		return (st_is_long(arg));
 }
 
-int	bi_exit(char **args)
+int	bi_exit(char **args, int who)
 {
 	int	exit_code;
 
-	ft_putendl_fd("exit", 2);
+	if (who == PARENT)
+		ft_putendl_fd("exit", 2);
 	if (!args[1])
 		exit(0);
 	else if (st_is_valid_num_arg(args[1]) == FALSE)

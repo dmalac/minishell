@@ -17,38 +17,40 @@
 #include "symtab.h"
 #include "libft.h"
 
-static t_symtab	*st_get_old_pwd(t_symtab *symtab)
-{
-	t_symtab	*oldpwd;
-
-	oldpwd = symtab_get_node(symtab, "OLDPWD");
-	if (!oldpwd)
-	{
-		oldpwd = symtab_new("OLDPWD");
-		symtab_add_back(&symtab, oldpwd);
-	}
-	return (oldpwd);
-}
-
-/* swaps values of two variables (useful for builtin function cd) */
-static void	st_symtab_swap_value(t_symtab *node1, t_symtab *node2)
+/* swaps values of PWD and OLDPWD */
+static int	st_symtab_swap_value(t_symtab *symtab, t_symtab *pwd, \
+t_symtab *oldpwd)
 {
 	char	*tmp;
 
-	tmp = node1->value;
-	node1->value = node2->value;
-	node2->value = tmp;
+	if (!pwd)
+		pwd = symtab_add_node(&symtab, "PWD");
+	if (!pwd)
+		return (EXIT_FAILURE);
+	tmp = pwd->value;
+	pwd->value = oldpwd->value;
+	oldpwd->value = tmp;
+	return (EXIT_SUCCESS);
 }
 
 /* updates the PWD and OLDPWD variables */
-static void	st_symtab_update_pwd(t_symtab *oldpwd, t_symtab *pwd)
+static int	st_symtab_update_pwd(t_symtab *symtab, t_symtab *oldpwd, \
+t_symtab *pwd)
 {
 	char	*new_address;
 
 	new_address = getcwd(NULL, 1);
-	free(oldpwd->value);
+	if (!oldpwd)
+		oldpwd = symtab_add_node(&symtab, "OLDPWD");
+	else
+		free(oldpwd->value);
+	if (!pwd)
+		pwd = symtab_add_node(&symtab, "PWD");
+	if (!pwd || !oldpwd)
+		return (EXIT_FAILURE);
 	oldpwd->value = pwd->value;
 	pwd->value = new_address;
+	return (EXIT_SUCCESS);
 }
 
 int	bi_cd(char *address, t_symtab *symtab)
@@ -57,25 +59,24 @@ int	bi_cd(char *address, t_symtab *symtab)
 	t_symtab	*oldpwd;
 
 	if (!address)
-		return (1);
+		return (EXIT_FAILURE);
 	pwd = symtab_get_node(symtab, "PWD");
-	oldpwd = st_get_old_pwd(symtab);
+	oldpwd = symtab_get_node(symtab, "OLDPWD");
 	if (address && ft_strncmp(address, "-", 2) == 0)
 	{
-		if (!oldpwd->value)
+		if (!oldpwd || !oldpwd->value)
 			return (builtin_error("cd", NULL, "OLDPWD not set"), 1);
-		else if (chdir(oldpwd->value) < 0) // non-existing address
+		else if (chdir(oldpwd->value) < 0)
 			return (builtin_error("cd", oldpwd->value, \
 			"No such file or directory"), 1);
 		printf("%s\n", oldpwd->value);
-		st_symtab_swap_value(pwd, oldpwd);
+		return (st_symtab_swap_value(symtab, pwd, oldpwd));
 	}
 	else
 	{
 		if (chdir(address) < 0)
 			return (builtin_error("cd", address, "No such file or directory"), \
 			1);
-		st_symtab_update_pwd(oldpwd, pwd);
+		return (st_symtab_update_pwd(symtab, oldpwd, pwd));
 	}
-	return (0);
 }

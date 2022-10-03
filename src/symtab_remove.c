@@ -19,8 +19,11 @@
 static void	st_symtab_erase_and_free_node(t_symtab **node)
 {
 	free((*node)->key);
+	(*node)->key = NULL;
 	free((*node)->value);
+	(*node)->value = NULL;
 	free(*node);
+	(*node) = NULL;
 }
 
 void	symtab_erase_and_free(t_symtab **top)

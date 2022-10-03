@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/27 15:57:28 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 14:46:22 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	builtin_error(char *bi_name, char *error_cause, char *error_msg)
 	ft_putstr_fd(": ", 2);
 	if (error_cause)
 	{
-		ft_putstr_fd("`", 2);
+		ft_putstr_fd("`", 2);	// NOT when cd
 		ft_putstr_fd(error_cause, 2);
 		ft_putstr_fd("': ", 2);
 	}
@@ -64,7 +64,7 @@ int	is_builtin(char *cmd)
 		return (FALSE);
 }
 
-int	execute_builtin(char **args, t_symtab *symtab)
+int	execute_builtin(char **args, t_symtab *symtab, int who)
 {
 	if (args[0][0] == 'c')
 		return (bi_cd(args[1], symtab));
@@ -79,6 +79,6 @@ int	execute_builtin(char **args, t_symtab *symtab)
 	else if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'p')
 		return (bi_export(args, symtab));
 	else if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'i')
-		return (bi_exit(args));
+		return (bi_exit(args, who));
 	return (0);
 }

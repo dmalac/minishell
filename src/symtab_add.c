@@ -17,12 +17,11 @@
 #include "symtab.h"
 #include "libft.h"
 
-/* creates a new node */
+/* creates and returns a new node */
 t_symtab	*symtab_new(char *str)
 {
 	size_t		i;
 	t_symtab	*new;
-	size_t		len;
 
 	new = malloc(sizeof(t_symtab));
 	if (!str || !new)
@@ -30,12 +29,11 @@ t_symtab	*symtab_new(char *str)
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
-	len = ft_strlen(str);
 	new->key = ft_substr(str, 0, i);
-	if (len == i + 1)
+	if (str[i] != '=')
 		new->value = NULL;
 	else
-		new->value = ft_substr(str, i + 1, len - i - 1);
+		new->value = ft_substr(str, i + 1, ft_strlen(str) - i - 1);
 	new->next = NULL;
 	return (new);
 }
@@ -56,13 +54,14 @@ void	symtab_add_back(t_symtab **top, t_symtab *new)
 	}
 }
 
-void	symtab_add_node(t_symtab **top, char *str)
+t_symtab	*symtab_add_node(t_symtab **top, char *str)
 {
 	t_symtab	*new;
 
 	new = symtab_new(str);
 	if (new)
 		symtab_add_back(top, new);
+	return (new);
 }
 
 /* adds new variables to the symbol table (used by the export builtin) */

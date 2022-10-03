@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/27 16:18:10 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 11:22:15 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include "libft.h"
 #include "builtin.h"
 
-/* To do: finalise error handling & exit codes */
-
 static int	st_perform_export(char **args, char **var_name, char **var_val, \
 t_symtab *symtab)
 {
@@ -25,6 +23,7 @@ t_symtab *symtab)
 	int		exit_code;
 
 	i = 1;
+	exit_code = EXIT_SUCCESS;
 	while (args[i])
 	{
 		if (get_var_name(args[i], var_name) == EXIT_FAILURE)
@@ -39,7 +38,7 @@ t_symtab *symtab)
 			return (EXIT_FAILURE);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }
 
 int	bi_export(char **args, t_symtab *symtab)
