@@ -22,7 +22,6 @@ static int	st_perform_export(char **args, char **var_name, char **var_val, \
 t_symtab *symtab)
 {
 	size_t	i;
-	int		exit_code;
 
 	i = 1;
 	while (args[i])
@@ -32,7 +31,6 @@ t_symtab *symtab)
 		else if (is_valid_var_name("export", *var_name) == FALSE)
 		{
 			free(*var_name);
-			exit_code = EXIT_FAILURE;
 		}
 		else if (export_variable(args[i], var_name, var_val, symtab) == \
 		EXIT_FAILURE)

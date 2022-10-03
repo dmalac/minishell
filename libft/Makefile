@@ -4,6 +4,7 @@ SRC = ft_atol.c \
 ft_bzero.c \
 ft_isalnum.c \
 ft_isalpha.c \
+ft_isdigit.c \
 ft_itoa.c \
 ft_putendl_fd.c \
 ft_putstr_fd.c \
@@ -23,7 +24,7 @@ OBJDIR = obj
 OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 
 CC = gcc
-CC_FLAGS = -Wall -Wextra -Werror -I $(INCLDIR) -g -fsanitize=address
+CC_FLAGS = -Wall -Wextra -Werror -I $(INCLDIR) #-g -fsanitize=address
 
 all: $(NAME)
 

@@ -53,20 +53,18 @@ static int	key_word(char *token, t_state *st, int *exit_n)
 	return (SUCCESS);
 }
 
-static int	processing(char *token, t_state *state,
-		t_symtab *symtab, int *exit_n)
+static int	processing(char *token, t_state *state, int *exit_n)
 {
 	if (state->state == st_s_quote)
 		return (sin_quote(token + 1, state, exit_n));
 	if (state->state == st_d_quote)
-		return (dub_quote(token + 1, state, symtab, exit_n));
+		return (dub_quote(token + 1, state, exit_n));
 	if (state->state == st_word)
-		return (word(token, state, symtab, exit_n));
+		return (word(token, state, exit_n));
 	return (key_word(token, state, exit_n));
 }
 
-void	create_token_list(char *token, t_token_lst **head,
-	t_symtab *symtab, int *exit_n)
+void	create_token_list(char *token, t_token_lst **head, int *exit_n)
 {
 	t_state			st;
 
@@ -80,7 +78,7 @@ void	create_token_list(char *token, t_token_lst **head,
 				return ;
 			st.buffer = NULL;
 		}
-		if (processing(token + st.pos, &st, symtab, exit_n) == ERROR)
+		if (processing(token + st.pos, &st, exit_n) == ERROR)
 		{
 			free(st.buffer);
 			free_list(head);

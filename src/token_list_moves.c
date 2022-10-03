@@ -12,7 +12,7 @@
 
 #include "parser.h"
 
-static int	token_types(char *buffer, int state)
+static int	token_types(char *buffer, t_state_t state)
 {	
 	if (state == st_word)
 		return (WORD);
@@ -35,7 +35,7 @@ static int	token_types(char *buffer, int state)
 	return (-1);
 }
 
-t_token_lst	*create_token(char *buffer, int state)
+t_token_lst	*create_token(char *buffer, t_state_t state)
 {
 	t_token_lst	*new_element;
 	int			token_type;

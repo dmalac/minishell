@@ -72,11 +72,6 @@ int	ft_str_strlen(char **tokens)
 	return (count);
 }
 
-int	is_begin_var(char c)
-{
-	return (c == '?' || ft_isalpha(c) || c == '_');
-}
-
 char	*free_set_null(char *str)
 {
 	if (!str)
@@ -84,4 +79,9 @@ char	*free_set_null(char *str)
 	free(str);
 	str = NULL;
 	return (NULL);
+}
+
+char	ft_isvar_empty(char *str)
+{
+	return (str[0] == '$' && (ft_isalpha(str[1]) || str[1] == '_'));
 }

@@ -18,7 +18,9 @@
 long long	ft_atol(const char *str);
 void	ft_bzero(void *s, size_t n);
 int		ft_isalnum(int c);
+int     ft_isnum(int c);
 int		ft_isalpha(int c);
+int     ft_isdigit(int c);
 char	*ft_itoa(int n);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);

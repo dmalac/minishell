@@ -13,7 +13,7 @@
 #include "parser.h"
 #include "error.h"
 
-static int	ft_ispcnt(char c)
+int	ft_ispcnt(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
