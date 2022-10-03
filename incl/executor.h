@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/30 10:56:00 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 19:13:39 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ typedef struct s_cmd_tools
 # define R 0
 # define W 1
 
-# define BEFORE 0
-# define AFTER 1
-
 /* executor.c */
 // int	executor(t_token_lst *input, t_symtab *symtab, struct sigaction *sa);
 int			executor(t_token_lst *input, t_symtab *symtab);
@@ -80,7 +77,11 @@ int			get_env_var(t_symtab *symtab, t_cmd_tools *tools);
 int			get_heredoc(t_heredoc *hd_list);
 int			check_heredoc(t_token_lst *input, t_cmd_tools *tools);
 /* heredoc_child.c */
-void		heredoc_child_receive_input(t_heredoc *hd_list);
+void		heredoc_child_process_redir(t_heredoc *hd_list);
+/* heredoc_utils.c */
+int			heredoc_open_pipes(t_heredoc *hd_list);
+void		heredoc_close_pipes(t_heredoc *hd_list);
+void		heredoc_child_close_pipes(t_heredoc *hd_list, int end);
 /* exec_errors.c */
 void		free_array(char **array);
 void		child_error_and_exit(int error_code, t_cmd_tools *tools, \

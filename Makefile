@@ -10,8 +10,6 @@ RM = rm -f
 
 NAME = minishell
 
-# LDFLAGS = -L /Users/dmonfrin/.brew/opt/readline/lib
-# CPPFLAGS = -I /Users/dmonfrin/.brew/opt/readline/include
 LDFLAGS = -L $(shell brew --prefix readline)/lib -lreadline
 CPPFLAGS = -I $(shell brew --prefix readline)/include
 
@@ -38,6 +36,7 @@ executor.c \
 exec_errors.c \
 heredoc.c \
 heredoc_child.c \
+heredoc_utils.c \
 token_processing.c \
 builtin_cd.c \
 builtin_echo.c \

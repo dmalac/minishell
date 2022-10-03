@@ -24,56 +24,68 @@
 static void	st_heredoc_handler_sigint(int sig)
 {
 	g_is_interupt = sig;
-	rl_replace_line("", 0);
-	rl_redisplay();
+	rl_done = 1;
 	rl_on_new_line();
 	rl_done = 0;
-	// write(1, "\n", 1);
-	// write(1, "\n", 1);
-	// exit(sig);
 }
 
-static int	check_global_var(void)
+static int	st_check_global_var(void)
 {
-	if (rl_done == 0 && g_is_interupt == SIGINT)
+	if (g_is_interupt == SIGINT)
 	{
-		rl_line_buffer = NULL;
+		g_is_interupt = 1;
 		rl_done = 1;
 	}
-		return (0);
+	return (0);
 }
 
-void	heredoc_child_receive_input(t_heredoc *hd_list)
+static void	st_heredoc_init_signal_handling(struct sigaction *sa_si, \
+struct sigaction *sa_sq)
+{
+	(*sa_si).sa_handler = &st_heredoc_handler_sigint;
+	(*sa_sq).sa_handler = SIG_IGN;
+	sigaction(SIGINT, sa_si, NULL);
+	sigaction(SIGQUIT, sa_sq, NULL);
+	rl_event_hook = &st_check_global_var;
+}
+
+void	st_heredoc_child_receive_input(t_heredoc *hd_list)
+{
+	char	*line;
+	int		start;
+
+	start = 1;
+	line = NULL;
+	while ((g_is_interupt == 0 && line && ft_strncmp(line, \
+	hd_list->limiter, ft_strlen(hd_list->limiter) + 1) != 0) || start == 1)
+	{
+		start = 0;
+		if (line)
+		{
+			ft_putendl_fd(line, hd_list->hd_pipe[W]);
+			free(line);
+		}
+		line = readline("> ");
+	}
+	if (g_is_interupt == 1)
+	{
+		heredoc_child_close_pipes(hd_list, W);
+		exit(EXIT_FAILURE);
+	}
+	free(line);
+	close(hd_list->hd_pipe[W]);
+}
+
+void	heredoc_child_process_redir(t_heredoc *hd_list)
 {
 	struct sigaction	sa_si;
 	struct sigaction	sa_sq;
-	char				*line;
-	int					start;
 
-	sa_si.sa_handler = &st_heredoc_handler_sigint;
-	sa_sq.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa_si, NULL);
-	sigaction(SIGQUIT, &sa_sq, NULL);
+	st_heredoc_init_signal_handling(&sa_si, &sa_sq);
+	heredoc_child_close_pipes(hd_list, R);
 	while (hd_list)
 	{
-		line = NULL;
-		start = 1;
-		rl_event_hook = &check_global_var;
-		while ((line && ft_strncmp(line, hd_list->limiter, \
-		ft_strlen(hd_list->limiter) + 1) != 0) || start == 1)
-		{
-			start = 0;
-			if (line)
-			{
-				ft_putendl_fd(line, hd_list->hd_pipe[W]);
-				free(line);
-			}
-			line = readline("> ");
-			// printf("< glob var is %d >", g_is_interupt);
-		}
-		printf("out of the loop, still in child; global var is %d\n", g_is_interupt);
-		free(line);
-		close(hd_list->hd_pipe[W]);
+		st_heredoc_child_receive_input(hd_list);
 		hd_list = hd_list->next;
 	}
 	exit(EXIT_SUCCESS);
