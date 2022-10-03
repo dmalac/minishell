@@ -23,10 +23,10 @@
 static void	st_update_shlvl(t_symtab *symtab)
 {
 	t_symtab	*node;
-	long long	no;
+	int			no;
 
 	node = symtab_get_node(symtab, "SHLVL");
-	no = ft_atol(node->value);	// do we want to include atoi just for this?
+	no = ft_atoi(node->value);
 	free(node->value);
 	node->value = ft_itoa(no + 1);
 }
@@ -51,9 +51,7 @@ t_symtab	*init_symbol_table(void)
 		}
 		symtab_add_back(&top, new);
 	}
-	if (!symtab_get_node(top, "OLDPWD"))
-		symtab_add_node(&top, "OLDPWD");
-	symtab_add_node(&top, "PS1=minishell> ");
+	new = symtab_add_node(&top, "PS1=minishell> ");
 	st_update_shlvl(top);
 	return (top);
 }

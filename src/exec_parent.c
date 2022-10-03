@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/27 11:46:14 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 11:38:03 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_symtab *symtab)
 		return (1);
 	dup2(tools->input_fd, STDIN_FILENO);
 	dup2(tools->output_fd, STDOUT_FILENO);
-	return (execute_builtin(tools->cmd_args, symtab));
+	return (execute_builtin(tools->cmd_args, symtab, PARENT));
 }
 
 int	wait_for_last_child(int id, size_t total_cmds)

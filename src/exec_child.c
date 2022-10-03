@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/29 16:12:19 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 18:34:52 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,6 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-
-static char	*st_prepare_cmd(char *cmd, char **paths)
-{
-	int		i;
-	char	*full_cmd;
-
-	i = 0;
-	while (paths && paths[i])
-	{
-		full_cmd = ft_strjoin(paths[i++], cmd);
-		if (access(full_cmd, F_OK) == 0)
-		{
-			free(cmd);
-			return (full_cmd);
-		}
-		else
-			free (full_cmd);
-	}
-	// if (access(cmd, F_OK) == 0)
-	// 	return (cmd);
-	return (cmd);
-}
 
 static void	st_get_tools(t_cmd_tools *tools, t_token_lst *input, \
 int pipe_end[2][2])
@@ -60,8 +38,6 @@ int pipe_end[2][2])
 	if (tools->output_fd == STDOUT_FILENO && tools->total_cmds > 1 && \
 	tools->cmd != tools->total_cmds)
 		tools->output_fd = pipe_end[tools->cmd % 2 == 0][W];
-	if (tools->cmd_args && is_builtin(tools->cmd_args[0]) == FALSE)
-		tools->cmd_args[0] = st_prepare_cmd(tools->cmd_args[0], tools->paths);
 }
 
 static void	close_pipes_child(t_cmd_tools *tools, int pipe_end[2][2], int when)
@@ -91,6 +67,35 @@ static void	close_pipes_child(t_cmd_tools *tools, int pipe_end[2][2], int when)
 	}
 }
 
+static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
+{
+	int		i;
+	char	*full_cmd;
+	char	*orig_cmd;
+
+	if (is_builtin(tools->cmd_args[0]) == TRUE)
+		return (execute_builtin(tools->cmd_args, symtab, CHILD));
+	i = 0;
+	while (tools->paths && tools->paths[i])
+	{
+		full_cmd = ft_strjoin(tools->paths[i++], tools->cmd_args[0]);
+		if (access(full_cmd, F_OK) == 0)
+		{
+			orig_cmd = tools->cmd_args[0];
+			tools->cmd_args[0] = full_cmd;
+			if (execve(tools->cmd_args[0], tools->cmd_args, tools->env_var) < 0)
+			{
+				tools->cmd_args[0] = orig_cmd;
+				free(full_cmd);
+				return (-1);
+			}
+		}
+		free (full_cmd);
+	}
+	execve(tools->cmd_args[0], tools->cmd_args, tools->env_var);
+	return (-1);
+}
+
 void	perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
 t_symtab *symtab)
 {
@@ -103,18 +108,18 @@ t_symtab *symtab)
 	close_pipes_child(tools, pipe_end, BEFORE);
 	dup2(tools->input_fd, STDIN_FILENO);
 	dup2(tools->output_fd, STDOUT_FILENO);
-	if (!tools->cmd_args)
-		child_error_and_exit(NO_ERROR, tools, NULL);
-	if (is_builtin(tools->cmd_args[0]) == TRUE)
-		exit_code = execute_builtin(tools->cmd_args, symtab);
-	else if (execve(tools->cmd_args[0], tools->cmd_args, tools->env_var) < 0)
-	{
-		close_pipes_child(tools, pipe_end, AFTER);
-		if (access(tools->cmd_args[0], F_OK) < 0)
-			child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
-		else if (access(tools->cmd_args[0], X_OK) < 0)
-			child_error_and_exit(errno, tools, tools->cmd_args[0]);
-	}
+	if (tools->cmd_args)
+		exit_code = st_execute_cmd(tools, symtab);
 	close_pipes_child(tools, pipe_end, AFTER);
-	child_error_and_exit(exit_code, tools, NULL);
+	if (exit_code >= 0)
+	{
+		cleanup(tools);
+		exit(exit_code);
+	}
+	if (access(tools->cmd_args[0], F_OK) < 0)
+		child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
+	else if (access(tools->cmd_args[0], X_OK) < 0)
+		child_error_and_exit(errno, tools, tools->cmd_args[0]);
+	else
+		child_error_and_exit(errno, tools, tools->cmd_args[0]);
 }

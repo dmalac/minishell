@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 12:13:15 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/26 15:25:56 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 18:33:16 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,35 +48,53 @@ void	cleanup(t_cmd_tools *tools)
 	}
 }
 
-int	print_error_message(int error_code, char *name)
+static int	st_contains_slash(char *str)
 {
-	if (error_code != 12)
+	while (*str)
+	{
+		if ((*str) == '/')
+			return (TRUE);
+		str++;
+	}
+	return (FALSE);
+}
+
+int	print_error_message(int error_no, char *name)
+{
+	int	exit_code;
+
+	if (error_no != 12)
 		ft_putstr_fd("bash: ", 2);
 	if (name)
 	{
 		ft_putstr_fd(name, 2);
 		write(2, ": ", 2);
 	}
-	if (error_code == CMD_ERROR)
+	if (error_no == CMD_ERROR)
 	{
-		error_code = 127;
-		ft_putstr_fd("Command not found", 2);
+		exit_code = 127;
+		if (st_contains_slash(name) == FALSE)
+			ft_putstr_fd("Command not found", 2);
+		else
+			ft_putstr_fd(strerror(2), 2);	// CHECK!
 	}
 	else
-		ft_putstr_fd(strerror(error_code), 2);
+		ft_putstr_fd(strerror(error_no), 2);
 	write(2, "\n", 1);
-	if (error_code == 13)
-		error_code = 126;
-	return (error_code);
+	if (error_no == 13)
+		exit_code = 126;
+	return (exit_code);
 }
 
 void	child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name)
 {
+	int	exit_code;
+
 	if ((error_code > 0 && name) || error_code == CMD_ERROR)
-		error_code = print_error_message(error_code, name);
+		exit_code = print_error_message(error_code, name);
 	cleanup(tools);
-	if (error_code < 0)
-		error_code = 1;
-	exit(error_code);
+	if (error_code < CMD_ERROR)
+		exit_code = 1;
+	exit(exit_code);
 }

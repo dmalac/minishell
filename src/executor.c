@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/29 18:01:37 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/03 19:09:34 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,7 @@ t_symtab *symtab, int exit_code)
 	return (exit_code);
 }
 
-// void	exec_signal_handler(int sig)
-// {
-// 	dprintf(2, "Received a signal %d\n", sig);
-// 	if (sig == SIGINT)
-// 	{
-// 		rl_replace_line("",0);
-// 		write(1, "\n", 1);
-// 		rl_on_new_line();
-// 		// rl_done = 1;
-// 		// rl_redisplay();
-// 	}
-// 	if (sig == SIGCHLD)
-// 	{
-// 		rl_replace_line("",0);
-// 		write(1, "\n", 1);
-// 		rl_on_new_line();
-// 		// rl_done = 1;
-// 	}
-// 	g_is_interupt = sig;
-// 	dprintf(2, "global var is now %d\n", g_is_interupt);
-// }
+/* TO BE INCLUDED: SIGNAL HANDLING */
 
 // int	executor(t_token_lst *input, t_symtab *symtab, struct sigaction *sa)
 int	executor(t_token_lst *input, t_symtab *symtab)
@@ -80,13 +60,9 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 
 	tools = tools_init(input, symtab);
 	if (!tools)
-	{
-		if (g_is_interupt == SIGINT)
-			g_is_interupt = 0;
 		return (EXIT_FAILURE);
-	}
 	node = input;
-	exit_code = 0;
+	exit_code = EXIT_SUCCESS;
 	while (exit_code == 0 && tools->cmd <= tools->total_cmds)
 	{
 		if (tools->id > 0)
