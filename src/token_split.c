@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:07:08 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:07:16 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/04 16:13:04 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,12 @@ static int	count_token(char *line)
 	return (count);
 }
 
-/* split a string into single tokens. A Token is separated by	*/
-/* space/tab/newline. Does not consider space/tab inside quotes	*/
+/* ************************************************************************** */
+/*                                                                            */
+/* It splits a string into single tokens. A Token is separated by space, tab  */
+/* or newline. Does not consider space/tab inside quotes.                     */
+/*                                                                            */
+/* ************************************************************************** */
 char	**raw_token_split(char *line, int *exit_n)
 {
 	char	**tokens;

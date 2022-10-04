@@ -13,14 +13,18 @@
 #include "parser.h"
 #include "error.h"
 
-/* This function is responsable to check the right token combinations	*/
-/* if some combinations are wrong it trow the right error and return -1	*/
-/* wrong combination:													*/
-/* redirect or pipe at the end of the list;								*/
-/* different redirect tipe next to each other							*/
-/* more than 1 pipe or more than 2 redirect next to each other;			*/
-/* pipe and redirect next to each others;								*/
-/* redirect to a not existing variable;									*/
+/* ************************************************************************** */
+/*                                                                            */
+/* This function is responsible to check the right token combinations,        */
+/* if some combinations are wrong it trow the right error and returns -1      */
+/* wrong combination:                                                         */
+/* redirect or pipe at the end of the list;                                   */
+/* different redirect type next to each other;                                */
+/* more than 1 pipe or more than 2 redirect next to each other;               */
+/* pipe and redirect next to each other;                                     */
+/* redirect to a not existing variable;                                       */
+/*                                                                            */
+/* ************************************************************************** */
 
 static int	right_value_err(t_token_lst *elem, int *exit_n)
 {
@@ -79,12 +83,14 @@ static void	unfold_token_list(char **tokens, t_token_lst **head, int *exit_n)
 	}
 }
 
-/* This function is responsable to start: 						*/
-/* the variable expansion,										*/
-/* the raw token separation										*/
-/* and the tokenization											*/
-/* to check syntax error and gives a working list of token		*/
-/* or an empty (NULL) list in case of error						*/
+/* ************************************************************************** */
+/*                                                                            */
+/* This function is responsible to start:                                     */
+/* the variable expansion;                                                    */
+/* the raw token separation;                                                  */
+/* the tokenization;                                                          */
+/* to check syntax error and gives a working list of token or an empty (NULL) */
+/* list in case of error;                                                     */
 t_token_lst	**parser(t_token_lst **head, char *raw_string,
 		t_symtab *symtab, int *exit_n)
 {

@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:04:43 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:04:53 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/04 16:16:06 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,14 @@ static char	*extract_d_quote(char *tokn, int *exit_n)
 		return (ft_strjoinfree(str, ft_substr(tokn, 0, i)));
 }
 
-/* if the previus token is word it conacatenate it with the content		*/
-/* of the quotes, if the previus token is an empty variable, it ereses	*/
-/* it and save just the content of the quotes, if the quotes are not	*/
-/* close it trow a sitax error											*/
+/* ************************************************************************** */
+/*                                                                            */
+/* if the previous token is "word" it concatenates it with the content of the */
+/* quotes, if the previous token is an empty variable, it erases it and saves */
+/* just the content of the quotes, if the quotes are not close it throws a    */
+/* syntax error                                                               */
+/*                                                                            */
+/* ************************************************************************** */
 int	sin_quote(char *token, t_state *st, int *exit_n)
 {
 	char	*str;
@@ -118,10 +122,14 @@ int	sin_quote(char *token, t_state *st, int *exit_n)
 	return (SUCCESS);
 }
 
-/* if the previus token is word it conacatenate it with the content		*/
-/* of the quotes, if the previus token is an empty variable, it ereses	*/
-/* it and save just the content of the quotes, if the quotes are not	*/
-/* close it trow a sitax error											*/
+/* ************************************************************************** */
+/*                                                                            */
+/* if the previus token is "word" it concatenates it with the content of the  */
+/* quotes, if the previus token is an empty variable, it erases it and saves  */
+/* just the content of the quotes, if the quotes are not close it trhows a    */
+/* syntax error                                                               */
+/*                                                                            */
+/* ************************************************************************** */
 int	dub_quote(char *token, t_state *st, int *exit_n)
 {
 	char	*d_word;

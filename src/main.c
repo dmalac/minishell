@@ -33,7 +33,7 @@ int	main(void)
 		rline = readline(var_search("PS1", 3, symtab));
 		if (!rline && g_signal != SIGINT)
 			break ;
-		if (g_signal== SIGINT)
+		if (g_signal == SIGINT)
 			sig_init_action(&exit_n, &sa);
 		if (rline && *rline)
 			add_history(rline);
@@ -43,6 +43,6 @@ int	main(void)
 			execution(&sa, &token_head, symtab, &exit_n);
 		free(rline);
 	}
-	free_all(&token_head, &symtab, rline);
+	free_all_exit(&token_head, &symtab, rline);
 	return (exit_n);
 }

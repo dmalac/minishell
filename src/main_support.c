@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:27:27 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/04 15:53:08 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ void	signal_handler(int signum)
 	}
 }
 
+/* ************************************************************************** */
+/*                                                                            */
+/* this function set the value of readline and signal:                        */
+/* rl_cath_signal set to 0 doesn't allow readline to catch signal;            */
+/* rl_outstream set where readline diplay the output;                         */
+/* sa->sa_handler set the function where the signal is sent;                  */
+/*                                                                            */
+/* ************************************************************************** */
 void	sigred_init(struct sigaction *sa)
 {
 	rl_catch_signals = 0;
@@ -57,7 +65,7 @@ void	execution(struct sigaction *sa, t_token_lst **head, t_symtab *symtab,
 	free_list(head);
 }
 
-void	free_all(t_token_lst **head, t_symtab **symtab, char *rline)
+void	free_all_exit(t_token_lst **head, t_symtab **symtab, char *rline)
 {
 	free(rline);
 	free_list(head);

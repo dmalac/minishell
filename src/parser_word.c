@@ -39,8 +39,6 @@ static char	*exit_num_exp(char *token, char **str, int i, int *exit_n)
 	return (ft_strjoinfree(*str, exit_code));
 }
 
-/* an empty variable alone or a sequenze of just empty veriables 	*/
-/* return without expantion. in other combinations it is erased		*/
 static char	*extract_word(char *tokn, int *exit_n)
 {
 	int		i;
@@ -65,9 +63,6 @@ static char	*extract_word(char *tokn, int *exit_n)
 	return (ft_strjoinfree(str, ft_substr(tokn, 0, i)));
 }
 
-/* save a word token or concatenate it with another word token:	*/
-/* if there is a previus word token and the new one is an just	*/
-/* an empty variable it frees the new one						*/
 int	word(char *token, t_state *st, int *exit_n)
 {
 	char	*ex_word;

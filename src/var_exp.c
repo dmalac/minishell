@@ -6,15 +6,19 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:21:46 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/04 16:15:27 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-/* this function looks for the variable in the symtab and return an allocate */
-/* string with the content of the variable or an allocated empty string '\0' */
+/* ************************************************************************** */
+/*                                                                            */
+/* This function looks for the variable in the symtab and returns an allocate */
+/* string with the content of the variable or an allocated empty string '\0'  */
+/*                                                                            */
+/* ************************************************************************** */
 static char	*var_search(char *variable, int sz, t_symtab *symtab)
 {
 	int		size;
@@ -41,9 +45,13 @@ static char	*var_search(char *variable, int sz, t_symtab *symtab)
 	return (ft_strdup(""));
 }
 
-/* if the state is st_word and the variable is not inside the list or 	*/
-/* contains just spaces it returns an allocate string with the 			*/
-/* variable name ex: $not_exist	*/
+/* ************************************************************************** */
+/*                                                                            */
+/* if the state is st_word and the variable is not inside the list or         */
+/* contains just spaces it returns an allocates string with the variable      */
+/* name ex: $not_exist                                                        */
+/*                                                                            */
+/* ************************************************************************** */
 char	*var_opening(char *var, t_state_t state, t_symtab *symtab)
 {
 	int		i;
@@ -112,16 +120,18 @@ char	*quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	return (save_previus(exp_str, str, i));
 }
 
-/* If there are variables inside the input they are going to be			*/
-/* expanded:														    */
-/* if the variable is inside the double quotes is gonna be expanded		*/
-/* how it is															*/
-/* if it is alone it's going to be considered as a token or group of	*/
-/* token and to avoid keywords such as > or | to be consider keyword	*/
-/* we include each token inside double quote es:						*/
-/* word="    ls    -a  "												*/
-/* `hello $word`														*/
-/* `hello  "ls" "-a"													*/
+/* ************************************************************************** */
+/*                                                                            */
+/* If there are variables inside the input they are going to be expanded:     */
+/* if the variable is inside the double quotes is gonna be expanded how it is */
+/* if it is alone it's going to be considered as a token or group of token    */
+/* and to avoid keywords such as > or | to consider keyword we include each   */
+/* token inside double quote es:                                              */
+/* word="    ls    -a  "                                                      */
+/* `hello $word`                                                              */
+/* `hello  "ls" "-a"                                                          */
+/*                                                                            */
+/* ************************************************************************** */
 char	*var_expantion(char *str, t_symtab *symtab)
 {
 	int		i;

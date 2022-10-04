@@ -38,7 +38,6 @@ static int	matching(int prev_var, int var)
 	return (0);
 }
 
-/* key_word includes > < |									*/
 static int	key_word(char *token, t_state *st, int *exit_n)
 {
 	if (st->prv_state != st->state || !(st->buffer))
