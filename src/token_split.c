@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   raw_token_ext.c                                    :+:    :+:            */
+/*   token_split.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:41:08 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:41:16 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:07:08 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 16:13:04 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "error.h"
 
-static int	ft_ispcnt(char c)
+int	ft_ispcnt(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
@@ -90,8 +90,12 @@ static int	count_token(char *line)
 	return (count);
 }
 
-/* split a string into single tokens. A Token is separated by	*/
-/* space/tab/newline. Does not consider space/tab inside quotes	*/
+/* ************************************************************************** */
+/*                                                                            */
+/* It splits a string into single tokens. A Token is separated by space, tab  */
+/* or newline. Does not consider space/tab inside quotes.                     */
+/*                                                                            */
+/* ************************************************************************** */
 char	**raw_token_split(char *line, int *exit_n)
 {
 	char	**tokens;

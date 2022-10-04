@@ -18,7 +18,6 @@ LIB_PATH = ${LIBFTDIR}/libft.a
 FILES_MAIN = parser.c \
 parser_quote.c \
 parser_word.c \
-parser_variable.c \
 synt_red_error.c \
 token_list_moves.c \
 token_separation.c \
@@ -47,7 +46,11 @@ builtin_export_var.c \
 builtin_export_lst.c \
 builtin_unset.c \
 builtin_exit.c \
-builtin_utils.c
+builtin_utils.c \
+var_exp.c \
+var_exp_word.c \
+var_exp_utility.c \
+main_support.c
 
 
 OBJ = ${FILES_MAIN:%.c=${OBJDIR}/%.o}
@@ -57,7 +60,7 @@ SRC = ${FILES_MAIN:%.c=${SRCDIR}/%.c}
 all : ${NAME}
 
 ${NAME} : ${LIB_PATH} ${OBJ}
-	${CC} ${CFLAGS} ${LDFLAGS} ${CPPFLAGS} ${OBJ} ${LIB_PATH} -o ${NAME}
+	${CC} ${CFLAGS} ${OBJ} ${LIB_PATH} ${LDFLAGS} ${CPPFLAGS} -o ${NAME}
 
 ${OBJDIR}/%.o : ${SRCDIR}/%.c
 	${CC} ${CFLAGS} ${CPPFLAGS} -c $^ -o $@

@@ -1,43 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   quote_parsing.c                                    :+:    :+:            */
+/*   parser_quote.c                                     :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:41:47 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:41:49 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:04:43 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 16:16:06 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "error.h"
 
-static char	*var_processing(char *token, char **str, int i, t_symtab *symtab)
+static int	set_trimmer(char *token, char *d_word, t_state *st, int *exit_n)
 {
-	char	*variable;
-	char	*new_str;
-
-	new_str = NULL;
-	variable = var_expantion(token + i, st_d_quote, symtab);
-	if (!variable)
-		return (free_set_null(*str));
-	if (i > 0)
+	if (st->prv_state != st_trimmer)
 	{
-		if (*str != NULL)
-			new_str = ft_strjoinfree(*str, ft_substr(token, 0, i));
-		else
-			new_str = ft_substr(token, 0, i);
-		if (!new_str)
-			return (free_set_null(variable));
+		free(d_word);
+		while (token[st->pos] && token[st->pos] != '"')
+		st->pos++;
+		if (!token[st->pos])
+			return (syntax_error(err_noclose_d, exit_n));
 	}
-	if (*str && !new_str)
-		new_str = *str;
-	if (new_str == NULL)
-		return (variable);
 	else
-		return (ft_strjoinfree(new_str, variable));
-	return (new_str);
+	{
+		st->buffer = ft_strjoinfree(st->buffer, d_word);
+		if (st->buffer == NULL)
+			return (malloc_error(exit_n));
+		while (token[st->pos] && token[st->pos] != '"')
+		st->pos++;
+		if (!token[st->pos])
+			return (syntax_error(err_noclose_d, exit_n));
+		st->prv_state = st_trimmer;
+	}
+	st->pos += 2;
+	return (SUCCESS);
 }
 
 static char	*exit_n_proc(char *token, char **str, int i, int *exit_n)
@@ -65,7 +63,7 @@ static char	*exit_n_proc(char *token, char **str, int i, int *exit_n)
 	return (new_str);
 }
 
-static char	*extract_d_quote(char *tokn, t_symtab *symtab, int *exit_n)
+static char	*extract_d_quote(char *tokn, int *exit_n)
 {
 	int		i;
 	char	*str;
@@ -74,15 +72,13 @@ static char	*extract_d_quote(char *tokn, t_symtab *symtab, int *exit_n)
 	str = NULL;
 	while (tokn[i] && tokn[i] != '"' )
 	{
-		if (tokn[i] == '$' && is_begin_var(tokn[i + 1]))
+		if (tokn[i] == '$' && tokn[i + 1] == '?')
 		{
-			if (tokn[i + 1] == '?')
-				str = exit_n_proc(tokn, &str, i, exit_n);
-			else
-				str = var_processing(tokn, &str, i, symtab);
+			str = exit_n_proc(tokn, &str, i, exit_n);
 			if (!str)
 				return (NULL);
-			tokn += end_var_set(tokn, &i);
+			tokn += 2;
+			i = -1;
 		}
 		i++;
 	}
@@ -92,10 +88,14 @@ static char	*extract_d_quote(char *tokn, t_symtab *symtab, int *exit_n)
 		return (ft_strjoinfree(str, ft_substr(tokn, 0, i)));
 }
 
-/* if the previus token is word it conacatenate it with the content		*/
-/* of the quotes, if the previus token is an empty variable, it ereses	*/
-/* it and save just the content of the quotes, if the quotes are not	*/
-/* close it trow a sitax error											*/
+/* ************************************************************************** */
+/*                                                                            */
+/* if the previous token is "word" it concatenates it with the content of the */
+/* quotes, if the previous token is an empty variable, it erases it and saves */
+/* just the content of the quotes, if the quotes are not close it throws a    */
+/* syntax error                                                               */
+/*                                                                            */
+/* ************************************************************************** */
 int	sin_quote(char *token, t_state *st, int *exit_n)
 {
 	char	*str;
@@ -122,19 +122,25 @@ int	sin_quote(char *token, t_state *st, int *exit_n)
 	return (SUCCESS);
 }
 
-/* if the previus token is word it conacatenate it with the content		*/
-/* of the quotes, if the previus token is an empty variable, it ereses	*/
-/* it and save just the content of the quotes, if the quotes are not	*/
-/* close it trow a sitax error											*/
-int	dub_quote(char *token, t_state *st, t_symtab *symtab, int *exit_n)
+/* ************************************************************************** */
+/*                                                                            */
+/* if the previus token is "word" it concatenates it with the content of the  */
+/* quotes, if the previus token is an empty variable, it erases it and saves  */
+/* just the content of the quotes, if the quotes are not close it trhows a    */
+/* syntax error                                                               */
+/*                                                                            */
+/* ************************************************************************** */
+int	dub_quote(char *token, t_state *st, int *exit_n)
 {
 	char	*d_word;
 
 	if (!*token)
 		return (syntax_error(err_noclose_d, exit_n));
-	d_word = extract_d_quote(token, symtab, exit_n);
+	d_word = extract_d_quote(token, exit_n);
 	if (!d_word)
 		return (malloc_error(exit_n));
+	if (ft_isvar_empty(d_word))
+		return (set_trimmer(token, d_word, st, exit_n));
 	if (st->prv_state == st_trimmer || !(st->buffer))
 		free_set_null(st->buffer);
 	if (st->prv_state != st_word || !(st->buffer))

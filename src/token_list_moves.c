@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   linked_list_moves.c                                :+:    :+:            */
+/*   token_list_moves.c                                 :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:42:56 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:42:58 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:06:22 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 15:06:25 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static int	token_types(char *buffer, int state)
+static int	token_types(char *buffer, t_state_t state)
 {	
 	if (state == st_word)
 		return (WORD);
@@ -35,7 +35,7 @@ static int	token_types(char *buffer, int state)
 	return (-1);
 }
 
-t_token_lst	*create_token(char *buffer, int state)
+t_token_lst	*create_token(char *buffer, t_state_t state)
 {
 	t_token_lst	*new_element;
 	int			token_type;

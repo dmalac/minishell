@@ -3,24 +3,28 @@
 /*                                                        ::::::::            */
 /*   parser.c                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:41:30 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:41:34 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:05:55 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 15:05:57 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "error.h"
 
-/* This function is responsable to check the right token combinations	*/
-/* if some combinations are wrong it trow the right error and return -1	*/
-/* wrong combination:													*/
-/* redirect or pipe at the end of the list;								*/
-/* different redirect tipe next to each other							*/
-/* more than 1 pipe or more than 2 redirect next to each other;			*/
-/* pipe and redirect next to each others;								*/
-/* redirect to a not existing variable;									*/
+/* ************************************************************************** */
+/*                                                                            */
+/* This function is responsible to check the right token combinations,        */
+/* if some combinations are wrong it trow the right error and returns -1      */
+/* wrong combination:                                                         */
+/* redirect or pipe at the end of the list;                                   */
+/* different redirect type next to each other;                                */
+/* more than 1 pipe or more than 2 redirect next to each other;               */
+/* pipe and redirect next to each other;                                     */
+/* redirect to a not existing variable;                                       */
+/*                                                                            */
+/* ************************************************************************** */
 
 static int	right_value_err(t_token_lst *elem, int *exit_n)
 {
@@ -67,36 +71,47 @@ static void	error_check(t_token_lst **head, int *exit_n)
 	}
 }
 
-static void	unfold_token_list(char **tokens, t_token_lst **head,
-	t_symtab *symtab, int *exit_n)
+static void	unfold_token_list(char **tokens, t_token_lst **head, int *exit_n)
 {
 	int	i;
 
 	i = 0;
 	while (tokens[i])
 	{
-		create_token_list(tokens[i], head, symtab, exit_n);
-		if (!*head)
-			return ;
+		create_token_list(tokens[i], head, exit_n);
 		i++;
 	}
 }
 
-/* This function is responsable to start the token separation,	*/
-/* to check syntax error and gives a working list of token		*/
-/* or an empty (NULL) list in case of error						*/
-t_token_lst	**parser(t_token_lst **head, char *string,
+/* ************************************************************************** */
+/*                                                                            */
+/* This function is responsible to start:                                     */
+/* the variable expansion;                                                    */
+/* the raw token separation;                                                  */
+/* the tokenization;                                                          */
+/* to check syntax error and gives a working list of token or an empty (NULL) */
+/* list in case of error;                                                     */
+t_token_lst	**parser(t_token_lst **head, char *raw_string,
 		t_symtab *symtab, int *exit_n)
 {
 	char	**tokens;
+	char	*var_string;
 
 	*head = NULL;
-	if (string == NULL)
+	var_string = NULL;
+	if (raw_string == NULL)
 		return (head);
-	tokens = raw_token_split(string, exit_n);
+	var_string = var_expantion(raw_string, symtab);
+	if (!var_string)
+	{
+		malloc_error(exit_n);
+		return (head);
+	}
+	tokens = raw_token_split(var_string, exit_n);
+	free_set_null(var_string);
 	if (!tokens || !*tokens)
 		return (head);
-	unfold_token_list(tokens, head, symtab, exit_n);
+	unfold_token_list(tokens, head, exit_n);
 	ft_free_mem(tokens, ft_str_strlen(tokens));
 	if (!*head)
 		return (head);

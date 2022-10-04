@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   error.h                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:43:46 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:43:47 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:11:41 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 15:11:43 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
