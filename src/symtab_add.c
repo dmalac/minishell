@@ -17,7 +17,10 @@
 #include "symtab.h"
 #include "libft.h"
 
-/* creates and returns a new node */
+/* 
+	This function creates and returns a new node in the symbol table with the 
+	content extracted from the string passed as argument.
+ */
 t_symtab	*symtab_new(char *str)
 {
 	size_t		i;
@@ -25,7 +28,7 @@ t_symtab	*symtab_new(char *str)
 
 	new = malloc(sizeof(t_symtab));
 	if (!str || !new)
-		return (NULL);
+		return (ft_putendl_fd(strerror(errno), 2), NULL);
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
@@ -38,7 +41,9 @@ t_symtab	*symtab_new(char *str)
 	return (new);
 }
 
-/* adds node to the back of the list */
+/* 
+	The function adds a new node to the back of the symbol table linked list.
+ */
 void	symtab_add_back(t_symtab **top, t_symtab *new)
 {
 	t_symtab	*node;
@@ -54,6 +59,12 @@ void	symtab_add_back(t_symtab **top, t_symtab *new)
 	}
 }
 
+/* 
+	This function creates a new node in the symbol table with the content 
+	extracted from the string passed as argument and adds the new node to the 
+	back of the symbol table linked list. It returns a pointer to the newly 
+	added node, or NULL if the addition was unsuccessful.
+ */
 t_symtab	*symtab_add_node(t_symtab **top, char *str)
 {
 	t_symtab	*new;
@@ -64,17 +75,18 @@ t_symtab	*symtab_add_node(t_symtab **top, char *str)
 	return (new);
 }
 
-/* adds new variables to the symbol table (used by the export builtin) */
+/* 
+	The function adds a new variable to the symbol table with the variable name 
+	and value provided as arguments. It returns 0 upon success or 1 if an error 
+	occurred.
+ */
 int	symtab_add_var(t_symtab *symtab, char *var_name, char *var_val)
 {
 	t_symtab	*new;
 
 	new = malloc(sizeof(t_symtab));
 	if (!new)
-	{
-		ft_putendl_fd(strerror(errno), 2);
-		return (EXIT_FAILURE);
-	}
+		return (ft_putendl_fd(strerror(errno), 2), EXIT_FAILURE);
 	new->key = var_name;
 	new->value = var_val;
 	new->next = NULL;

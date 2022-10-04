@@ -21,19 +21,26 @@
 #include <readline/readline.h>
 #include <sys/wait.h>
 
+/* 
+	This function creates a new node of the heredoc linked list, adds the values 
+	cmd_no and content and returns a pointer to the node.
+ */
 static t_heredoc	*st_heredoc_new(t_token_lst *node, size_t cmd_no)
 {
 	t_heredoc	*new;
 
 	new = malloc(sizeof(t_heredoc));
 	if (!new)
-		return (NULL);
+		return (ft_putendl_fd(strerror(errno), 2), NULL);
 	new->cmd_no = cmd_no;
 	new->limiter = node->content;
 	new->next = NULL;
 	return (new);
 }
 
+/* 
+	This function adds a new node to the back of the heredoc linked list.
+ */
 static void	st_heredoc_add_back(t_heredoc **top, t_heredoc *new)
 {
 	t_heredoc	*node;
@@ -49,6 +56,12 @@ static void	st_heredoc_add_back(t_heredoc **top, t_heredoc *new)
 	}
 }
 
+/* 
+	This function opens one pipe for each "<<" redirection sign in the input and 
+	creates a child process to retrieve the user input. It returns 0 upon 
+	success and 1 if an error occurs or the child process exits because of the 
+	SIGINT signal.
+ */
 int	get_heredoc(t_heredoc *hd_list)
 {
 	pid_t			id;
@@ -75,6 +88,11 @@ int	get_heredoc(t_heredoc *hd_list)
 	return (exit_code);
 }
 
+/* 
+	This function checks whether the input line contains a "<<" redirection and 
+	if so, it creates a new node in the heredoc linked list for each "<<" 
+	redirection. It returns 0 upon success and 1 if an allocation error occurs.
+*/
 int	check_heredoc(t_token_lst *input, t_cmd_tools *tools)
 {
 	size_t		cmd_no;

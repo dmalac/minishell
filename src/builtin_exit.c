@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/03 11:38:36 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 14:58:10 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 // TBD: clear history, clear and free everything (input) ?
 
+/* 
+	This function verifies whether the string in the argument only contains 
+	digits (and one sign '-' or '+') and returns 0 (FALSE) or 1 (TRUE).
+ */
 static int	st_only_digits(char *str)
 {
 	size_t	i;
@@ -39,6 +43,10 @@ static int	st_only_digits(char *str)
 		return (0);
 }
 
+/* 
+	This function verifies whether the number in the argument is between (and 
+	including LONG MIN and LONG MAX) and returns 0 (FALSE) or 1 (TRUE).
+ */
 static int	st_is_long(char *str)
 {
 	char	*num;
@@ -58,6 +66,10 @@ static int	st_is_long(char *str)
 		return (0);
 }
 
+/* 
+	This function verifies whether the argument is a valid exit code and returns 
+	0 (FALSE) or 1 (TRUE).
+ */
 static int	st_is_valid_num_arg(char *arg)
 {
 	if (st_only_digits(arg) == FALSE)
@@ -66,6 +78,9 @@ static int	st_is_valid_num_arg(char *arg)
 		return (st_is_long(arg));
 }
 
+/* 
+	The function exits the process with the correct exit code.
+ */
 int	bi_exit(char **args, int who)
 {
 	int	exit_code;

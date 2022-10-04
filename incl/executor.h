@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/03 19:13:39 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 11:46:20 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_token_lst	*process_input_redir2(t_cmd_tools *tools, t_token_lst *node);
 t_token_lst	*process_output_redir1(t_cmd_tools *tools, t_token_lst *node);
 t_token_lst	*process_output_redir2(t_cmd_tools *tools, t_token_lst *node);
 /* get.c */
-void		get_args(t_cmd_tools *tools, t_token_lst *input);
+int			get_args(t_cmd_tools *tools, t_token_lst *input);
 int			get_paths(t_symtab *symtab, t_cmd_tools *tools);
 int			get_env_var(t_symtab *symtab, t_cmd_tools *tools);
 /* heredoc.c */

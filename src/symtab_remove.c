@@ -15,7 +15,10 @@
 #include "symtab.h"
 #include "libft.h"
 
-/* frees allocated memory in a node that was removed from the list */
+/* 
+	This function frees allocated memory in a node that was removed from the 
+	symbol table linked list.
+*/
 static void	st_symtab_erase_and_free_node(t_symtab **node)
 {
 	free((*node)->key);
@@ -26,6 +29,10 @@ static void	st_symtab_erase_and_free_node(t_symtab **node)
 	(*node) = NULL;
 }
 
+/* 
+	This function frees allocated memory in all nodes in the symbol table linked 
+	list.
+*/
 void	symtab_erase_and_free(t_symtab **top)
 {
 	t_symtab	*node;
@@ -40,7 +47,10 @@ void	symtab_erase_and_free(t_symtab **top)
 	}
 }
 
-/* removes a node from the list */
+/* 
+	This function removes a node containing the variable with the name provided 
+	as the argument "key" from the symbol table linked list.
+ */
 t_symtab	*symtab_remove_node(t_symtab **top, char *key)
 {
 	t_symtab	*prev;

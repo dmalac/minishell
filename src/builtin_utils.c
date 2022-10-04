@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/03 14:46:22 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 12:28:57 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #include <stdio.h>
 #include <string.h>
 
+/* 
+	This function writes the correct error message corresponding to a builtin 
+	function in the standard error.
+ */
 void	builtin_error(char *bi_name, char *error_cause, char *error_msg)
 {
 	ft_putstr_fd("bash: ", 2);
@@ -30,6 +34,10 @@ void	builtin_error(char *bi_name, char *error_cause, char *error_msg)
 	ft_putendl_fd(error_msg, 2);
 }
 
+/* 
+	The function verifies whether the string given as a parameter concerns a 
+	valid variable name and returns 1 (TRUE) or 0 (FALSE).
+ */
 int	is_valid_var_name(char *bi_name, char *identifier)
 {
 	size_t	i;
@@ -53,6 +61,10 @@ int	is_valid_var_name(char *bi_name, char *identifier)
 	return (TRUE);
 }
 
+/* 
+	The function verifies whether the string given as a parameter concerns a 
+	builtin function and returns 1 (TRUE) or 0 (FALSE).
+ */
 int	is_builtin(char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 5) == 0 || ft_strncmp(cmd, "cd", 3) == 0 || \
@@ -64,6 +76,10 @@ int	is_builtin(char *cmd)
 		return (FALSE);
 }
 
+/* 
+	This function identifies which builtin function needs to be executed and 
+	executes it. It returns the exit code returned by the builtin function.
+ */
 int	execute_builtin(char **args, t_symtab *symtab, int who)
 {
 	if (args[0][0] == 'c')

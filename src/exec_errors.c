@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 12:13:15 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/03 18:33:16 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 18:36:22 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "executor.h"
 #include "libft.h"
 
+/* 
+	A function that frees the memory allocated for a 2D char array.
+ */
 void	free_array(char **array)
 {
 	size_t	i;
@@ -29,6 +32,9 @@ void	free_array(char **array)
 	array = NULL;
 }
 
+/* 
+	This function frees all memory allocated for the struct tools.
+ */
 void	cleanup(t_cmd_tools *tools)
 {
 	t_heredoc	*node;
@@ -48,6 +54,11 @@ void	cleanup(t_cmd_tools *tools)
 	}
 }
 
+/* 
+	This function iterates over the characters in a string and checks whether 
+	the string contains the character '/'. It then returns either 1 (TRUE) or 
+	0 (FALSE).
+ */
 static int	st_contains_slash(char *str)
 {
 	while (*str)
@@ -59,6 +70,10 @@ static int	st_contains_slash(char *str)
 	return (FALSE);
 }
 
+/* 
+	Prints an error message based on the error no. in the stderr and returns an 
+	exit code corresponding to the error no.
+ */
 int	print_error_message(int error_no, char *name)
 {
 	int	exit_code;
@@ -76,7 +91,7 @@ int	print_error_message(int error_no, char *name)
 		if (st_contains_slash(name) == FALSE)
 			ft_putstr_fd("Command not found", 2);
 		else
-			ft_putstr_fd(strerror(2), 2);	// CHECK!
+			ft_putstr_fd(strerror(2), 2);
 	}
 	else
 		ft_putstr_fd(strerror(error_no), 2);
@@ -86,6 +101,10 @@ int	print_error_message(int error_no, char *name)
 	return (exit_code);
 }
 
+/* 
+	The function manages exit of a child process, including printing of an error 
+	message and freeing allocated memory. It exits with the correct exit code.
+ */
 void	child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name)
 {

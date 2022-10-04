@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/03 19:09:34 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 18:48:58 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 // #include <stdio.h>	is in minishell.h
 // #include <unistd.h>	is in minishell.h
 
+/* 
+	The function returns the firs node of the following command (i.e., the first
+	token following the next PIPE). If there is no next command, it returns NULL.
+ */
 static t_token_lst	*st_goto_nxt_cmd(t_token_lst *node)
 {
 	while (node && node->token_type != PIPE)
@@ -30,7 +34,16 @@ static t_token_lst	*st_goto_nxt_cmd(t_token_lst *node)
 	return (node);
 }
 
-int	st_prepare_to_exit(t_cmd_tools *tools, t_token_lst *input, \
+/* 
+	If the process had been forked (-> exit_code >= 0), then a function is 
+	called which lets the parent process wait for the child processes to finish 
+	and captures the exit code of the last pipe.
+	If the process had not been forked because the input only contained one 
+	command and it was a builtin function (-> exit_code == -1), the function 
+	that executes the builtin function is called and the exit code is captured. 
+	The function then returns the exit code.
+ */
+static int	st_prepare_to_exit(t_cmd_tools *tools, t_token_lst *input, \
 t_symtab *symtab, int exit_code)
 {
 	if (exit_code == -1)
@@ -50,7 +63,13 @@ t_symtab *symtab, int exit_code)
 
 /* TO BE INCLUDED: SIGNAL HANDLING */
 
-// int	executor(t_token_lst *input, t_symtab *symtab, struct sigaction *sa)
+/* 
+	Executor manages the execution of the commands and builtin functions 
+	contained in the user input. It takes care of pipes and redirections, 
+	creates required output files and executes the commands either in a child 
+	process or in the parent process.
+*/
+
 int	executor(t_token_lst *input, t_symtab *symtab)
 {
 	t_token_lst	*node;

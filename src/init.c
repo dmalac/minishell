@@ -20,6 +20,9 @@
 #include "symtab.h"
 #include "libft.h"
 
+/* 
+	This function updates the value of the SHLVL variable.
+ */
 static void	st_update_shlvl(t_symtab *symtab)
 {
 	t_symtab	*node;
@@ -31,6 +34,10 @@ static void	st_update_shlvl(t_symtab *symtab)
 	node->value = ft_itoa(no + 1);
 }
 
+/* 
+	The function initialises the symbol table and copies all environment 
+	variables into it.
+ */
 t_symtab	*init_symbol_table(void)
 {
 	extern char	**environ;
@@ -56,6 +63,10 @@ t_symtab	*init_symbol_table(void)
 	return (top);
 }
 
+/* 
+	This function counts the commands in the input linked list and returns the 
+	result.
+ */
 static size_t	st_count_cmds(t_token_lst *input)
 {
 	size_t	count;
@@ -70,10 +81,14 @@ static size_t	st_count_cmds(t_token_lst *input)
 	return (count + 1);
 }
 
-static int	st_check_if_cmd_builtin(t_token_lst *input, t_cmd_tools *tools)
+/* 
+	The function checks whether the input only contains one command, which is 
+	also a builtin function.
+ */
+static int	st_check_if_only_builtin(t_token_lst *input, t_cmd_tools *tools)
 {
 	if (tools->total_cmds > 1)
-		return (0);
+		return (FALSE);
 	while (input && input->token_type != PIPE)
 	{
 		if (input->token_type == WORD)
@@ -83,16 +98,20 @@ static int	st_check_if_cmd_builtin(t_token_lst *input, t_cmd_tools *tools)
 			input = input->next;
 		input = input->next;
 	}	
-	return (0);
+	return (FALSE);
 }
 
+/* 
+	This function initialises the struct tools to be used by the execution 
+	process.
+ */
 t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 {
 	t_cmd_tools	*tools;
 
 	tools = malloc(sizeof(t_cmd_tools));
 	if (!tools)
-		return (NULL);
+		return (ft_putendl_fd(strerror(errno), 2), NULL);
 	tools->id = 1;
 	tools->cmd = 1;
 	tools->total_cmds = st_count_cmds(input);
@@ -105,7 +124,7 @@ t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 	if (check_heredoc(input, tools) == EXIT_FAILURE || \
 	get_heredoc(tools->heredoc) == EXIT_FAILURE)
 		return (cleanup(tools), NULL);
-	tools->builtin_only = st_check_if_cmd_builtin(input, tools);
+	tools->builtin_only = st_check_if_only_builtin(input, tools);
 	tools->process_tokens[WORD] = process_word;
 	tools->process_tokens[GRT_TH] = process_output_redir1;
 	tools->process_tokens[SMLR_TH] = process_input_redir1;

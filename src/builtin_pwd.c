@@ -17,6 +17,10 @@
 #include <stdlib.h>
 #include "builtin.h"
 
+/* 
+	This function returns the address of the current working dictionary. It 
+	returns 1 if an error occured or 0 upon successful completion.
+ */
 int	bi_pwd(void)
 {
 	char	*pwd;
@@ -26,9 +30,9 @@ int	bi_pwd(void)
 	{
 		builtin_error("pwd", NULL, \
 		"Failed to retrieve the working directory address");
-		return (1);
+		return (EXIT_FAILURE);
 	}
 	printf("%s\n", pwd);
 	free(pwd);
-	return (0);
+	return (EXIT_SUCCESS);
 }

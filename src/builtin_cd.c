@@ -17,7 +17,12 @@
 #include "symtab.h"
 #include "libft.h"
 
-/* swaps values of PWD and OLDPWD */
+/* 
+	This function swaps values of PWD and OLDPWD to reflect the change of 
+	working directory. If the PWD variable is not in the symbol	table, the 
+	function has it added. It returns 1 if an error occured or 0 upon successful 
+	completion.
+*/
 static int	st_symtab_swap_value(t_symtab *symtab, t_symtab *pwd, \
 t_symtab *oldpwd)
 {
@@ -33,7 +38,12 @@ t_symtab *oldpwd)
 	return (EXIT_SUCCESS);
 }
 
-/* updates the PWD and OLDPWD variables */
+/* 
+	This function updates the PWD and OLDPWD variables to reflect the change of 
+	working directory. If the PWD or the OLDPWD variable are not in the symbol 
+	table, the function haves them added. It returns 1 if an error occured or 
+	0 upon successful completion.
+*/
 static int	st_symtab_update_pwd(t_symtab *symtab, t_symtab *oldpwd, \
 t_symtab *pwd)
 {
@@ -53,6 +63,12 @@ t_symtab *pwd)
 	return (EXIT_SUCCESS);
 }
 
+/* 
+	This function changes the directory to the address provided as argument and 
+	updates the values of the PWD and OLDPWD variables. 
+	If the address is '-', the address stored in the OLDPWD variable is used.
+	It returns 1 if an error occured or 0 upon successful completion.
+ */
 int	bi_cd(char *address, t_symtab *symtab)
 {
 	t_symtab	*pwd;
@@ -65,10 +81,10 @@ int	bi_cd(char *address, t_symtab *symtab)
 	if (address && ft_strncmp(address, "-", 2) == 0)
 	{
 		if (!oldpwd || !oldpwd->value)
-			return (builtin_error("cd", NULL, "OLDPWD not set"), 1);
+			return (builtin_error("cd", NULL, "OLDPWD not set"), EXIT_FAILURE);
 		else if (chdir(oldpwd->value) < 0)
 			return (builtin_error("cd", oldpwd->value, \
-			"No such file or directory"), 1);
+			"No such file or directory"), EXIT_FAILURE);
 		printf("%s\n", oldpwd->value);
 		return (st_symtab_swap_value(symtab, pwd, oldpwd));
 	}
@@ -76,7 +92,7 @@ int	bi_cd(char *address, t_symtab *symtab)
 	{
 		if (chdir(address) < 0)
 			return (builtin_error("cd", address, "No such file or directory"), \
-			1);
+			EXIT_FAILURE);
 		return (st_symtab_update_pwd(symtab, oldpwd, pwd));
 	}
 }

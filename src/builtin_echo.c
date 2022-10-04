@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:12:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/27 14:29:01 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 15:07:36 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,17 @@
 #include "builtin.h"
 #include "libft.h"
 
+/* 
+	This function verifies whether the -n option was specified and identifies 
+	the first argument that does not contain the option -n and needs to be 
+	printed. It returns 1 (TRUE) if a newline is required and 0 (FALSE) if not.
+ */
 static int	st_skip_n_option(char **args, size_t *i)
 {
 	int		nl;
 	size_t	j;
 
-	nl = 1;
+	nl = TRUE;
 	while (args && args[*i])
 	{
 		j = 0;
@@ -31,12 +36,17 @@ static int	st_skip_n_option(char **args, size_t *i)
 			j++;
 		if (args[*i][j])
 			return (nl);
-		nl = 0;
+		nl = FALSE;
 		*i += 1;
 	}
 	return (nl);
 }
 
+/* 
+	This function prints the arguments in the stdout, followed by a newline. 
+	If the -n option is specified, no newline is printed.
+	It returns 0 upon successful completion and 1 in case of a writing error.
+ */
 int	bi_echo(char **args)
 {
 	int		nl;
@@ -47,11 +57,11 @@ int	bi_echo(char **args)
 	while (args && args[i])
 	{
 		if (printf("%s", args[i++]) < 0)
-			return (builtin_error("echo", NULL, "Writing error"), 1);
+			return (builtin_error("echo", NULL, "Writing error"), EXIT_FAILURE);
 		if (args[i])	// watch out for "" (should not be NULL)
 			printf(" ");
 	}
 	if (nl == 1)
 		printf("\n");
-	return (0);
+	return (EXIT_SUCCESS);
 }

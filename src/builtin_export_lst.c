@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/27 14:47:51 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 18:45:50 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 #include "builtin.h"
 #include "libft.h"
 
-/* To do: finalise error handling & exit codes */
-
+/* 
+	The function sorts a 2D array containing the pointers to all nodes in the 
+	symbol table.
+ */
 static void	st_sort_export_list(t_symtab **export_list)
 {
 	size_t		i;
@@ -43,6 +45,10 @@ static void	st_sort_export_list(t_symtab **export_list)
 	}
 }
 
+/* 
+	The function displays the alphabetically sorted list of variables from the 
+	symbol table. It returns 0 upon success and 1 if a writing error occurs.
+ */
 static int	st_print_export_list(t_symtab **export_list)
 {
 	size_t	i;
@@ -66,6 +72,10 @@ static int	st_print_export_list(t_symtab **export_list)
 	return (0);
 }
 
+/* 
+	The function creates a 2D array containing the pointers to all nodes in the 
+	symbol table and returns it.
+ */
 static t_symtab	**st_create_export_list(t_symtab *symtab, size_t count)
 {
 	t_symtab	**export_list;
@@ -74,7 +84,7 @@ static t_symtab	**st_create_export_list(t_symtab *symtab, size_t count)
 
 	export_list = malloc(sizeof(t_symtab *) * (count + 1));
 	if (!export_list)
-		return (NULL);
+		return (ft_putendl_fd(strerror(errno), 2), NULL);
 	i = 0;
 	node = symtab;
 	while (i < count)
@@ -87,6 +97,10 @@ static t_symtab	**st_create_export_list(t_symtab *symtab, size_t count)
 	return (export_list);
 }
 
+/* 
+	This function displays a list of all variables contained in the symbol table 
+	linked list sorted alphabetically.
+ */
 int	display_export_list(t_symtab *symtab)
 {
 	t_symtab	**export_list;
@@ -97,8 +111,8 @@ int	display_export_list(t_symtab *symtab)
 	export_list = st_create_export_list(symtab, count);
 	if (!export_list)
 	{
-		ft_putendl_fd(strerror(errno), 2);	// is this a good malloc error msg?
-		return (1);
+		ft_putendl_fd(strerror(errno), 2);
+		return (EXIT_FAILURE);
 	}
 	st_sort_export_list(export_list);
 	exit_code = st_print_export_list(export_list);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   heredoc.c                                          :+:    :+:            */
+/*   heredoc_utils.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/12 12:33:23 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/09/20 16:39:15 by dmalacov      ########   odam.nl         */
+/*   Created: 2022/10/04 18:47:14 by dmalacov      #+#    #+#                 */
+/*   Updated: 2022/10/04 18:47:14 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 #include <readline/readline.h>
 #include <sys/wait.h>
 
+/* 
+	This function opens a separate pipe for each node in the heredoc linked list.
+	It returns 0 upon success or 1 if the pipe function returns error.
+ */
 int	heredoc_open_pipes(t_heredoc *hd_list)
 {
 	while (hd_list)
@@ -35,18 +39,26 @@ int	heredoc_open_pipes(t_heredoc *hd_list)
 	return (EXIT_SUCCESS);
 }
 
+/* 
+	This function closes specific file descriptors associated with the heredoc 
+	linked list in the parent process.
+ */
 void	heredoc_close_pipes(t_heredoc *hd_list)
 {
 	while (hd_list)
 	{
-		if (g_is_interupt == SIGINT)
+		if (g_signal == SIGINT)
 			close(hd_list->hd_pipe[R]);
 		close(hd_list->hd_pipe[W]);
 		hd_list = hd_list->next;
 	}
-	g_is_interupt = 0;
+	g_signal = 0;
 }
 
+/* 
+	This function closes a specific file descriptor associated with the heredoc 
+	linked list in the child process.
+ */
 void	heredoc_child_close_pipes(t_heredoc *hd_list, int end)
 {
 	while (hd_list)

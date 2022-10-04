@@ -15,8 +15,11 @@
 #include "symtab.h"
 #include "libft.h"
 
-/* finds and returns a pointer to the value belonging to a particular 
-	variable name (parameter "key") */
+/* 
+	This function finds a node in the symbol table containing the variable the 
+	name of which is provided as the argument "key". It returns a char *pointer 
+	to the value of that variable.
+ */
 char	*symtab_get_value(t_symtab *symtab, char *key)
 {
 	t_symtab	*node;
@@ -30,8 +33,11 @@ char	*symtab_get_value(t_symtab *symtab, char *key)
 		return (NULL);
 }
 
-/* finds and returns a pointer to the node containing a particular 
-	variable name (parameter "key") */
+/* 
+	This function finds a node in the symbol table containing the variable the 
+	name of which is provided as the argument "key". It returns a pointer to the 
+	node containing that variable.
+ */
 t_symtab	*symtab_get_node(t_symtab *symtab, char *key)
 {
 	t_symtab	*node;
@@ -42,15 +48,19 @@ t_symtab	*symtab_get_node(t_symtab *symtab, char *key)
 	return (node);
 }
 
-/* updates the value in a specific node */
+/* 
+	This value updates the value in a specific node in the symbol table.
+*/
 void	symtab_update_value(t_symtab *node, char *new_value)
 {
 	free(node->value);
 	node->value = new_value;
 }
 
-/* changes the value in a node corresponding to the variable name passed as
-	parameter "key" */
+/* 
+	This function finds a node corresponding to the variable name passed to the 
+	function as the argument "key" and changes its value.
+*/
 void	symtab_change_value(t_symtab *symtab, char *key, char *new_value)
 {
 	t_symtab	*node;
@@ -65,7 +75,9 @@ void	symtab_change_value(t_symtab *symtab, char *key, char *new_value)
 	}
 }
 
-/* counts the number of nodes in the linked list */
+/* 
+	This function counts the number of nodes in the symbol table linked list.
+*/
 size_t	symtab_count_nodes(t_symtab *node)
 {
 	size_t	count;

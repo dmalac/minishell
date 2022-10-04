@@ -5,6 +5,7 @@ ft_atol.c \
 ft_bzero.c \
 ft_isalnum.c \
 ft_isalpha.c \
+ft_isdigit.c \
 ft_itoa.c \
 ft_putendl_fd.c \
 ft_putstr_fd.c \

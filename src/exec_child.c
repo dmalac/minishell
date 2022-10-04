@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/03 18:34:52 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/04 12:25:37 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,19 @@
 #include <stdio.h>
 #include <string.h>
 
+/* 
+	This function processes all the tokens corresponding forming a particular 
+	command and saves in the struct tools (i) the array of arguments, and 
+	(ii) the correct fds for input and output. If the get_args function returned 
+	EXIT_FAILURE becuase of a memory allocation error, the function exits.
+ */
 static void	st_get_tools(t_cmd_tools *tools, t_token_lst *input, \
 int pipe_end[2][2])
 {
 	t_token_lst	*node;
 
-	get_args(tools, input);
+	if (get_args(tools, input) == EXIT_FAILURE)
+		child_error_and_exit(errno, tools, NULL);
 	node = input;
 	while (node && node->token_type != PIPE && tools->input_fd != -1 && \
 	tools->output_fd != -1)
@@ -40,6 +47,12 @@ int pipe_end[2][2])
 		tools->output_fd = pipe_end[tools->cmd % 2 == 0][W];
 }
 
+/* 
+	This function closes the appropriate file descriptors (fd) assigned to pipes 
+	based on (i) at what stage of the process it is called (BEFORE or AFTER the 
+	execution of the command), and (ii) whether there were pipes open for 
+	heredoc.
+ */
 static void	close_pipes_child(t_cmd_tools *tools, int pipe_end[2][2], int when)
 {
 	t_heredoc	*node;
@@ -67,6 +80,12 @@ static void	close_pipes_child(t_cmd_tools *tools, int pipe_end[2][2], int when)
 	}
 }
 
+/* 
+	This function verifies whether the command is a builtin function or not and
+	performs execution accordingly. It returns either the exit code returned by 
+	a builtin function (0 or 1) or -1 in case where there was an error executing 
+	a command using the execve function.
+ */
 static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
 {
 	int		i;
@@ -96,6 +115,13 @@ static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
 	return (-1);
 }
 
+/* 
+	This function manages everything that is necessary for the correct execution 
+	of the command by a child process. It also handles the correct exit of the 
+	child process in case (i) there was no command to execute, (ii) the command 
+	was a builtin function or (iii) the execution of a command using execve 
+	returned an error.
+ */
 void	perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
 t_symtab *symtab)
 {
