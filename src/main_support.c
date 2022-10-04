@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:53:08 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/04 16:26:48 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include "executor.h"
 
 void	signal_handler(int signum)
 {
@@ -58,7 +59,7 @@ void	sig_init_action(int *exit_n, struct sigaction *sa)
 void	execution(struct sigaction *sa, t_token_lst **head, t_symtab *symtab,
 		int *exit_n)
 {
-	*exit_n = executor(*head, symtab, sa);
+	*exit_n = executor(*head, symtab);
 	if (*exit_n == 1)
 		write(STDERR_FILENO, "\n", 1);
 	sigaction(SIGINT, sa, NULL);

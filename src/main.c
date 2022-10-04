@@ -18,31 +18,45 @@
 #include <signal.h>
 #include "main_support.h"
 
+
+char	user_input(t_symtab *symtab, int *exit_n)
+{
+	char	*shell_name;
+	char	*user_input;
+
+	shell_name = var_search("PS1", 3, symtab);
+	if(!shell_name)
+		malloc_error(exit_n);
+	user_input = readline(shell_name);
+	free(shell_name);
+	return (user_input);
+}
+
 int	main(void)
 {
 	t_token_lst			*token_head;
 	t_symtab			*symtab;
 	int					exit_n;
-	char				*rline;
+	char				*line;
 	struct sigaction	sa;
 
 	symtab = init_symbol_table();
 	exit_n = 0;
 	while (1)
 	{
-		rline = readline(var_search("PS1", 3, symtab));
-		if (!rline && g_signal != SIGINT)
+		line = user_input(symtab, &exit_n);
+		if (!line && g_signal != SIGINT)
 			break ;
 		if (g_signal == SIGINT)
 			sig_init_action(&exit_n, &sa);
-		if (rline && *rline)
-			add_history(rline);
-		if (rline && *rline)
-			parser(&token_head, rline, symtab, &exit_n);
+		if (line && *line)
+			add_history(line);
+		if (line && *line)
+			parser(&token_head, line, symtab, &exit_n);
 		if (token_head)
 			execution(&sa, &token_head, symtab, &exit_n);
-		free(rline);
+		free(line);
 	}
-	free_all_exit(&token_head, &symtab, rline);
+	free_all_exit(&token_head, &symtab, line);
 	return (exit_n);
 }

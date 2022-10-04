@@ -47,6 +47,5 @@ int	g_signal = 0;
 
 t_token_lst	**parser(t_token_lst **head, char *string, t_symtab *symtab,
 				int *exit_n);
-int	executor(t_token_lst *input, t_symtab *symtab);
 
 #endif
