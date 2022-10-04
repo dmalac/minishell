@@ -3,15 +3,16 @@
 /*                                                        ::::::::            */
 /*   parser.h                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:42:13 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:42:15 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:11:18 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 15:11:19 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
+
 # include "minishell.h"
 typedef struct s_state{
 	char	*buffer;

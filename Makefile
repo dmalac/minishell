@@ -10,10 +10,10 @@ RM = rm -f
 
 NAME = minishell
 
-LDFLAGS =  -L/usr/local/lib 
-CPPFLAGS = -I/usr/local/include -lreadline
-#LDFLAGS = -L $(shell brew --prefix readline)/lib -lreadline
-#CPPFLAGS = -I $(shell brew --prefix readline)/include
+#LDFLAGS =  -L/usr/local/lib 
+#CPPFLAGS = -I/usr/local/include -lreadline
+LDFLAGS = -L $(shell brew --prefix readline)/lib -lreadline
+CPPFLAGS = -I $(shell brew --prefix readline)/include
 
 LIB_PATH = ${LIBFTDIR}/libft.a
 
@@ -49,7 +49,8 @@ builtin_exit.c \
 builtin_utils.c \
 var_exp.c \
 var_exp_word.c \
-var_exp_utility.c 
+var_exp_utility.c \
+main_support.c
 
 
 OBJ = ${FILES_MAIN:%.c=${OBJDIR}/%.o}

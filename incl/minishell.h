@@ -3,15 +3,16 @@
 /*                                                        ::::::::            */
 /*   minishell.h                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:47:16 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:47:18 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:10:57 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 15:10:59 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
 # include "libft.h"
 # include "symtab.h"
 # include <unistd.h>
@@ -42,7 +43,10 @@ typedef struct s_token_lst{
 
 }	t_token_lst;
 
+int	g_signal = 0;
+
 t_token_lst	**parser(t_token_lst **head, char *string, t_symtab *symtab,
 				int *exit_n);
+int	executor(t_token_lst *input, t_symtab *symtab);
 
 #endif

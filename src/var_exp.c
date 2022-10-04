@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   variable.c                                         :+:    :+:            */
+/*   var_exp.c                                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:42:29 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:42:31 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 15:21:46 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ char	*quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 {
 	char	*var;
 
+	if (str[i] == '\'')
+		return (save_previus(exp_str, str, i + quote_end_set(str, &i)));
 	exp_str = save_previus(exp_str, str, i);
 	if (!exp_str)
 		return (NULL);
@@ -100,11 +102,10 @@ char	*quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 			if (!var)
 				return (NULL);
 			exp_str = save_previus(exp_str, str, i);
-			exp_str = save_previus(exp_str, var, ft_strlen(var));
+			exp_str = ft_strjoinfree(exp_str, var);
 			if (!exp_str)
 				return (NULL);
 			str += var_end_set(str, &i);
-			free(var);
 		}
 		i++;
 	}

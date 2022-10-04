@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parser.c                                           :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: dmonfrin <marvin@codam.nl>                   +#+                     */
+/*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/16 13:41:30 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/09/16 13:41:34 by dmonfrin      ########   odam.nl         */
+/*   Created: 2022/10/04 15:05:55 by dmonfrin      #+#    #+#                 */
+/*   Updated: 2022/10/04 15:05:57 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
