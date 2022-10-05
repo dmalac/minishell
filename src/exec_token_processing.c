@@ -27,9 +27,17 @@ t_token_lst	*process_input_redir1(t_cmd_tools *tools, t_token_lst *node)
 	char	*filename;
 
 	filename = node->next->content;
-	tools->input_fd = open(filename, O_RDONLY | O_CLOEXEC);
-	if (tools->input_fd < 0)
-		print_error_message(errno, filename);
+	if (filename[0] == '$')
+	{
+		print_error_message(REDIR_ERROR, filename);
+		tools->input_fd = -1;
+	}
+	else
+	{
+		tools->input_fd = open(filename, O_RDONLY | O_CLOEXEC);
+		if (tools->input_fd < 0)
+			print_error_message(errno, filename);
+	}
 	return (node->next->next);
 }
 
@@ -60,9 +68,17 @@ t_token_lst	*process_output_redir1(t_cmd_tools *tools, t_token_lst *node)
 	char	*filename;
 
 	filename = node->next->content;
-	tools->output_fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (tools->input_fd < 0)
-		print_error_message(errno, filename);
+	if (filename[0] == '$')
+	{
+		print_error_message(REDIR_ERROR, filename);
+		tools->input_fd = -1;
+	}
+	else
+	{
+		tools->output_fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		if (tools->input_fd < 0)
+			print_error_message(errno, filename);
+	}
 	return (node->next->next);
 }
 
@@ -75,9 +91,17 @@ t_token_lst	*process_output_redir2(t_cmd_tools *tools, t_token_lst *node)
 	char	*filename;
 
 	filename = node->next->content;
-	tools->output_fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
-	if (tools->input_fd < 0)
-		print_error_message(errno, filename);
+	if (filename[0] == '$')
+	{
+		print_error_message(REDIR_ERROR, filename);
+		tools->input_fd = -1;
+	}
+	else
+	{
+		tools->output_fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
+		if (tools->input_fd < 0)
+			print_error_message(errno, filename);
+	}
 	return (node->next->next);
 }
 
@@ -89,12 +113,14 @@ t_token_lst	*process_word(t_cmd_tools *tools, t_token_lst *node)
 {
 	int	i;
 
-	if (node->token_type == WORD)
+	if (node->token_type == EMPTY)
 	{
-		i = 0;
-		while (tools->cmd_args[i])
-			i++;
-		tools->cmd_args[i] = node->content;
+		free (node->content);
+		node->content = ft_strdup("");
 	}
+	i = 0;
+	while (tools->cmd_args[i])
+		i++;
+	tools->cmd_args[i] = node->content;
 	return (node->next);
 }

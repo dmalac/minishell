@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
 #include "builtin.h"
 #include "symtab.h"
 #include "libft.h"
@@ -84,14 +85,14 @@ int	bi_cd(char *address, t_symtab *symtab)
 			return (builtin_error("cd", NULL, "OLDPWD not set"), EXIT_FAILURE);
 		else if (chdir(oldpwd->value) < 0)
 			return (builtin_error("cd", oldpwd->value, \
-			"No such file or directory"), EXIT_FAILURE);
+			strerror(errno)), EXIT_FAILURE);
 		printf("%s\n", oldpwd->value);
 		return (st_symtab_swap_value(symtab, pwd, oldpwd));
 	}
 	else
 	{
 		if (chdir(address) < 0)
-			return (builtin_error("cd", address, "No such file or directory"), \
+			return (builtin_error("cd", address, strerror(errno)), \
 			EXIT_FAILURE);
 		return (st_symtab_update_pwd(symtab, oldpwd, pwd));
 	}

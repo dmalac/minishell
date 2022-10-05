@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 12:13:15 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 18:36:22 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/05 16:23:30 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	cleanup(t_cmd_tools *tools)
 	the string contains the character '/'. It then returns either 1 (TRUE) or 
 	0 (FALSE).
  */
-static int	st_contains_slash(char *str)
+int	contains_slash(char *str)
 {
 	while (*str)
 	{
@@ -78,26 +78,23 @@ int	print_error_message(int error_no, char *name)
 {
 	int	exit_code;
 
+	exit_code = error_no;
 	if (error_no != 12)
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("mish: ", 2);
 	if (name)
 	{
 		ft_putstr_fd(name, 2);
 		write(2, ": ", 2);
 	}
-	if (error_no == CMD_ERROR)
-	{
-		exit_code = 127;
-		if (st_contains_slash(name) == FALSE)
-			ft_putstr_fd("Command not found", 2);
-		else
-			ft_putstr_fd(strerror(2), 2);
-	}
+	if (error_no == CMD_ERROR && contains_slash(name) == FALSE)
+		ft_putstr_fd("Command not found", 2);
+	else if (error_no == CMD_ERROR)
+		ft_putstr_fd(strerror(2), 2);
+	else if (error_no == REDIR_ERROR)
+		ft_putstr_fd ("Ambiguous redirect", STDERR_FILENO);
 	else
 		ft_putstr_fd(strerror(error_no), 2);
 	write(2, "\n", 1);
-	if (error_no == 13)
-		exit_code = 126;
 	return (exit_code);
 }
 
@@ -110,9 +107,14 @@ char *name)
 {
 	int	exit_code;
 
-	if ((error_code > 0 && name) || error_code == CMD_ERROR)
+	if ((error_code > 0 && name) || error_code == CMD_ERROR || error_code == \
+	REDIR_ERROR)
 		exit_code = print_error_message(error_code, name);
 	cleanup(tools);
+	if (error_code == 13)
+		exit_code = 126;
+	if (error_code == CMD_ERROR)
+		exit_code = 127;
 	if (error_code < CMD_ERROR)
 		exit_code = 1;
 	exit(exit_code);

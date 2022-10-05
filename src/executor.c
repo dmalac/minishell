@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 19:07:13 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/05 17:06:30 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,25 @@ t_symtab *symtab, int exit_code)
 	return (exit_code);
 }
 
+
+// void	print_input(t_token_lst *input)
+// {
+// 	size_t	i;
+// 	const char	*token_type[] = {"WORD", "GREATER THAN", "SMALLER THAN", \
+// 	"DOUBLE GREATER THAN", "DOUBLE SMALLER THAN", "EMPTY", "PIPE"};
+
+// 	i = 0;
+// 	while (input)
+// 	{
+// 		printf("%zu. %s\t%s\n", i++, token_type[input->token_type], input->content);
+// 		input = input->next;
+// 	}
+// 	if (!input)
+// 		printf("%zu. <empty>\n", i);
+// 	printf("\n\n");
+// }
+
+
 /* TO BE INCLUDED: SIGNAL HANDLING */
 
 /* 
@@ -77,6 +96,7 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 	int			pipe_end[2][2];
 	int			exit_code;
 
+	// print_input(input);
 	tools = tools_init(input, symtab);
 	if (!tools)
 		return (EXIT_FAILURE);

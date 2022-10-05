@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 11:46:20 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:46:36 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_cmd_tools
 # define NO_ERROR 0
 # define CMD_ERROR -1
 # define IO_FD_ERROR -2
+# define REDIR_ERROR -3
 
 # define R 0
 # define W 1
@@ -88,6 +89,7 @@ void		child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name);
 int			print_error_message(int error_code, char *name);
 void		cleanup(t_cmd_tools *tools);
+int			contains_slash(char *str);
 /* init.c */
 t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab);
 

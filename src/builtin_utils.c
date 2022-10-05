@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/05 12:04:18 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:08:49 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
  */
 void	builtin_error(char *bi_name, char *error_cause, char *error_msg)
 {
-	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd("mish: ", 2);
 	ft_putstr_fd(bi_name, 2);
 	ft_putstr_fd(": ", 2);
 	if (error_cause && (ft_strncmp(bi_name, "export", 7) == 0 || \
@@ -33,7 +33,10 @@ void	builtin_error(char *bi_name, char *error_cause, char *error_msg)
 		ft_putstr_fd("': ", 2);
 	}
 	else if (error_cause)
+	{
 		ft_putstr_fd(error_cause, 2);
+		ft_putstr_fd(": ", 2);
+	}
 	ft_putendl_fd(error_msg, 2);
 }
 

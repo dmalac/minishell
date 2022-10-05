@@ -29,7 +29,7 @@ int	bi_pwd(void)
 	if (!pwd)
 	{
 		builtin_error("pwd", NULL, \
-		"Failed to retrieve the working directory address");
+		"Permission denied");
 		return (EXIT_FAILURE);
 	}
 	printf("%s\n", pwd);
