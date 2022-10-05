@@ -21,16 +21,13 @@
 
 int	g_signal = 0;
 
-static char	*user_input(t_symtab *symtab, int *exit_n)
+static char	*user_input(t_symtab *symtab)
 {
 	char	*shell_name;
 	char	*user_input;
 
-	shell_name = var_search("PS1", 3, symtab);
-	if(!shell_name)
-		malloc_error(exit_n);
+	shell_name = symtab_get_value(symtab, "PS1");
 	user_input = readline(shell_name);
-	free(shell_name);
 	return (user_input);
 }
 
@@ -46,7 +43,7 @@ int	main(void)
 	exit_n = 0;
 	while (1)
 	{
-		line = user_input(symtab, &exit_n);
+		line = user_input(symtab);
 		if (!line && g_signal != SIGINT)
 			break ;
 		if (g_signal == SIGINT)
