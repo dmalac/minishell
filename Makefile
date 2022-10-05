@@ -23,7 +23,7 @@ token_list_moves.c \
 token_separation.c \
 token_split.c \
 token_utility.c \
-test.c \
+main.c \
 init.c \
 symtab_add.c \
 symtab_operations.c \
