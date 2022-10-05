@@ -21,7 +21,7 @@ int	syntax_error(int error_type, int *exit_n)
 
 	ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
 	ft_putendl_fd((char *)error[error_type], STDERR_FILENO);
-	*exit_n = 2;
+	*exit_n = 258;
 	return (ERROR);
 }
 
