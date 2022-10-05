@@ -18,10 +18,10 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
-extern int	g_is_interupt;
+extern int	g_signal;
 
 enum e_token_type{
 	WORD,
@@ -44,8 +44,6 @@ typedef struct s_token_lst{
 	struct s_token_lst	*next;
 
 }	t_token_lst;
-
-int	g_signal = 0;
 
 t_token_lst	**parser(t_token_lst **head, char *string, t_symtab *symtab,
 				int *exit_n);

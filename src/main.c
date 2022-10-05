@@ -17,9 +17,11 @@
 #include <readline/history.h>
 #include <signal.h>
 #include "main_support.h"
+#include "error.h"
 
+int	g_signal = 0;
 
-char	user_input(t_symtab *symtab, int *exit_n)
+static char	*user_input(t_symtab *symtab, int *exit_n)
 {
 	char	*shell_name;
 	char	*user_input;

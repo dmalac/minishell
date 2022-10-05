@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 16:15:27 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/05 12:33:30 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 /* string with the content of the variable or an allocated empty string '\0'  */
 /*                                                                            */
 /* ************************************************************************** */
-static char	*var_search(char *variable, int sz, t_symtab *symtab)
+char	*var_search(char *variable, int sz, t_symtab *symtab)
 {
 	int		size;
 	char	*key;

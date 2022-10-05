@@ -58,5 +58,6 @@ int			isallsp(char *var);
 char		ft_isvar_empty(char *str);
 char		*var_expantion(char *str, t_symtab *symtab);
 char		*set_beginning(char c);
+char		*var_search(char *variable, int sz, t_symtab *symtab);
 
 #endif
