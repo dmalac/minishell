@@ -57,7 +57,7 @@ static void	error_check(t_token_lst **head, int *exit_n)
 		return ;
 	p_h = *head;
 	while (p_h)
-	{
+	{	
 		if (right_value_err(p_h, exit_n) == ERROR)
 		{
 			free_list(head);
