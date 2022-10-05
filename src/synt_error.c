@@ -25,14 +25,6 @@ int	syntax_error(int error_type, int *exit_n)
 	return (ERROR);
 }
 
-int	redirect_error(char *content, int *exit_n)
-{
-	ft_putstr_fd(content, STDERR_FILENO);
-	ft_putendl_fd (": ambiguous redirect", STDERR_FILENO);
-	*exit_n = 1;
-	return (ERROR);
-}
-
 int	malloc_error(int *exit_n)
 {
 	perror(NULL);

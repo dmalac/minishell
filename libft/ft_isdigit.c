@@ -6,7 +6,7 @@
 /*   By: dmalacov <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/05 15:21:27 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:34:07 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/05 15:00:39 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_isdigit(int c)
 {
 	if ((c >= '0') && (c <= '9'))
-		return (FALSE);
-	else
 		return (TRUE);
+	else
+		return (FALSE);
 }

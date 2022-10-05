@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:04:43 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 16:16:06 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/05 13:30:46 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int	set_trimmer(char *token, char *d_word, t_state *st, int *exit_n)
 {
-	if (st->prv_state != st_trimmer)
+	if (st->prv_state == st_word)
 	{
 		free(d_word);
 		while (token[st->pos] && token[st->pos] != '"')
@@ -25,7 +25,10 @@ static int	set_trimmer(char *token, char *d_word, t_state *st, int *exit_n)
 	}
 	else
 	{
-		st->buffer = ft_strjoinfree(st->buffer, d_word);
+		if (st->buffer)
+			st->buffer = ft_strjoinfree(st->buffer, d_word);
+		else
+			st->buffer = d_word;
 		if (st->buffer == NULL)
 			return (malloc_error(exit_n));
 		while (token[st->pos] && token[st->pos] != '"')
@@ -90,6 +93,41 @@ static char	*extract_d_quote(char *tokn, int *exit_n)
 
 /* ************************************************************************** */
 /*                                                                            */
+/* if the previus token is "word" it concatenates it with the content of the  */
+/* quotes, if the previus token is an empty variable, it erases it and saves  */
+/* just the content of the quotes, if the quotes are not close it trhows a    */
+/* syntax error                                                               */
+/*                                                                            */
+/* ************************************************************************** */
+int	dub_quote(char *token, t_state *st, int *exit_n)
+{
+	char	*d_word;
+
+	if (!*token)
+		return (syntax_error(err_noclose_d, exit_n));
+	d_word = extract_d_quote(token, exit_n);
+	if (!d_word)
+		return (malloc_error(exit_n));
+	if (ft_isvar_empty(d_word))
+		return (set_trimmer(token, d_word, st, exit_n));
+	else if (st->prv_state == st_trimmer || !(st->buffer))
+		free_set_null(st->buffer);
+	else if (st->prv_state != st_word || !(st->buffer))
+		st->buffer = d_word;
+	else
+		st->buffer = ft_strjoinfree(st->buffer, d_word);
+	if (st->buffer == NULL)
+		return (malloc_error(exit_n));
+	while (token[st->pos] && token[st->pos] != '"')
+		st->pos++;
+	if (!token[st->pos])
+		return (syntax_error(err_noclose_d, exit_n));
+
+	return (SUCCESS);
+}
+
+/* ************************************************************************** */
+/*                                                                            */
 /* if the previous token is "word" it concatenates it with the content of the */
 /* quotes, if the previous token is an empty variable, it erases it and saves */
 /* just the content of the quotes, if the quotes are not close it throws a    */
@@ -119,41 +157,5 @@ int	sin_quote(char *token, t_state *st, int *exit_n)
 		return (malloc_error(exit_n));
 	st->pos += 2;
 	st->prv_state = st_word;
-	return (SUCCESS);
-}
-
-/* ************************************************************************** */
-/*                                                                            */
-/* if the previus token is "word" it concatenates it with the content of the  */
-/* quotes, if the previus token is an empty variable, it erases it and saves  */
-/* just the content of the quotes, if the quotes are not close it trhows a    */
-/* syntax error                                                               */
-/*                                                                            */
-/* ************************************************************************** */
-int	dub_quote(char *token, t_state *st, int *exit_n)
-{
-	char	*d_word;
-
-	if (!*token)
-		return (syntax_error(err_noclose_d, exit_n));
-	d_word = extract_d_quote(token, exit_n);
-	if (!d_word)
-		return (malloc_error(exit_n));
-	if (ft_isvar_empty(d_word))
-		return (set_trimmer(token, d_word, st, exit_n));
-	if (st->prv_state == st_trimmer || !(st->buffer))
-		free_set_null(st->buffer);
-	if (st->prv_state != st_word || !(st->buffer))
-		st->buffer = d_word;
-	else
-		st->buffer = ft_strjoinfree(st->buffer, d_word);
-	if (st->buffer == NULL)
-		return (malloc_error(exit_n));
-	while (token[st->pos] && token[st->pos] != '"')
-		st->pos++;
-	if (!token[st->pos])
-		return (syntax_error(err_noclose_d, exit_n));
-	st->prv_state = st_word;
-	st->pos += 2;
 	return (SUCCESS);
 }

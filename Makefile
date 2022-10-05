@@ -18,7 +18,7 @@ LIB_PATH = ${LIBFTDIR}/libft.a
 FILES_MAIN = parser.c \
 parser_quote.c \
 parser_word.c \
-synt_red_error.c \
+synt_error.c \
 token_list_moves.c \
 token_separation.c \
 token_split.c \

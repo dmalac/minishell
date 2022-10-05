@@ -21,8 +21,7 @@
 /* redirect or pipe at the end of the list;                                   */
 /* different redirect type next to each other;                                */
 /* more than 1 pipe or more than 2 redirect next to each other;               */
-/* pipe and redirect next to each other;                                     */
-/* redirect to a not existing variable;                                       */
+/* pipe and redirect next to each other;                                      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +45,6 @@ static int	right_value_err(t_token_lst *elem, int *exit_n)
 			return (syntax_error(err_pip, exit_n));
 		if (elem->next->token_type > 0 && elem->next->token_type != EMPTY)
 			return (syntax_error(elem->next->token_type, exit_n));
-		if (elem->next->token_type == EMPTY && (elem->token_type >= GRT_TH
-				&& elem->token_type < DSML_TH))
-			return (redirect_error(elem->next->content, exit_n));
 	}	
 	return (SUCCESS);
 }
@@ -91,6 +87,9 @@ static void	unfold_token_list(char **tokens, t_token_lst **head, int *exit_n)
 /* the tokenization;                                                          */
 /* to check syntax error and gives a working list of token or an empty (NULL) */
 /* list in case of error;                                                     */
+/*                                                                            */
+/* ************************************************************************** */
+
 t_token_lst	**parser(t_token_lst **head, char *raw_string,
 		t_symtab *symtab, int *exit_n)
 {

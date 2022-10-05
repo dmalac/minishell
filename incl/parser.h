@@ -57,5 +57,6 @@ char		*var_fixing(char *var);
 int			isallsp(char *var);
 char		ft_isvar_empty(char *str);
 char		*set_beginning(char c);
+char		*var_expantion(char *str, t_symtab *symtab);
 
 #endif
