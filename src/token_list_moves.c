@@ -32,7 +32,7 @@ static int	token_types(char *buffer, t_state_t state)
 	}
 	if (state == st_trimmer)
 		return (EMPTY);
-	return (-1);
+	return (ERROR);
 }
 
 t_token_lst	*create_token(char *buffer, t_state_t state)

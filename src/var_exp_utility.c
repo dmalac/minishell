@@ -6,11 +6,10 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:08:15 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/06 12:14:55 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/06 16:43:04 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "parser.h"
 
 int	ft_isvar(char c)
