@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:04:43 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/05 13:30:46 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/06 12:54:58 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,6 @@ int	dub_quote(char *token, t_state *st, int *exit_n)
 		return (malloc_error(exit_n));
 	if (ft_isvar_empty(d_word))
 		return (set_trimmer(token, d_word, st, exit_n));
-	else if (st->prv_state == st_trimmer || !(st->buffer))
-		free_set_null(st->buffer);
 	else if (st->prv_state != st_word || !(st->buffer))
 		st->buffer = d_word;
 	else
@@ -122,7 +120,8 @@ int	dub_quote(char *token, t_state *st, int *exit_n)
 		st->pos++;
 	if (!token[st->pos])
 		return (syntax_error(err_noclose_d, exit_n));
-
+	st->pos += 2;
+	st->prv_state = st_word;
 	return (SUCCESS);
 }
 

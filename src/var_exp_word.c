@@ -6,11 +6,10 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:08:37 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:08:39 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/06 16:42:59 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "parser.h"
 
 static char	*quote_join(char *new_var, char *var, int i)
@@ -30,10 +29,10 @@ int	isallsp(char *var)
 	while (*var)
 	{
 		if (*var != ' ')
-			return (0);
+			return (FALSE);
 		var++;
 	}
-	return (1);
+	return (TRUE);
 }
 
 static char	*var_division(char *var)
