@@ -31,7 +31,7 @@ int	heredoc_open_pipes(t_heredoc *hd_list)
 	{
 		if (pipe(hd_list->hd_pipe) < 0)
 		{
-			ft_putendl_fd(strerror(errno), 2);
+			ft_putendl_fd(strerror(errno), STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
 		hd_list = hd_list->next;
@@ -66,4 +66,23 @@ void	heredoc_child_close_pipes(t_heredoc *hd_list, int end)
 		close(hd_list->hd_pipe[end]);
 		hd_list = hd_list->next;
 	}
+}
+
+void	cleanup_hd_list(t_heredoc **hd_list)
+{
+	t_heredoc	*temp;
+
+	while (*hd_list)
+	{
+		temp = *hd_list;
+		*hd_list = (*hd_list)->next;
+		free (temp);
+	}
+}
+
+void	heredoc_error_and_exit(t_heredoc *hd_list)
+{
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	cleanup_hd_list(&hd_list);	// close pipes also!
+	exit(EXIT_FAILURE);
 }

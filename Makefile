@@ -36,6 +36,7 @@ exec_errors.c \
 heredoc.c \
 heredoc_child.c \
 heredoc_utils.c \
+heredoc_var_exp.c \
 exec_token_processing.c \
 builtin_cd.c \
 builtin_echo.c \

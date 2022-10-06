@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:57:26 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/06 12:58:42 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
 		}
 		free (full_cmd);
 	}
-	if (contains_slash(tools->cmd_args[0]) == 1)
+	if (contains_char(tools->cmd_args[0], '/') == 1)
 		execve(tools->cmd_args[0], tools->cmd_args, tools->env_var);
 	return (-1);
 }
@@ -143,7 +143,7 @@ t_symtab *symtab)
 		exit(exit_code);
 	}
 	if (access(tools->cmd_args[0], F_OK) < 0 || \
-	contains_slash(tools->cmd_args[0]) == 0)
+	contains_char(tools->cmd_args[0], '/') == 0)
 		child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
 	else if (access(tools->cmd_args[0], X_OK) < 0)
 		child_error_and_exit(errno, tools, tools->cmd_args[0]);

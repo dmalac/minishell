@@ -66,7 +66,7 @@ struct sigaction *sa_sq)
 	writes each line into the corresponding pipe's reading end fd. Upon success, 
 	it exits with exit code 0. If SIGINT was received, it exits with exit code 1.
  */
-void	st_heredoc_child_receive_input(t_heredoc *hd_list)
+void	st_heredoc_child_receive_input(t_heredoc *hd_list, t_symtab *symtab)
 {
 	char	*line;
 	int		start;
@@ -79,6 +79,8 @@ void	st_heredoc_child_receive_input(t_heredoc *hd_list)
 		start = 0;
 		if (line)
 		{
+			if (hd_list->expand == 1)
+				line = heredoc_expand_var(line, symtab, hd_list);
 			ft_putendl_fd(line, hd_list->hd_pipe[W]);
 			free(line);
 		}
@@ -96,7 +98,7 @@ void	st_heredoc_child_receive_input(t_heredoc *hd_list)
 /* 
 	This function manages the processing of the heredoc redirection.
  */
-void	heredoc_child_process_redir(t_heredoc *hd_list)
+void	heredoc_child_process_redir(t_heredoc *hd_list, t_symtab *symtab)
 {
 	struct sigaction	sa_si;
 	struct sigaction	sa_sq;
@@ -105,7 +107,7 @@ void	heredoc_child_process_redir(t_heredoc *hd_list)
 	heredoc_child_close_pipes(hd_list, R);
 	while (hd_list)
 	{
-		st_heredoc_child_receive_input(hd_list);
+		st_heredoc_child_receive_input(hd_list, symtab);
 		hd_list = hd_list->next;
 	}
 	exit(EXIT_SUCCESS);

@@ -31,9 +31,21 @@ static t_heredoc	*st_heredoc_new(t_token_lst *node, size_t cmd_no)
 
 	new = malloc(sizeof(t_heredoc));
 	if (!new)
-		return (ft_putendl_fd(strerror(errno), 2), NULL);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), NULL);
 	new->cmd_no = cmd_no;
-	new->limiter = node->content;
+	if (node->content[0] == '"' || node->content[0] == '\'')
+	{
+		new->limiter = ft_substr(node->content, 1, \
+		ft_strlen(node->content) - 2);
+		free (node->content);
+		node->content = new->limiter;
+		new->expand = 0;
+	}
+	else
+	{
+		new->limiter = node->content;
+		new->expand = 1;
+	}
 	new->next = NULL;
 	return (new);
 }
@@ -62,7 +74,7 @@ static void	st_heredoc_add_back(t_heredoc **top, t_heredoc *new)
 	success and 1 if an error occurs or the child process exits because of the 
 	SIGINT signal.
  */
-int	get_heredoc(t_heredoc *hd_list)
+int	get_heredoc(t_heredoc *hd_list, t_symtab *symtab)
 {
 	pid_t			id;
 	int				exit_code;
@@ -75,9 +87,9 @@ int	get_heredoc(t_heredoc *hd_list)
 		return (EXIT_FAILURE);
 	id = fork();
 	if (id < 0)
-		return (ft_putendl_fd(strerror(errno), 2), 1);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), 1);
 	if (id == 0)
-		heredoc_child_process_redir(hd_list);
+		heredoc_child_process_redir(hd_list, symtab);
 	else
 	{
 		waitpid(id, &wait_status, 0);

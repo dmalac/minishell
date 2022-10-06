@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 12:13:15 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/05 16:23:30 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/06 12:59:04 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void	cleanup(t_cmd_tools *tools)
 	the string contains the character '/'. It then returns either 1 (TRUE) or 
 	0 (FALSE).
  */
-int	contains_slash(char *str)
+int	contains_char(char *str, char c)
 {
 	while (*str)
 	{
-		if ((*str) == '/')
+		if ((*str) == c)
 			return (TRUE);
 		str++;
 	}
@@ -86,7 +86,7 @@ int	print_error_message(int error_no, char *name)
 		ft_putstr_fd(name, 2);
 		write(2, ": ", 2);
 	}
-	if (error_no == CMD_ERROR && contains_slash(name) == FALSE)
+	if (error_no == CMD_ERROR && contains_char(name, '/') == FALSE)
 		ft_putstr_fd("Command not found", 2);
 	else if (error_no == CMD_ERROR)
 		ft_putstr_fd(strerror(2), 2);

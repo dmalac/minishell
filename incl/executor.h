@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/05 15:46:36 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/06 17:39:26 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_heredoc
 {
 	int					hd_pipe[2];
 	char				*limiter;
+	int					expand;
 	size_t				cmd_no;
 	struct s_heredoc	*next;
 }				t_heredoc;
@@ -75,21 +76,27 @@ int			get_args(t_cmd_tools *tools, t_token_lst *input);
 int			get_paths(t_symtab *symtab, t_cmd_tools *tools);
 int			get_env_var(t_symtab *symtab, t_cmd_tools *tools);
 /* heredoc.c */
-int			get_heredoc(t_heredoc *hd_list);
+int			get_heredoc(t_heredoc *hd_list, t_symtab *symtab);
 int			check_heredoc(t_token_lst *input, t_cmd_tools *tools);
+void		cleanup_hd_list(t_heredoc **heredoc);
 /* heredoc_child.c */
-void		heredoc_child_process_redir(t_heredoc *hd_list);
+void		heredoc_child_process_redir(t_heredoc *hd_list, t_symtab *symtab);
 /* heredoc_utils.c */
 int			heredoc_open_pipes(t_heredoc *hd_list);
 void		heredoc_close_pipes(t_heredoc *hd_list);
 void		heredoc_child_close_pipes(t_heredoc *hd_list, int end);
+void		heredoc_error_and_exit(t_heredoc *hd_list);
+/* heredoc_var_exp.c */
+char		*heredoc_expand_var(char *line, t_symtab *symtab, \
+t_heredoc *hd_list);
+
 /* exec_errors.c */
 void		free_array(char **array);
 void		child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name);
 int			print_error_message(int error_code, char *name);
 void		cleanup(t_cmd_tools *tools);
-int			contains_slash(char *str);
+int			contains_char(char *str, char c);
 /* init.c */
 t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab);
 
