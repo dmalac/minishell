@@ -14,12 +14,14 @@
 # define PARSER_H
 
 # include "minishell.h"
+
 typedef struct s_state{
 	char	*buffer;
 	int		prv_state;
 	int		state;
 	int		pos;
 }	t_state;
+
 typedef enum e_t_state_t
 {
 	blank,

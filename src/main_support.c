@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/05 12:58:57 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/06 12:49:26 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ void	execution(struct sigaction *sa, t_token_lst **head, t_symtab *symtab,
 		int *exit_n)
 {
 	*exit_n = executor(*head, symtab);
-	//if (*exit_n == 1)
-		//write(STDERR_FILENO, "\n", 1);
 	sigaction(SIGINT, sa, NULL);
 	free_list(head);
 }

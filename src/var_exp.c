@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/06 12:20:42 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/06 12:48:59 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static char	*quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 
 	if (str[i] == '\'')
 		return (save_previus(exp_str, str, i + quote_end_set(str, &i)));
-	exp_str = save_previus(exp_str, str, i + 1 );
+	exp_str = save_previus(exp_str, str, i + 1);
 	if (!exp_str)
 		return (NULL);
 	str += i + 1;
@@ -117,9 +117,7 @@ static char	*quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 		}
 		i++;
 	}
-	if (str[i] == '"')
-		i++;
-	return (save_previus(exp_str, str, i));
+	return (save_previus(exp_str, str, i + 1));
 }
 
 /* ************************************************************************** */
