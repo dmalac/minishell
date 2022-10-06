@@ -6,12 +6,13 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 18:45:50 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/06 16:58:01 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <errno.h>
+#include <unistd.h>
 #include <string.h>
 #include "symtab.h"
 #include "builtin.h"
@@ -84,7 +85,7 @@ static t_symtab	**st_create_export_list(t_symtab *symtab, size_t count)
 
 	export_list = malloc(sizeof(t_symtab *) * (count + 1));
 	if (!export_list)
-		return (ft_putendl_fd(strerror(errno), 2), NULL);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), NULL);
 	i = 0;
 	node = symtab;
 	while (i < count)
@@ -111,7 +112,7 @@ int	display_export_list(t_symtab *symtab)
 	export_list = st_create_export_list(symtab, count);
 	if (!export_list)
 	{
-		ft_putendl_fd(strerror(errno), 2);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	st_sort_export_list(export_list);

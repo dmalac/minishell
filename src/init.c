@@ -53,7 +53,7 @@ t_symtab	*init_symbol_table(void)
 		if (!new)
 		{
 			symtab_erase_and_free(&top);
-			ft_putendl_fd(strerror(errno), 2);
+			ft_putendl_fd(strerror(errno), STDERR_FILENO);
 			return (NULL);
 		}
 		symtab_add_back(&top, new);
@@ -111,7 +111,7 @@ t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 
 	tools = malloc(sizeof(t_cmd_tools));
 	if (!tools)
-		return (ft_putendl_fd(strerror(errno), 2), NULL);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), NULL);
 	tools->id = 1;
 	tools->cmd = 1;
 	tools->total_cmds = st_count_cmds(input);
@@ -122,7 +122,7 @@ t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 	get_env_var(symtab, tools) == EXIT_FAILURE)
 		return (cleanup(tools), NULL);
 	if (check_heredoc(input, tools) == EXIT_FAILURE || \
-	get_heredoc(tools->heredoc) == EXIT_FAILURE)
+	get_heredoc(tools->heredoc, symtab) == EXIT_FAILURE)
 		return (cleanup(tools), NULL);
 	tools->builtin_only = st_check_if_only_builtin(input, tools);
 	tools->process_tokens[WORD] = process_word;

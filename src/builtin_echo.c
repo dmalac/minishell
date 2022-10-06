@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:12:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 15:07:36 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/06 10:12:04 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	bi_echo(char **args)
 	{
 		if (printf("%s", args[i++]) < 0)
 			return (builtin_error("echo", NULL, "Writing error"), EXIT_FAILURE);
-		if (args[i])	// watch out for "" (should not be NULL)
+		if (args[i])
 			printf(" ");
 	}
 	if (nl == 1)

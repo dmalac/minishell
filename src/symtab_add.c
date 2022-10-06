@@ -28,7 +28,7 @@ t_symtab	*symtab_new(char *str)
 
 	new = malloc(sizeof(t_symtab));
 	if (!str || !new)
-		return (ft_putendl_fd(strerror(errno), 2), NULL);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), NULL);
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
@@ -86,7 +86,7 @@ int	symtab_add_var(t_symtab *symtab, char *var_name, char *var_val)
 
 	new = malloc(sizeof(t_symtab));
 	if (!new)
-		return (ft_putendl_fd(strerror(errno), 2), EXIT_FAILURE);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), EXIT_FAILURE);
 	new->key = var_name;
 	new->value = var_val;
 	new->next = NULL;

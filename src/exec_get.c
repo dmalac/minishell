@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 13:11:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 11:59:23 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/06 16:28:32 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static size_t	st_count_args(t_token_lst *input)
 	words = 0;
 	while (input && input->token_type != PIPE)
 	{
-		if (input->token_type == WORD)
+		if (input->token_type == WORD || input->token_type == EMPTY)
 			words++;
 		else if (input->token_type == GRT_TH || input->token_type == DGRT_TH || \
 		input->token_type == SMLR_TH || input->token_type == DSML_TH)
@@ -52,7 +52,7 @@ int	get_args(t_cmd_tools *tools, t_token_lst *input)
 	{
 		tools->cmd_args = malloc(sizeof(char *) * (no_of_args + 1));
 		if (!tools->cmd_args)
-			return (ft_putendl_fd(strerror(errno), 2), EXIT_FAILURE);
+			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), EXIT_FAILURE);
 		i = 0;
 		while (i <= no_of_args)
 			tools->cmd_args[i++] = NULL;
@@ -105,7 +105,7 @@ int	get_paths(t_symtab *symtab, t_cmd_tools *tools)
 		}
 		if (!tools->paths)
 		{
-			ft_putendl_fd(strerror(errno), 2);
+			ft_putendl_fd(strerror(errno), STDERR_FILENO);
 			return (EXIT_FAILURE);
 		}
 	}
@@ -130,7 +130,7 @@ int	get_env_var(t_symtab *symtab, t_cmd_tools *tools)
 	total_nodes = symtab_count_nodes(symtab);
 	tools->env_var = malloc(sizeof(char *) * (total_nodes + 1));
 	if (!tools->env_var)
-		return (ft_putendl_fd(strerror(errno), 2), EXIT_FAILURE);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), EXIT_FAILURE);
 	node = symtab;
 	i = 0;
 	while (node)

@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 18:46:44 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/06 16:28:32 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 	{
 		if (pipe(pipe_end[pipe_no]) < 0)
 		{
-			ft_putendl_fd(strerror(errno), 2);
+			ft_putendl_fd(strerror(errno), STDERR_FILENO);
 			return (1);
 		}
 	}
 	*id = fork();
 	if (*id < 0)
 	{
-		ft_putendl_fd(strerror(errno), 2);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		return (1);
 	}
 	return (0);
@@ -97,7 +97,7 @@ static int	st_get_tools(t_cmd_tools *tools, t_token_lst *input)
 	t_token_lst	*node;
 
 	if (get_args(tools, input) == EXIT_FAILURE)
-		return (ft_putendl_fd(strerror(errno), 2), EXIT_FAILURE);
+		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), EXIT_FAILURE);
 	node = input;
 	while (node && node->token_type != PIPE && tools->input_fd != -1 && \
 	tools->output_fd != -1)
