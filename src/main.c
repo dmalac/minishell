@@ -50,8 +50,6 @@ int	main(void)
 		if (g_signal == SIGINT)
 			sig_init_action(&exit_n, &sa);
 		if (line && *line)
-			add_history(line);
-		if (line && *line)
 			parser(&token_head, line, symtab, &exit_n);
 		if (token_head)
 			execution(&sa, &token_head, symtab, &exit_n);
