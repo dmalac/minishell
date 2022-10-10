@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/06 12:49:26 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/10 14:52:39 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	sigred_init(struct sigaction *sa)
 	ft_bzero(&(sa->sa_mask), sizeof(sa->sa_mask));
 	sa->sa_handler = signal_handler;
 	sigaction(SIGINT, sa, NULL);
-	sigaction(SIGQUIT, sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	sig_init_action(int *exit_n, struct sigaction *sa)
@@ -59,7 +59,10 @@ void	sig_init_action(int *exit_n, struct sigaction *sa)
 void	execution(struct sigaction *sa, t_token_lst **head, t_symtab *symtab,
 		int *exit_n)
 {
+	signal(SIGINT, SIG_IGN);
 	*exit_n = executor(*head, symtab);
+	if (*exit_n == 130 || *exit_n == 131)
+		write(2, "\n", 1);
 	sigaction(SIGINT, sa, NULL);
 	free_list(head);
 }
@@ -70,5 +73,5 @@ void	free_all_exit(t_token_lst **head, t_symtab **symtab, char *rline)
 	free_list(head);
 	rl_clear_history();
 	symtab_erase_and_free(symtab);
-	write(STDERR_FILENO, "exit\n", 4);
+	write(STDERR_FILENO, "exit\n", 5);
 }

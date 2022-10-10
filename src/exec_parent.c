@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:28:32 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/10 14:57:45 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/wait.h>
 
 /* 
 	This function assesses whether it is necessary to open a pipe and fork the
@@ -132,6 +133,8 @@ int	wait_for_last_child(int id, size_t total_cmds)
 	waitpid(id, &wait_status, 0);
 	if (WIFEXITED(wait_status))
 		exit_code = WEXITSTATUS(wait_status);
+	else if (WIFSIGNALED(wait_status))
+		exit_code = WTERMSIG(wait_status) + 128;
 	else
 		exit_code = 1;
 	while (total_cmds > 1)

@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 12:58:42 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/10 14:58:47 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 
 /* 
 	This function processes all the tokens corresponding forming a particular 
@@ -125,9 +126,11 @@ static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
 void	perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
 t_symtab *symtab)
 {
-	int	exit_code;
+	int					exit_code;
 
 	exit_code = 0;
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 	st_get_tools(tools, input, pipe_end);
 	if (tools->input_fd < 0 || tools->output_fd < 0)
 		child_error_and_exit(IO_FD_ERROR, tools, NULL);
