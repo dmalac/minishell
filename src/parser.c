@@ -12,6 +12,7 @@
 
 #include "parser.h"
 #include "error.h"
+#include <readline/history.h>
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -43,7 +44,8 @@ static int	right_value_err(t_token_lst *elem, int *exit_n)
 			return (syntax_error(err_new_line, exit_n));
 		if (elem->next->token_type == PIPE)
 			return (syntax_error(err_pip, exit_n));
-		if (elem->next->token_type > 0 && elem->next->token_type != EMPTY)
+		if (elem->next->token_type > 0 && elem->next->token_type != EMPTY
+			&& elem->token_type != PIPE)
 			return (syntax_error(elem->next->token_type, exit_n));
 	}	
 	return (SUCCESS);
