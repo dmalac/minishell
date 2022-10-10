@@ -28,6 +28,7 @@ static void	st_heredoc_handler_sigint(int sig)
 {
 	g_signal = sig;
 	rl_done = 1;
+	write(2, "\n", 1);
 	rl_on_new_line();
 	rl_done = 0;
 }
@@ -47,17 +48,14 @@ static int	st_check_global_var(void)
 }
 
 /* 
-	This function assigns the signal handling functions to the struct sigaction 
-	sa_si and sa_sq and calls the sigaction function. It also sets the 
-	rl_event_hook.
+	This function assigns the signal handling function to the struct sigaction 
+	sa and calls the sigaction function. It also sets the rl_event_hook.
  */
-static void	st_heredoc_init_signal_handling(struct sigaction *sa_si, \
-struct sigaction *sa_sq)
+static void	st_heredoc_init_signal_handling(struct sigaction *sa)
 {
-	(*sa_si).sa_handler = &st_heredoc_handler_sigint;
-	(*sa_sq).sa_handler = SIG_IGN;
-	sigaction(SIGINT, sa_si, NULL);
-	sigaction(SIGQUIT, sa_sq, NULL);
+	(*sa).sa_handler = &st_heredoc_handler_sigint;
+	sigaction(SIGINT, sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 	rl_event_hook = &st_check_global_var;
 }
 
@@ -100,10 +98,10 @@ void	st_heredoc_child_receive_input(t_heredoc *hd_list, t_symtab *symtab)
  */
 void	heredoc_child_process_redir(t_heredoc *hd_list, t_symtab *symtab)
 {
-	struct sigaction	sa_si;
-	struct sigaction	sa_sq;
+	struct sigaction	sa;
 
-	st_heredoc_init_signal_handling(&sa_si, &sa_sq);
+	signal(SIGINT, SIG_DFL);
+	st_heredoc_init_signal_handling(&sa);
 	heredoc_child_close_pipes(hd_list, R);
 	while (hd_list)
 	{
