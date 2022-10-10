@@ -74,18 +74,3 @@ t_symtab	*symtab_remove_node(t_symtab **top, char *key)
 	st_symtab_erase_and_free_node(&tmp);
 	return (*top);
 }
-
-/* TO BE DELETED */
-/* prints the whole symbol table in the format <KEY>=<VALUE> */
-void	symtab_print(t_symtab *top)
-{
-	printf("*** SYMBOL TABLE ***\n\n");
-	
-	while (top)
-	{
-		printf("\t%s=%s\n", top->key, top->value);
-		top = top->next;
-	}
-	
-	printf("\n*** END OF SYMBOL TABLE ***\n\n");
-}

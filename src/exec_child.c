@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/10 14:58:47 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/10 15:16:00 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,22 @@ static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
 	return (-1);
 }
 
+static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
+{
+	if (exit_code >= 0)
+	{
+		cleanup(tools);
+		exit(exit_code);
+	}
+	if (access(tools->cmd_args[0], F_OK) < 0 || \
+	contains_char(tools->cmd_args[0], '/') == 0)
+		child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
+	else if (access(tools->cmd_args[0], X_OK) < 0)
+		child_error_and_exit(errno, tools, tools->cmd_args[0]);
+	else
+		child_error_and_exit(errno, tools, tools->cmd_args[0]);
+}
+
 /* 
 	This function manages everything that is necessary for the correct execution 
 	of the command by a child process. It also handles the correct exit of the 
@@ -140,16 +156,5 @@ t_symtab *symtab)
 	if (tools->cmd_args)
 		exit_code = st_execute_cmd(tools, symtab);
 	close_pipes_child(tools, pipe_end, AFTER);
-	if (exit_code >= 0)
-	{
-		cleanup(tools);
-		exit(exit_code);
-	}
-	if (access(tools->cmd_args[0], F_OK) < 0 || \
-	contains_char(tools->cmd_args[0], '/') == 0)
-		child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
-	else if (access(tools->cmd_args[0], X_OK) < 0)
-		child_error_and_exit(errno, tools, tools->cmd_args[0]);
-	else
-		child_error_and_exit(errno, tools, tools->cmd_args[0]);
+	st_handle_exit(tools, exit_code);
 }
