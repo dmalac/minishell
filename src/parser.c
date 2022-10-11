@@ -12,6 +12,7 @@
 
 #include "parser.h"
 #include "error.h"
+#include <readline/history.h>
 
 /* ************************************************************************** */
 /*                                                                            */
