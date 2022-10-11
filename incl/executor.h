@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/11 19:31:25 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 20:24:09 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void		cleanup_hd_list(t_heredoc **heredoc);
 void		heredoc_child_process_redir(t_heredoc **hd_list, t_symtab **symtab);
 /* heredoc_utils.c */
 int			heredoc_open_pipes(t_heredoc *hd_list);
-void		heredoc_close_pipes(t_heredoc *hd_list);
+void		heredoc_close_pipes(t_heredoc *hd_list, int exit_code);
 void		heredoc_child_close_pipes(t_heredoc *hd_list, int end);
 void		heredoc_error_and_exit(t_symtab **symtab, t_heredoc **hd_list, \
 t_heredoc *hd_node);
