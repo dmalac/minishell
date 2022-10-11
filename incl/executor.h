@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/11 17:02:28 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 19:31:25 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,16 @@ int			get_heredoc(t_heredoc *hd_list, t_symtab *symtab);
 int			check_heredoc(t_token_lst *input, t_cmd_tools *tools);
 void		cleanup_hd_list(t_heredoc **heredoc);
 /* heredoc_child.c */
-void		heredoc_child_process_redir(t_heredoc *hd_list, t_symtab *symtab);
+void		heredoc_child_process_redir(t_heredoc **hd_list, t_symtab **symtab);
 /* heredoc_utils.c */
 int			heredoc_open_pipes(t_heredoc *hd_list);
 void		heredoc_close_pipes(t_heredoc *hd_list);
 void		heredoc_child_close_pipes(t_heredoc *hd_list, int end);
-void		heredoc_error_and_exit(t_heredoc *hd_list);
+void		heredoc_error_and_exit(t_symtab **symtab, t_heredoc **hd_list, \
+t_heredoc *hd_node);
 /* heredoc_var_exp.c */
-char		*heredoc_expand_var(char *line, t_symtab *symtab, \
-t_heredoc *hd_list);
+char		*heredoc_expand_var(char *line, t_symtab **symtab, \
+t_heredoc **hd_list, t_heredoc *hd_node);
 
 /* exec_errors.c */
 void		free_array(char **array);

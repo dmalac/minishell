@@ -64,7 +64,8 @@ static void	st_heredoc_init_signal_handling(struct sigaction *sa)
 	writes each line into the corresponding pipe's reading end fd. Upon success, 
 	it exits with exit code 0. If SIGINT was received, it exits with exit code 1.
  */
-void	st_heredoc_child_receive_input(t_heredoc *hd_list, t_symtab *symtab)
+void	st_heredoc_child_receive_input(t_heredoc **hd_list, t_heredoc *hd_node, \
+t_symtab **symtab)
 {
 	char	*line;
 	int		start;
@@ -72,41 +73,43 @@ void	st_heredoc_child_receive_input(t_heredoc *hd_list, t_symtab *symtab)
 	start = 1;
 	line = NULL;
 	while ((g_signal == 0 && line && ft_strncmp(line, \
-	hd_list->limiter, ft_strlen(hd_list->limiter) + 1) != 0) || start == 1)
+	hd_node->limiter, ft_strlen(hd_node->limiter) + 1) != 0) || start == 1)
 	{
 		start = 0;
 		if (line)
 		{
-			if (hd_list->expand == 1)
-				line = heredoc_expand_var(line, symtab, hd_list);
-			ft_putendl_fd(line, hd_list->hd_pipe[W]);
+			if (hd_node->expand == 1)
+				line = heredoc_expand_var(line, symtab, hd_list, hd_node);
+			ft_putendl_fd(line, hd_node->hd_pipe[W]);
 			free(line);
 		}
 		line = readline("> ");
 	}
 	if (g_signal == 1)
 	{
-		heredoc_child_close_pipes(hd_list, W);
+		heredoc_child_close_pipes(hd_node, W);
 		exit(EXIT_FAILURE);
 	}
 	free(line);
-	close(hd_list->hd_pipe[W]);
+	close(hd_node->hd_pipe[W]);
 }
 
 /* 
 	This function manages the processing of the heredoc redirection.
  */
-void	heredoc_child_process_redir(t_heredoc *hd_list, t_symtab *symtab)
+void	heredoc_child_process_redir(t_heredoc **hd_list, t_symtab **symtab)
 {
 	struct sigaction	sa;
+	t_heredoc			*hd_node;
 
 	signal(SIGINT, SIG_DFL);
 	st_heredoc_init_signal_handling(&sa);
-	heredoc_child_close_pipes(hd_list, R);
-	while (hd_list)
+	hd_node = *hd_list;
+	heredoc_child_close_pipes(*hd_list, R);
+	while (hd_node)
 	{
-		st_heredoc_child_receive_input(hd_list, symtab);
-		hd_list = hd_list->next;
+		st_heredoc_child_receive_input(hd_list, hd_node, symtab);
+		hd_node = hd_node->next;
 	}
 	exit(EXIT_SUCCESS);
 }

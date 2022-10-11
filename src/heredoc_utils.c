@@ -80,9 +80,12 @@ void	cleanup_hd_list(t_heredoc **hd_list)
 	}
 }
 
-void	heredoc_error_and_exit(t_heredoc *hd_list)
+void	heredoc_error_and_exit(t_symtab **symtab, t_heredoc **hd_list, \
+t_heredoc *hd_node)
 {
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
-	cleanup_hd_list(&hd_list);	// close pipes also!
+	symtab_erase_and_free(symtab);
+	heredoc_child_close_pipes(hd_node, W);
+	cleanup_hd_list(hd_list);
 	exit(EXIT_FAILURE);
 }

@@ -89,7 +89,7 @@ int	get_heredoc(t_heredoc *hd_list, t_symtab *symtab)
 	if (id < 0)
 		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), 1);
 	if (id == 0)
-		heredoc_child_process_redir(hd_list, symtab);
+		heredoc_child_process_redir(&hd_list, &symtab);
 	else
 	{
 		waitpid(id, &wait_status, 0);
