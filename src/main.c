@@ -44,10 +44,10 @@ int	main(void)
 	while (1)
 	{
 		line = user_input(symtab);
-		if (!line && g_signal != SIGINT)
-			break ;
 		if (g_signal == SIGINT)
 			sig_init_action(&exit_n, &sa);
+		if (!line && !g_signal)
+			break ;
 		if (line && *line)
 			parser(&token_head, line, symtab, &exit_n);
 		if (token_head)
