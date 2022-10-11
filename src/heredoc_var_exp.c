@@ -86,14 +86,12 @@ char	*heredoc_expand_var(char *line, t_symtab *symtab, \
 t_heredoc *hd_list)
 {
 	size_t	i;
-	size_t	start;
 	char	*new_line;
 	char	*temp;
 
 	if (contains_char(line, '$') == 0)
 		return (line);
 	i = 0;
-	start = 0;
 	new_line = ft_strdup("");
 	while (line[i] && new_line)
 	{

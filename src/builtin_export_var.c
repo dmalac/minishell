@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:57:24 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/10 15:13:31 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	get_var_val(char *arg, char **var_val)
 		*var_val = ft_substr(arg, len_var_name + 1, \
 		ft_strlen(arg) - len_var_name - 1);
 		if (!(*var_val))
-			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), EXIT_FAILURE);
+			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), \
+			EXIT_FAILURE);
 	}
 	else
 		*var_val = NULL;

@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/19 13:11:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:28:32 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/10 15:16:19 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	get_args(t_cmd_tools *tools, t_token_lst *input)
 	{
 		tools->cmd_args = malloc(sizeof(char *) * (no_of_args + 1));
 		if (!tools->cmd_args)
-			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), EXIT_FAILURE);
+			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), \
+			EXIT_FAILURE);
 		i = 0;
 		while (i <= no_of_args)
 			tools->cmd_args[i++] = NULL;

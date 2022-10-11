@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 14:58:10 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/10 17:39:31 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,16 @@ static int	st_is_long(char *str)
 		(num)++;
 	while (*num && *num == '0')
 		(num)++;
+	if (ft_strlen(num) > 19)
+		return (FALSE);
 	if (ft_strlen(num) < 19)
-		return (1);
+		return (TRUE);
 	else if (str[0] == '-' && ft_strncmp(num, "9223372036854775808", 20) <= 0)
-		return (1);
+		return (TRUE);
 	else if (ft_strncmp(num, "9223372036854775807", 20) <= 0)
-		return (1);
+		return (TRUE);
 	else
-		return (0);
+		return (FALSE);
 }
 
 /* 
