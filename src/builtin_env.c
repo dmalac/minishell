@@ -12,7 +12,9 @@
 
 #include "symtab.h"
 #include "builtin.h"
+#include "libft.h"
 #include <stdio.h>
+#include <unistd.h>
 
 /* 
 	This function prints all variables included in the symbol table that have a 
@@ -25,7 +27,9 @@ int	bi_env(t_symtab *symtab)
 	{
 		if (symtab->value)
 		{
-			if (printf("%s=%s\n", symtab->key, symtab->value) < 0)
+			if (ft_putstr_fd(symtab->key, STDOUT_FILENO) < 0 || \
+			ft_putstr_fd("=", STDOUT_FILENO) < 0 || \
+			ft_putendl_fd(symtab->value, STDOUT_FILENO) < 0)
 				return (builtin_error("env", NULL, "Writing error"), \
 				EXIT_FAILURE);
 		}

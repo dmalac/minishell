@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/11 11:06:28 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 16:58:02 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <signal.h>
+#include <sys/stat.h>
 
 /* 
 	This function processes all the tokens corresponding forming a particular 
@@ -54,7 +55,8 @@ int pipe_end[2][2])
 	execution of the command), and (ii) whether there were pipes open for 
 	heredoc.
  */
-static void	close_pipes_child(t_cmd_tools *tools, int pipe_end[2][2], int when)
+static void	st_close_pipes_child(t_cmd_tools *tools, int pipe_end[2][2], \
+int when)
 {
 	t_heredoc	*node;
 
@@ -87,7 +89,7 @@ static void	close_pipes_child(t_cmd_tools *tools, int pipe_end[2][2], int when)
 	a builtin function (0 or 1) or -1 in case where there was an error executing 
 	a command using the execve function.
  */
-static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
+static int	st_execute_cmd(t_cmd_tools *tools, t_symtab **symtab)
 {
 	int		i;
 	char	*full_cmd;
@@ -118,11 +120,15 @@ static int	st_execute_cmd(t_cmd_tools *tools, t_symtab *symtab)
 
 static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 {
+	struct stat	buf;
+
 	if (exit_code >= 0)
 	{
 		cleanup_tools(&tools);
 		exit(exit_code);
 	}
+	if (stat(tools->cmd_args[0], &buf) >= 0 && S_ISDIR(buf.st_mode) == TRUE)
+		child_error_and_exit(21, tools, tools->cmd_args[0]);
 	if (access(tools->cmd_args[0], F_OK) < 0 || \
 	contains_char(tools->cmd_args[0], '/') == 0)
 		child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
@@ -140,7 +146,7 @@ static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 	returned an error.
  */
 void	perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
-t_symtab *symtab)
+t_symtab **symtab)
 {
 	int					exit_code;
 
@@ -150,11 +156,11 @@ t_symtab *symtab)
 	st_get_tools(tools, input, pipe_end);
 	if (tools->input_fd < 0 || tools->output_fd < 0)
 		child_error_and_exit(IO_FD_ERROR, tools, NULL);
-	close_pipes_child(tools, pipe_end, BEFORE);
+	st_close_pipes_child(tools, pipe_end, BEFORE);
 	dup2(tools->input_fd, STDIN_FILENO);
 	dup2(tools->output_fd, STDOUT_FILENO);
 	if (tools->cmd_args)
 		exit_code = st_execute_cmd(tools, symtab);
-	close_pipes_child(tools, pipe_end, AFTER);
+	st_close_pipes_child(tools, pipe_end, AFTER);
 	st_handle_exit(tools, exit_code);
 }

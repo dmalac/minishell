@@ -52,10 +52,10 @@ int	main(void)
 		if (line && *line)
 			parser(&token_head, line, symtab, &exit_n);
 		if (token_head)
-			execution(&sa, &token_head, symtab, &exit_n);
+			execution(&sa, &token_head, &symtab, &exit_n);
 		if (exit_n < BI_EXITED)
 			free(line);
 	}
-	free_all_exit(&token_head, &symtab, line);
+	free_all_exit(&token_head, &symtab, line, &exit_n);
 	return (exit_n);
 }

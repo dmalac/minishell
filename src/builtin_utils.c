@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/05 15:08:49 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:00:42 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ int	is_builtin(char *cmd)
 	This function identifies which builtin function needs to be executed and 
 	executes it. It returns the exit code returned by the builtin function.
  */
-int	execute_builtin(char **args, t_symtab *symtab, int who)
+int	execute_builtin(char **args, t_symtab **symtab, int who)
 {
 	if (args[0][0] == 'c')
-		return (bi_cd(args[1], symtab));
+		return (bi_cd(args[1], *symtab));
 	else if (args[0][0] == 'p')
 		return (bi_pwd());
 	else if (args[0][0] == 'u')
@@ -97,9 +97,9 @@ int	execute_builtin(char **args, t_symtab *symtab, int who)
 	else if (args[0][0] == 'e' && args[0][1] == 'c')
 		return (bi_echo(args));
 	else if (args[0][0] == 'e' && args[0][1] == 'n')
-		return (bi_env(symtab));
+		return (bi_env(*symtab));
 	else if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'p')
-		return (bi_export(args, symtab));
+		return (bi_export(args, *symtab));
 	else if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'i')
 		return (bi_exit(args, who));
 	return (0);

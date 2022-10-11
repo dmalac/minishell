@@ -28,7 +28,7 @@ static void	st_heredoc_handler_sigint(int sig)
 {
 	g_signal = sig;
 	rl_done = 1;
-	write(2, "\n", 1);
+	write(STDERR_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_done = 0;
 }

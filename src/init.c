@@ -58,7 +58,10 @@ t_symtab	*init_symbol_table(void)
 		}
 		symtab_add_back(&top, new);
 	}
-	new = symtab_add_node(&top, "PS1=minishell> ");
+	if (!symtab_get_node(top, "PS1"))
+		new = symtab_add_node(&top, "PS1=minishell> ");
+	else
+		symtab_change_value(top, "PS1", ft_strdup("minishell> "));
 	st_update_shlvl(top);
 	return (top);
 }

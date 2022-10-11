@@ -6,12 +6,13 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:12:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 10:12:04 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 13:25:49 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "builtin.h"
 #include "libft.h"
 
@@ -56,12 +57,12 @@ int	bi_echo(char **args)
 	nl = st_skip_n_option(args, &i);
 	while (args && args[i])
 	{
-		if (printf("%s", args[i++]) < 0)
+		if (ft_putstr_fd(args[i++], STDOUT_FILENO) < 0)
 			return (builtin_error("echo", NULL, "Writing error"), EXIT_FAILURE);
 		if (args[i])
-			printf(" ");
+			write(STDOUT_FILENO, " ", 1);
 	}
 	if (nl == 1)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	return (EXIT_SUCCESS);
 }

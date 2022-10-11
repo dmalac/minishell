@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/10 14:52:39 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:33:42 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,26 @@ void	sig_init_action(int *exit_n, struct sigaction *sa)
 	ft_bzero(&(sa->sa_mask), sizeof(sa->sa_mask));
 }
 
-void	execution(struct sigaction *sa, t_token_lst **head, t_symtab *symtab,
+void	execution(struct sigaction *sa, t_token_lst **head, t_symtab **symtab,
 		int *exit_n)
 {
 	signal(SIGINT, SIG_IGN);
 	*exit_n = executor(*head, symtab);
 	if (*exit_n == 130 || *exit_n == 131)
-		write(2, "\n", 1);
+		write(STDERR_FILENO, "\n", 1);
 	sigaction(SIGINT, sa, NULL);
 	free_list(head);
 }
 
-void	free_all_exit(t_token_lst **head, t_symtab **symtab, char *rline)
+void	free_all_exit(t_token_lst **head, t_symtab **symtab, char *rline, \
+int *exit_n)
 {
 	free(rline);
 	free_list(head);
 	rl_clear_history();
 	symtab_erase_and_free(symtab);
-	write(STDERR_FILENO, "exit\n", 5);
+	if (*exit_n < BI_EXITED)
+		write(STDERR_FILENO, "exit\n", 5);
+	else
+		*exit_n -= BI_EXITED;
 }

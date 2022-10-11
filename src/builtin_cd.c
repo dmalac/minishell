@@ -86,7 +86,7 @@ int	bi_cd(char *address, t_symtab *symtab)
 		else if (chdir(oldpwd->value) < 0)
 			return (builtin_error("cd", oldpwd->value, \
 			strerror(errno)), EXIT_FAILURE);
-		printf("%s\n", oldpwd->value);
+		ft_putendl_fd(oldpwd->value, STDOUT_FILENO);
 		return (st_symtab_swap_value(symtab, pwd, oldpwd));
 	}
 	else

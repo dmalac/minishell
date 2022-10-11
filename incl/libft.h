@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/05 18:32:48 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 19:08:57 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:25:36 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int			ft_isalpha(int c);
 int			ft_isdigit(int c);
 int			ft_isnum(int c);
 char		*ft_itoa(int n);
-void		ft_putendl_fd(char *s, int fd);
-void		ft_putstr_fd(char *s, int fd);
+int			ft_putendl_fd(char *s, int fd);
+int			ft_putstr_fd(char *s, int fd);
 char		**ft_split(char const *s, char c);
 char		*ft_strdup(const char *s1);
 size_t		ft_strlcat(char *dest, const char *src, size_t dstsize);

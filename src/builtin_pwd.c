@@ -16,6 +16,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "builtin.h"
+#include "libft.h"
 
 /* 
 	This function returns the address of the current working dictionary. It 
@@ -32,7 +33,7 @@ int	bi_pwd(void)
 		"Permission denied");
 		return (EXIT_FAILURE);
 	}
-	printf("%s\n", pwd);
+	ft_putendl_fd(pwd, STDOUT_FILENO);
 	free(pwd);
 	return (EXIT_SUCCESS);
 }
