@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/10 15:16:00 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:06:28 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 {
 	if (exit_code >= 0)
 	{
-		cleanup(tools);
+		cleanup_tools(&tools);
 		exit(exit_code);
 	}
 	if (access(tools->cmd_args[0], F_OK) < 0 || \

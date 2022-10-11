@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/10 15:02:25 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:06:48 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,6 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 		node = st_goto_nxt_cmd(node);
 	}
 	exit_code = st_prepare_to_exit(tools, input, symtab, exit_code);
-	cleanup(tools);
+	cleanup_tools(&tools);
 	return (exit_code);
 }

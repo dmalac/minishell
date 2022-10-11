@@ -17,6 +17,7 @@
 #include <signal.h>
 #include "main_support.h"
 #include "error.h"
+#include "builtin.h"
 
 int	g_signal = 0;
 
@@ -41,7 +42,7 @@ int	main(void)
 	symtab = init_symbol_table();
 	exit_n = 0;
 	sigred_init(&sa);
-	while (1)
+	while (exit_n < BI_EXITED)
 	{
 		line = user_input(symtab);
 		if (g_signal == SIGINT)
@@ -52,7 +53,8 @@ int	main(void)
 			parser(&token_head, line, symtab, &exit_n);
 		if (token_head)
 			execution(&sa, &token_head, symtab, &exit_n);
-		free(line);
+		if (exit_n < BI_EXITED)
+			free(line);
 	}
 	free_all_exit(&token_head, &symtab, line);
 	return (exit_n);

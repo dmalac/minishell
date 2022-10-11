@@ -18,6 +18,7 @@
 
 # define CHILD 0
 # define PARENT 1
+# define BI_EXITED 10000
 
 int		bi_cd(char *address, t_symtab *symtab);
 int		bi_echo(char **args);

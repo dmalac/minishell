@@ -120,10 +120,10 @@ t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 	tools->cmd_args = NULL;
 	if (get_paths(symtab, tools) == EXIT_FAILURE || \
 	get_env_var(symtab, tools) == EXIT_FAILURE)
-		return (cleanup(tools), NULL);
+		return (cleanup_tools(&tools), NULL);
 	if (check_heredoc(input, tools) == EXIT_FAILURE || \
 	get_heredoc(tools->heredoc, symtab) == EXIT_FAILURE)
-		return (cleanup(tools), NULL);
+		return (cleanup_tools(&tools), NULL);
 	tools->builtin_only = st_check_if_only_builtin(input, tools);
 	tools->process_tokens[WORD] = process_word;
 	tools->process_tokens[GRT_TH] = process_output_redir1;

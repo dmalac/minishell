@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 17:39:26 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:06:42 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		free_array(char **array);
 void		child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name);
 int			print_error_message(int error_code, char *name);
-void		cleanup(t_cmd_tools *tools);
+void		cleanup_tools(t_cmd_tools **tools);
 int			contains_char(char *str, char c);
 /* init.c */
 t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab);

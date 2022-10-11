@@ -6,14 +6,12 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/10 17:39:31 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 11:16:44 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "builtin.h"
-
-// TBD: clear history, clear and free everything (input) ?
 
 /* 
 	This function verifies whether the string in the argument only contains 
@@ -90,16 +88,16 @@ int	bi_exit(char **args, int who)
 	if (who == PARENT)
 		ft_putendl_fd("exit", 2);
 	if (!args[1])
-		exit(0);
+		return (0 + BI_EXITED);
 	else if (st_is_valid_num_arg(args[1]) == FALSE)
 	{
 		builtin_error("exit", args[1], "numeric argument required");
-		exit(255);
+		return (255 + BI_EXITED);
 	}
 	else if (!args[2])
 	{
 		exit_code = ft_atol(args[1]);
-		exit((exit_code % 256 + 256) % 256);
+		return (((exit_code % 256 + 256) % 256) + BI_EXITED);
 	}
 	else
 		builtin_error("exit", NULL, "too many arguments");
