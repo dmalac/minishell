@@ -41,7 +41,7 @@ int	main(void)
 
 	symtab = init_symbol_table();
 	exit_n = 0;
-	sigred_init(&sa);
+	sigred_init(&sa, &token_head);
 	while (exit_n < BI_EXITED)
 	{
 		line = user_input(symtab);

@@ -19,7 +19,7 @@ int	syntax_error(int error_type, int *exit_n)
 	const char	error[8][10] = {"`newline'", "`>'", "`<'", "`>>'",
 		"`<<'", "`|'", "`\"'", "`''" };
 
-	ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
+	ft_putstr_fd("mish: syntax error near unexpected token ", STDERR_FILENO);
 	ft_putendl_fd((char *)error[error_type], STDERR_FILENO);
 	*exit_n = 258;
 	return (ERROR);
@@ -27,7 +27,7 @@ int	syntax_error(int error_type, int *exit_n)
 
 int	malloc_error(int *exit_n)
 {
-	perror(NULL);
+	perror("mish: ");
 	*exit_n = errno;
 	return (ERROR);
 }

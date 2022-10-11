@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:10:40 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/11 16:54:55 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:40:44 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "minishell.h"
 
 void	signal_handler(int signum);
-void	sigred_init(struct sigaction *sa);
+void	sigred_init(struct sigaction *sa, t_token_lst **head);
 void	sig_init_action(int *exit_n, struct sigaction *sa);
 void	execution(struct sigaction *sa, t_token_lst **head, t_symtab **symtab,
 			int *exit_n);
