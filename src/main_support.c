@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/10 14:52:39 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 15:29:26 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ void	signal_handler(int signum)
 /* sa->sa_handler set the function where the signal is sent;                  */
 /*                                                                            */
 /* ************************************************************************** */
-void	sigred_init(struct sigaction *sa)
+void	sigred_init(struct sigaction *sa, t_token_lst **head)
 {
+	*head = NULL;
 	rl_catch_signals = 0;
 	rl_outstream = stderr;
 	ft_bzero(&(sa->sa_mask), sizeof(sa->sa_mask));
