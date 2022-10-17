@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include "symtab.h"
+#include "minishell.h"
 #include "libft.h"
 
 /* 

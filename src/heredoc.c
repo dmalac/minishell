@@ -11,14 +11,10 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "minishell.h"
 #include "libft.h"
-#include <stdio.h>
 #include <string.h>
-#include <signal.h>
 #include <errno.h>
 #include <unistd.h>
-#include <readline/readline.h>
 #include <sys/wait.h>
 
 /* 
@@ -37,7 +33,7 @@ static t_heredoc	*st_heredoc_new(t_token_lst *node, size_t cmd_no)
 	{
 		new->limiter = ft_substr(node->content, 1, \
 		ft_strlen(node->content) - 2);
-		free (node->content);
+		free(node->content);
 		node->content = new->limiter;
 		new->expand = 0;
 	}

@@ -11,15 +11,11 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "minishell.h"
+#include "symtab.h"
 #include "libft.h"
-#include <stdio.h>
 #include <string.h>
-#include <signal.h>
 #include <errno.h>
 #include <unistd.h>
-#include <readline/readline.h>
-#include <sys/wait.h>
 
 /* 
 	This function opens a separate pipe for each node in the heredoc linked list.
@@ -67,7 +63,7 @@ void	heredoc_child_close_pipes(t_heredoc *hd_list, int end)
 	}
 }
 
-void	cleanup_hd_list(t_heredoc **hd_list)
+static void	st_cleanup_hd_list(t_heredoc **hd_list)
 {
 	t_heredoc	*temp;
 
@@ -85,6 +81,6 @@ t_heredoc *hd_node)
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	symtab_erase_and_free(symtab);
 	heredoc_child_close_pipes(hd_node, W);
-	cleanup_hd_list(hd_list);
+	st_cleanup_hd_list(hd_list);
 	exit(EXIT_FAILURE);
 }
