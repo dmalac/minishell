@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include "parser.h"
 #include "error.h"
+#include "libft.h"
 
 static int	ft_ispcnt(char c)
 {
