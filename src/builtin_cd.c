@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
@@ -65,6 +64,26 @@ t_symtab *pwd)
 }
 
 /* 
+	This function attempts to change directory to the address saved in the 
+	OLDPWD variable. It returns 0 upon success and 1 if an error occurred.
+ */
+static int	st_cd_oldpwd(t_symtab *pwd, t_symtab *oldpwd, t_symtab *symtab)
+{
+	if (!oldpwd || !oldpwd->value)
+	{
+		builtin_error("cd", NULL, "OLDPWD not set");
+		return (EXIT_FAILURE);
+	}
+	else if (chdir(oldpwd->value) < 0)
+	{
+		builtin_error("cd", oldpwd->value, strerror(errno));
+		return (EXIT_FAILURE);
+	}
+	ft_putendl_fd(oldpwd->value, STDOUT_FILENO);
+	return (st_symtab_swap_value(symtab, pwd, oldpwd));
+}
+
+/* 
 	This function changes the directory to the address provided as argument and 
 	updates the values of the PWD and OLDPWD variables. 
 	If the address is '-', the address stored in the OLDPWD variable is used.
@@ -80,20 +99,8 @@ int	bi_cd(char *address, t_symtab *symtab)
 	pwd = symtab_get_node(symtab, "PWD");
 	oldpwd = symtab_get_node(symtab, "OLDPWD");
 	if (address && ft_strncmp(address, "-", 2) == 0)
-	{
-		if (!oldpwd || !oldpwd->value)
-			return (builtin_error("cd", NULL, "OLDPWD not set"), EXIT_FAILURE);
-		else if (chdir(oldpwd->value) < 0)
-			return (builtin_error("cd", oldpwd->value, \
-			strerror(errno)), EXIT_FAILURE);
-		ft_putendl_fd(oldpwd->value, STDOUT_FILENO);
-		return (st_symtab_swap_value(symtab, pwd, oldpwd));
-	}
-	else
-	{
-		if (chdir(address) < 0)
-			return (builtin_error("cd", address, strerror(errno)), \
-			EXIT_FAILURE);
-		return (st_symtab_update_pwd(symtab, oldpwd, pwd));
-	}
+		return (st_cd_oldpwd(pwd, oldpwd, symtab));
+	if (chdir(address) < 0)
+		return (builtin_error("cd", address, strerror(errno)), EXIT_FAILURE);
+	return (st_symtab_update_pwd(symtab, oldpwd, pwd));
 }
