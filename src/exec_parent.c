@@ -15,7 +15,7 @@
 #include "libft.h"
 #include <errno.h>
 #include <unistd.h>
-#include <stdio.h>
+// #include <stdio.h>
 #include <string.h>
 #include <sys/wait.h>
 
@@ -29,7 +29,7 @@
 	If it is a command that will have to be executed using the execve function, 
 	a child process is created.
  */
-int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
+int	ex_pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 {
 	int	pipe_no;
 
@@ -40,7 +40,7 @@ int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 	{
 		if (pipe(pipe_end[pipe_no]) < 0)
 		{
-			print_error_message(errno, "pipe");
+			ex_print_error_message(errno, "pipe");
 			return (1);
 		}
 	}
@@ -65,7 +65,7 @@ int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 	from that pipe has already been created).
 	
  */
-void	close_unnecessary_pipes(t_cmd_tools *tools, int pipe_end[2][2])
+void	ex_close_unnecessary_pipes(t_cmd_tools *tools, int pipe_end[2][2])
 {
 	int			reading_pipe;
 	int			writing_pipe;
@@ -97,7 +97,7 @@ static int	st_get_tools(t_cmd_tools *tools, t_token_lst *input)
 {
 	t_token_lst	*node;
 
-	if (get_args(tools, input) == EXIT_FAILURE)
+	if (ex_get_args(tools, input) == EXIT_FAILURE)
 		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), EXIT_FAILURE);
 	node = input;
 	while (node && node->token_type != PIPE && tools->input_fd != -1 && \
@@ -110,7 +110,7 @@ static int	st_get_tools(t_cmd_tools *tools, t_token_lst *input)
 	This function executes a builtin function and returns the exit code that the
 	builtin function returned.
  */
-int	parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
+int	ex_parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
 t_symtab **symtab)
 {
 	if (st_get_tools(tools, input) == EXIT_FAILURE || tools->input_fd < 0 || \
@@ -125,7 +125,7 @@ t_symtab **symtab)
 	The function ensures that the parent process wait for the child processes 
 	to finish and captures the exit code of the last pipe, which it returns.
  */
-int	wait_for_last_child(int id, size_t total_cmds)
+int	ex_wait_for_last_child(int id, size_t total_cmds)
 {
 	int	wait_status;
 	int	exit_code;

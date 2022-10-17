@@ -10,33 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
 #include "executor.h"
 #include <errno.h>
 #include <fcntl.h>
-#include <stdio.h>
+// #include <stdio.h>
 
 /* 
 	This function opens a file with the name as in node->content. It then sets 
 	the tools->input_fd to the fd of the opened file. The function returns a 
 	pointer to the next node.
  */
-t_token_lst	*process_input_redir1(t_cmd_tools *tools, t_token_lst *node)
+t_token_lst	*ex_process_input_redir1(t_cmd_tools *tools, t_token_lst *node)
 {
 	char	*filename;
 
 	filename = node->next->content;
 	if (filename[0] == '$')
 	{
-		print_error_message(REDIR_ERROR, filename);
+		ex_print_error_message(REDIR_ERROR, filename);
 		tools->input_fd = -1;
 	}
 	else
 	{
 		tools->input_fd = open(filename, O_RDONLY | O_CLOEXEC);
 		if (tools->input_fd < 0)
-			print_error_message(errno, filename);
+			ex_print_error_message(errno, filename);
 	}
 	return (node->next->next);
 }
@@ -46,7 +45,7 @@ t_token_lst	*process_input_redir1(t_cmd_tools *tools, t_token_lst *node)
 	of the corresponding node of the heredoc linked list. It returns a 
 	pointer to the next input node.
  */
-t_token_lst	*process_input_redir2(t_cmd_tools *tools, t_token_lst *node)
+t_token_lst	*ex_process_input_redir2(t_cmd_tools *tools, t_token_lst *node)
 {
 	t_heredoc	*hd_node;
 
@@ -63,21 +62,21 @@ t_token_lst	*process_input_redir2(t_cmd_tools *tools, t_token_lst *node)
 	This function opens a file with name as in the node->content, truncates it 
 	if it already exists and returns a pointer to the next node.
  */
-t_token_lst	*process_output_redir1(t_cmd_tools *tools, t_token_lst *node)
+t_token_lst	*ex_process_output_redir1(t_cmd_tools *tools, t_token_lst *node)
 {
 	char	*filename;
 
 	filename = node->next->content;
 	if (filename[0] == '$')
 	{
-		print_error_message(REDIR_ERROR, filename);
+		ex_print_error_message(REDIR_ERROR, filename);
 		tools->input_fd = -1;
 	}
 	else
 	{
 		tools->output_fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (tools->input_fd < 0)
-			print_error_message(errno, filename);
+			ex_print_error_message(errno, filename);
 	}
 	return (node->next->next);
 }
@@ -86,21 +85,21 @@ t_token_lst	*process_output_redir1(t_cmd_tools *tools, t_token_lst *node)
 	This function opens a file with name as in the node->content in append mode 
 	and returns a pointer to the next node.
  */
-t_token_lst	*process_output_redir2(t_cmd_tools *tools, t_token_lst *node)
+t_token_lst	*ex_process_output_redir2(t_cmd_tools *tools, t_token_lst *node)
 {
 	char	*filename;
 
 	filename = node->next->content;
 	if (filename[0] == '$')
 	{
-		print_error_message(REDIR_ERROR, filename);
+		ex_print_error_message(REDIR_ERROR, filename);
 		tools->input_fd = -1;
 	}
 	else
 	{
 		tools->output_fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
 		if (tools->input_fd < 0)
-			print_error_message(errno, filename);
+			ex_print_error_message(errno, filename);
 	}
 	return (node->next->next);
 }
@@ -109,7 +108,7 @@ t_token_lst	*process_output_redir2(t_cmd_tools *tools, t_token_lst *node)
 	This function adds the content of the node passed as an argument to the end 
 	of the 2D char array tools->cmd_args and returns a pointer to the next node.
  */
-t_token_lst	*process_word(t_cmd_tools *tools, t_token_lst *node)
+t_token_lst	*ex_process_word(t_cmd_tools *tools, t_token_lst *node)
 {
 	int	i;
 

@@ -10,19 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+// #include <stdio.h>
+// #include "builtin.h"
+
+#include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <string.h>
-#include "symtab.h"
 #include "libft.h"
-#include "builtin.h"
+#include "minishell.h"
+#include "symtab.h"
 
 /* 
 	This function extracts the variable name part (i.e., the part preceding the 
 	'=' sign) from the argument string.
  */
-int	get_var_name(char *arg, char **var_name)
+int	bi_get_var_name(char *arg, char **var_name)
 {
 	size_t	len_var_name;
 
@@ -42,7 +44,7 @@ int	get_var_name(char *arg, char **var_name)
 	This function extracts the variable value part (i.e., the part following 
 	the '=' sign) from the argument string.
  */
-int	get_var_val(char *arg, char **var_val)
+int	st_get_var_val(char *arg, char **var_val)
 {
 	size_t	len_var_name;
 
@@ -66,12 +68,12 @@ int	get_var_val(char *arg, char **var_val)
 	This function ensures that a new variable is added to the symbol table or an 
 	existing variable's value is updated.
  */
-int	export_variable(char *arg, char **var_name, char **var_val, \
+int	bi_export_variable(char *arg, char **var_name, char **var_val, \
 t_symtab *symtab)
 {
 	t_symtab	*node;
 
-	if (get_var_val(arg, var_val) == EXIT_FAILURE)
+	if (st_get_var_val(arg, var_val) == EXIT_FAILURE)
 	{
 		free(*var_name);
 		return (EXIT_FAILURE);

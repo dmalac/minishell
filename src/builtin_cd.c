@@ -10,13 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+// #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
 #include "builtin.h"
-#include "symtab.h"
 #include "libft.h"
+#include "minishell.h"
+#include "symtab.h"
 
 /* 
 	This function swaps values of PWD and OLDPWD to reflect the change of 

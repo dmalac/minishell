@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include "minishell.h"
 #include "libft.h"
 #include "executor.h"
-#include "symtab.h"
+// #include "symtab.h"
 #include "builtin.h"
 #include <errno.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <string.h>
-#include <signal.h>
+// #include <stdio.h>
+// #include <string.h>
+// #include <signal.h>
 #include <sys/stat.h>
 
 /* 
@@ -33,8 +33,8 @@ int pipe_end[2][2])
 {
 	t_token_lst	*node;
 
-	if (get_args(tools, input) == EXIT_FAILURE)
-		child_error_and_exit(errno, tools, NULL);
+	if (ex_get_args(tools, input) == EXIT_FAILURE)
+		ex_child_error_and_exit(errno, tools, NULL);
 	node = input;
 	while (node && node->token_type != PIPE && tools->input_fd != -1 && \
 	tools->output_fd != -1)
@@ -113,7 +113,7 @@ static int	st_execute_cmd(t_cmd_tools *tools, t_symtab **symtab)
 		}
 		free (full_cmd);
 	}
-	if (contains_char(tools->cmd_args[0], '/') == 1)
+	if (ex_contains_char(tools->cmd_args[0], '/') == 1)
 		execve(tools->cmd_args[0], tools->cmd_args, tools->env_var);
 	return (-1);
 }
@@ -124,18 +124,18 @@ static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 
 	if (exit_code >= 0)
 	{
-		cleanup_tools(&tools);
+		ex_cleanup_tools(&tools);
 		exit(exit_code);
 	}
 	if (stat(tools->cmd_args[0], &buf) >= 0 && S_ISDIR(buf.st_mode) == TRUE)
-		child_error_and_exit(21, tools, tools->cmd_args[0]);
+		ex_child_error_and_exit(21, tools, tools->cmd_args[0]);
 	if (access(tools->cmd_args[0], F_OK) < 0 || \
-	contains_char(tools->cmd_args[0], '/') == 0)
-		child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
+	ex_contains_char(tools->cmd_args[0], '/') == 0)
+		ex_child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
 	else if (access(tools->cmd_args[0], X_OK) < 0)
-		child_error_and_exit(errno, tools, tools->cmd_args[0]);
+		ex_child_error_and_exit(errno, tools, tools->cmd_args[0]);
 	else
-		child_error_and_exit(errno, tools, tools->cmd_args[0]);
+		ex_child_error_and_exit(errno, tools, tools->cmd_args[0]);
 }
 
 /* 
@@ -145,7 +145,7 @@ static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 	was a builtin function or (iii) the execution of a command using execve 
 	returned an error.
  */
-void	perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
+void	ex_perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
 t_symtab **symtab)
 {
 	int					exit_code;
@@ -155,7 +155,7 @@ t_symtab **symtab)
 	signal(SIGINT, SIG_DFL);
 	st_get_tools(tools, input, pipe_end);
 	if (tools->input_fd < 0 || tools->output_fd < 0)
-		child_error_and_exit(IO_FD_ERROR, tools, NULL);
+		ex_child_error_and_exit(IO_FD_ERROR, tools, NULL);
 	st_close_pipes_child(tools, pipe_end, BEFORE);
 	dup2(tools->input_fd, STDIN_FILENO);
 	dup2(tools->output_fd, STDOUT_FILENO);

@@ -15,7 +15,7 @@
 
 # include <stdlib.h>
 # include "minishell.h"
-# include "symtab.h"
+// # include "symtab.h"
 
 typedef struct s_heredoc
 {
@@ -57,24 +57,24 @@ typedef struct s_cmd_tools
 // int	executor(t_token_lst *input, t_symtab *symtab, struct sigaction *sa);
 int			executor(t_token_lst *input, t_symtab **symtab);
 /* exec_parent.c */
-int			pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2]);
-void		close_unnecessary_pipes(t_cmd_tools *tools, int pipe_end[2][2]);
-int			parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
+int			ex_pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2]);
+void		ex_close_unnecessary_pipes(t_cmd_tools *tools, int pipe_end[2][2]);
+int			ex_parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
 t_symtab **symtab);
-int			wait_for_last_child(int id, size_t total_cmds);
+int			ex_wait_for_last_child(int id, size_t total_cmds);
 /* exec_child.c */
-void		perform_cmd(t_cmd_tools *tools, t_token_lst *input, \
+void		ex_perform_cmd(t_cmd_tools *tools, t_token_lst *input, \
 int pipe_end[2][2], t_symtab **symtab);
 /* token_processing.c */
-t_token_lst	*process_word(t_cmd_tools *tools, t_token_lst *node);
-t_token_lst	*process_input_redir1(t_cmd_tools *tools, t_token_lst *node);
-t_token_lst	*process_input_redir2(t_cmd_tools *tools, t_token_lst *node);
-t_token_lst	*process_output_redir1(t_cmd_tools *tools, t_token_lst *node);
-t_token_lst	*process_output_redir2(t_cmd_tools *tools, t_token_lst *node);
+t_token_lst	*ex_process_word(t_cmd_tools *tools, t_token_lst *node);
+t_token_lst	*ex_process_input_redir1(t_cmd_tools *tools, t_token_lst *node);
+t_token_lst	*ex_process_input_redir2(t_cmd_tools *tools, t_token_lst *node);
+t_token_lst	*ex_process_output_redir1(t_cmd_tools *tools, t_token_lst *node);
+t_token_lst	*ex_process_output_redir2(t_cmd_tools *tools, t_token_lst *node);
 /* get.c */
-int			get_args(t_cmd_tools *tools, t_token_lst *input);
-int			get_paths(t_symtab *symtab, t_cmd_tools *tools);
-int			get_env_var(t_symtab *symtab, t_cmd_tools *tools);
+int			ex_get_args(t_cmd_tools *tools, t_token_lst *input);
+int			ex_get_paths(t_symtab *symtab, t_cmd_tools *tools);
+int			ex_get_env_var(t_symtab *symtab, t_cmd_tools *tools);
 /* heredoc.c */
 int			get_heredoc(t_heredoc *hd_list, t_symtab *symtab);
 int			check_heredoc(t_token_lst *input, t_cmd_tools *tools);
@@ -92,13 +92,13 @@ char		*heredoc_expand_var(char *line, t_symtab **symtab, \
 t_heredoc **hd_list, t_heredoc *hd_node);
 
 /* exec_errors.c */
-void		free_array(char **array);
-void		child_error_and_exit(int error_code, t_cmd_tools *tools, \
+void		ex_free_array(char **array);
+void		ex_child_error_and_exit(int error_code, t_cmd_tools *tools, \
 char *name);
-int			print_error_message(int error_code, char *name);
-void		cleanup_tools(t_cmd_tools **tools);
-int			contains_char(char *str, char c);
+int			ex_print_error_message(int error_code, char *name);
+void		ex_cleanup_tools(t_cmd_tools **tools);
+int			ex_contains_char(char *str, char c);
 /* init.c */
-t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab);
+t_cmd_tools	*ex_tools_init(t_token_lst *input, t_symtab *symtab);
 
 #endif
