@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:43:07 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 16:34:13 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "libft.h"
 #include <errno.h>
 #include <unistd.h>
-// #include <stdio.h>
 #include <string.h>
 #include <sys/wait.h>
 
@@ -113,12 +112,27 @@ static int	st_get_tools(t_cmd_tools *tools, t_token_lst *input)
 int	ex_parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
 t_symtab **symtab)
 {
+	int	exit_code;
+	int	backup_stdin;
+	int	backup_stdout;
+
 	if (st_get_tools(tools, input) == EXIT_FAILURE || tools->input_fd < 0 || \
 	tools->output_fd < 0)
 		return (EXIT_FAILURE);
+	backup_stdin = dup(STDIN_FILENO);
+	backup_stdout = dup(STDOUT_FILENO);
 	dup2(tools->input_fd, STDIN_FILENO);
 	dup2(tools->output_fd, STDOUT_FILENO);
-	return (execute_builtin(tools->cmd_args, symtab, PARENT));
+	exit_code = execute_builtin(tools->cmd_args, symtab, PARENT);
+	if (tools->input_fd > STDERR_FILENO)
+		close(tools->input_fd);
+	if (tools->output_fd > STDERR_FILENO)
+		close(tools->output_fd);
+	dup2(backup_stdin, STDIN_FILENO);
+	dup2(backup_stdout, STDOUT_FILENO);
+	close(backup_stdin);
+	close(backup_stdout);
+	return (exit_code);
 }
 
 /* 

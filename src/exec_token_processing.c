@@ -14,7 +14,7 @@
 #include "executor.h"
 #include <errno.h>
 #include <fcntl.h>
-// #include <stdio.h>
+#include <unistd.h>
 
 /* 
 	This function opens a file with the name as in node->content. It then sets 
@@ -26,6 +26,8 @@ t_token_lst	*ex_process_input_redir1(t_cmd_tools *tools, t_token_lst *node)
 	char	*filename;
 
 	filename = node->next->content;
+	if (tools->input_fd > STDIN_FILENO)
+		close(tools->input_fd);
 	if (filename[0] == '$')
 	{
 		ex_print_error_message(REDIR_ERROR, filename);
@@ -67,6 +69,8 @@ t_token_lst	*ex_process_output_redir1(t_cmd_tools *tools, t_token_lst *node)
 	char	*filename;
 
 	filename = node->next->content;
+	if (tools->output_fd > STDOUT_FILENO)
+		close(tools->output_fd);
 	if (filename[0] == '$')
 	{
 		ex_print_error_message(REDIR_ERROR, filename);
@@ -90,6 +94,8 @@ t_token_lst	*ex_process_output_redir2(t_cmd_tools *tools, t_token_lst *node)
 	char	*filename;
 
 	filename = node->next->content;
+	if (tools->output_fd > STDOUT_FILENO)
+		close(tools->output_fd);
 	if (filename[0] == '$')
 	{
 		ex_print_error_message(REDIR_ERROR, filename);

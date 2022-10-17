@@ -6,20 +6,15 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/14 15:42:46 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 16:35:24 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "libft.h"
 #include "executor.h"
-// #include "symtab.h"
 #include "builtin.h"
 #include <errno.h>
 #include <unistd.h>
-// #include <stdio.h>
-// #include <string.h>
-// #include <signal.h>
 #include <sys/stat.h>
 
 /* 
@@ -147,8 +142,8 @@ static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 	This function manages everything that is necessary for the correct execution 
 	of the command by a child process. 
  */
-void	ex_perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
-t_symtab **symtab)
+void	ex_perform_cmd(t_cmd_tools *tools, t_token_lst *input, \
+int pipe_end[2][2], t_symtab **symtab)
 {
 	int	exit_code;
 
@@ -164,5 +159,9 @@ t_symtab **symtab)
 	if (tools->cmd_args)
 		exit_code = st_execute_cmd(tools, symtab);
 	st_close_pipes_child(tools, pipe_end, AFTER);
+	if (tools->input_fd > STDERR_FILENO)
+		close(tools->input_fd);
+	if (tools->output_fd > STDERR_FILENO)
+		close(tools->output_fd);
 	st_handle_exit(tools, exit_code);
 }
