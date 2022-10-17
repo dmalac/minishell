@@ -14,7 +14,7 @@
 #include "parser.h"
 #include "libft.h"
 
-static char	*store_previous(char *token, char **str, int i)
+static char	*st_store_previous(char *token, char **str, int i)
 {
 	char	*new_str;
 
@@ -25,7 +25,7 @@ static char	*store_previous(char *token, char **str, int i)
 	return (*str);
 }
 
-static char	*exit_num_exp(char *token, char **str, int i, int *exit_n)
+static char	*st_exit_num_exp(char *token, char **str, int i, int *exit_n)
 {
 	char	*exit_code;
 
@@ -33,14 +33,14 @@ static char	*exit_num_exp(char *token, char **str, int i, int *exit_n)
 	if (!exit_code)
 		return (free_set_null(*str));
 	if (i > 0)
-		if (!store_previous(token, str, i))
+		if (!st_store_previous(token, str, i))
 			return (free_set_null(exit_code));
 	if (*str == NULL)
 		return (exit_code);
 	return (ft_strjoinfree(*str, exit_code));
 }
 
-static char	*extract_word(char *tokn, int *exit_n)
+static char	*st_extract_word(char *tokn, int *exit_n)
 {
 	int		i;
 	char	*str;
@@ -51,7 +51,7 @@ static char	*extract_word(char *tokn, int *exit_n)
 	{
 		if (tokn[i] == '$' && tokn[i + 1] == '?')
 		{
-			str = exit_num_exp(tokn, &str, i, exit_n);
+			str = st_exit_num_exp(tokn, &str, i, exit_n);
 			if (!str)
 				return (NULL);
 			tokn += 2;
@@ -68,7 +68,7 @@ int	word(char *token, t_state *st, int *exit_n)
 {
 	char	*ex_word;
 
-	ex_word = extract_word(token, exit_n);
+	ex_word = st_extract_word(token, exit_n);
 	if (!ex_word)
 		return (malloc_error(exit_n));
 	if (st->prv_state != st_word || st->buffer == NULL)

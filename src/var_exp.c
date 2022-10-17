@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 11:16:19 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/17 11:45:57 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*var_search(char *variable, int sz, t_symtab *symtab)
     contains just spaces it returns an allocates string with the variable
     name ex: $not_exist
 */
-char	*var_opening(char *var, t_state_t state, t_symtab *symtab)
+static char	*st_var_opening(char *var, t_state_t state, t_symtab *symtab)
 {
 	int		i;
 	char	*content;
@@ -75,7 +75,7 @@ static char	*st_word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	char	*trans_var;
 	char	*new_str;
 
-	var = var_opening(str + i, st_word, symtab);
+	var = st_var_opening(str + i, st_word, symtab);
 	if (!var)
 		return (NULL);
 	trans_var = var_fixing(var);
@@ -103,7 +103,7 @@ static char	*st_quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	{
 		if (str[i] == '$' && (ft_isvar(str[i + 1]) && !ft_isdigit(str[i + 1])))
 		{
-			var = var_opening(str + i, st_d_quote, symtab);
+			var = st_var_opening(str + i, st_d_quote, symtab);
 			if (!var)
 				return (NULL);
 			exp_str = save_previus(exp_str, str, i);

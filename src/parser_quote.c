@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:04:43 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:57:06 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/17 11:32:21 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "parser.h"
 #include "libft.h"
 
-static int	set_trimmer(char *token, char *d_word, t_state *st, int *exit_n)
+static int	st_set_trimmer(char *token, char *d_word, t_state *st, int *exit_n)
 {
 	if (st->prv_state == st_word)
 	{
@@ -43,7 +43,7 @@ static int	set_trimmer(char *token, char *d_word, t_state *st, int *exit_n)
 	return (SUCCESS);
 }
 
-static char	*exit_n_proc(char *token, char **str, int i, int *exit_n)
+static char	*st_exit_n_proc(char *token, char **str, int i, int *exit_n)
 {
 	char	*exit_code;
 	char	*new_str;
@@ -68,7 +68,7 @@ static char	*exit_n_proc(char *token, char **str, int i, int *exit_n)
 	return (new_str);
 }
 
-static char	*extract_d_quote(char *tokn, int *exit_n)
+static char	*st_extract_d_quote(char *tokn, int *exit_n)
 {
 	int		i;
 	char	*str;
@@ -79,7 +79,7 @@ static char	*extract_d_quote(char *tokn, int *exit_n)
 	{
 		if (tokn[i] == '$' && tokn[i + 1] == '?')
 		{
-			str = exit_n_proc(tokn, &str, i, exit_n);
+			str = st_exit_n_proc(tokn, &str, i, exit_n);
 			if (!str)
 				return (NULL);
 			tokn += 2;
@@ -105,11 +105,11 @@ int	dub_quote(char *token, t_state *st, int *exit_n)
 
 	if (!*token)
 		return (syntax_error(err_noclose_d, exit_n));
-	d_word = extract_d_quote(token, exit_n);
+	d_word = st_extract_d_quote(token, exit_n);
 	if (!d_word)
 		return (malloc_error(exit_n));
 	if (ft_isvar_empty(d_word))
-		return (set_trimmer(token, d_word, st, exit_n));
+		return (st_set_trimmer(token, d_word, st, exit_n));
 	else if (st->prv_state != st_word || !(st->buffer))
 		st->buffer = d_word;
 	else

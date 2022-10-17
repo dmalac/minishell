@@ -12,8 +12,6 @@
 
 #ifndef ERROR_H
 # define ERROR_H
-# include "libft.h" 
-// # include "minishell.h"
 
 enum e_error{
 	err_new_line,
@@ -29,6 +27,5 @@ enum e_error{
 
 int			malloc_error(int *exit_n);
 int			syntax_error(int error_type, int *exit_n);
-int			redirect_error(char *content, int *exit_n);
 
 #endif

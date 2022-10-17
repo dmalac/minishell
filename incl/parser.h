@@ -35,32 +35,38 @@ typedef enum e_t_state_t
 	st_trimmer,
 }	t_state_t;
 
+/* parser.c */
 t_token_lst	**parser(t_token_lst **head, char *string, t_symtab *symtab, \
 int *exit_n);
-char		**raw_token_split(char *line, int *exit_n);
-void		create_token_list(char *token, t_token_lst **head, int *exit_n);
+/* parser_quote.c */
+int			dub_quote(char *tokn, t_state *state, int *exit_n);
+int			sin_quote(char *token, t_state *state, int *exit_n);
+/* parser_word.c */
+int			word(char *token, t_state *state, int *exit_n);
+/* token_list_moves.c */
 t_token_lst	*create_token(char *buffer, t_state_t state);
 void		free_list(t_token_lst **lst);
 int			ft_lsttadd_back(t_token_lst **lst, t_token_lst *new);
-char		**raw_token_split(char *line, int *exit_n);
-char		*ft_strjoinfree(char *s1, char *s2);
+/* token_separation.c */
+void		create_token_list(char *token, t_token_lst **head, int *exit_n);
 int			type_of_state(char c);
-int			word(char *token, t_state *state, int *exit_n);
-int			dub_quote(char *tokn, t_state *state, int *exit_n);
-int			sin_quote(char *token, t_state *state, int *exit_n);
-int			ft_str_strlen(char **tokens);
-int			ft_isvar(char c);
-void		double_free(char *str, t_token_lst **head);
+/* token_split.c */
+char		**raw_token_split(char *line, int *exit_n);
+/* token_utility.c */
 char		*free_set_null(char *str);
-//int			ft_ispcnt(char c);
+int			ft_isvar(char c);
+char		ft_isvar_empty(char *str);
+char		*ft_strjoinfree(char *s1, char *s2);
 void		**ft_free_mem(char **str_of_str, int count);
+/* var_exp_utility.c */
+int			isallsp(char *var);
 int			quote_end_set(char *string, int *i);
 char		*save_previus(char *string_alloc, char *string, int i);
-int			var_end_set(char *str, int *prev);
-char		*var_fixing(char *var);
-int			isallsp(char *var);
-char		ft_isvar_empty(char *str);
 char		*set_beginning(char c);
+int			var_end_set(char *str, int *prev);
+/* var_exp_word.c */
+char		*var_fixing(char *var);
+/* var_exp.c*/
 char		*var_expantion(char *str, t_symtab *symtab);
 
 #endif
