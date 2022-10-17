@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include "error.h"
 #include "minishell.h"
+#include "libft.h"
 
 int	syntax_error(int error_type, int *exit_n)
 {
