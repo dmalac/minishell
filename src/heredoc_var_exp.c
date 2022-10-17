@@ -15,7 +15,8 @@
 #include "symtab.h"
 
 /* 
-	
+	The function locates the '$' character preceding a valid variable name in a 
+	here_doc line and returns the length of the string up to that character
  */
 static size_t	st_find_next_valid_var(char *line, size_t i)
 {
@@ -32,6 +33,11 @@ static size_t	st_find_next_valid_var(char *line, size_t i)
 	return (len);
 }
 
+/* 
+	The function locates the '$' character preceding a valid variable name in 
+	the string received as argument and creates a substring of that string up to 
+	that character, which it returns.
+ */
 static char	*st_get_str_up_to_var(char *line, size_t *i)
 {
 	char	*str;
@@ -48,6 +54,10 @@ static char	*st_get_str_up_to_var(char *line, size_t *i)
 	return (str);
 }
 
+/* 
+	The function receives a pointer to a '$' character in a here_doc line and 
+	extracts the variable name, which it returns
+ */
 static char	*st_get_var_name(char *line, size_t *start)
 {
 	char	*var_name;
@@ -61,6 +71,11 @@ static char	*st_get_var_name(char *line, size_t *start)
 	return (var_name);
 }
 
+/* 
+	This function attempts to retrieve and returns a value form the symbol table 
+	corresponding to the variable name contained in a here_doc line. If no such 
+	variable is in the symbol table, an empty string is returned
+ */
 static char	*st_get_var_value(char *line, size_t *i, t_symtab *symtab)
 {
 	char	*var_name;
@@ -78,6 +93,11 @@ static char	*st_get_var_value(char *line, size_t *i, t_symtab *symtab)
 	return (var_val);
 }
 
+/* 
+	This function verifies whether the line inserted by the user in the context 
+	of here_doc contains variables that need to be expanded. If so, it performs 
+	such expansion and returns a new line.
+ */
 char	*heredoc_expand_var(char *line, t_symtab **symtab, t_heredoc **hd_list, \
 t_heredoc *hd_node)
 {

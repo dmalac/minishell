@@ -18,7 +18,7 @@
 #include <unistd.h>
 
 /* 
-	This function opens a separate pipe for each node in the heredoc linked list.
+	This function opens a separate pipe for each node in the here_doc linked list.
 	It returns 0 upon success or 1 if the pipe function returns error.
  */
 int	heredoc_open_pipes(t_heredoc *hd_list)
@@ -36,7 +36,7 @@ int	heredoc_open_pipes(t_heredoc *hd_list)
 }
 
 /* 
-	This function closes specific file descriptors associated with the heredoc 
+	This function closes specific file descriptors associated with the here_doc 
 	linked list in the parent process.
  */
 void	heredoc_close_pipes(t_heredoc *hd_list, int exit_code)
@@ -51,7 +51,7 @@ void	heredoc_close_pipes(t_heredoc *hd_list, int exit_code)
 }
 
 /* 
-	This function closes a specific file descriptor associated with the heredoc 
+	This function closes a specific file descriptor associated with the here_doc 
 	linked list in the child process.
  */
 void	heredoc_child_close_pipes(t_heredoc *hd_list, int end)
@@ -63,6 +63,10 @@ void	heredoc_child_close_pipes(t_heredoc *hd_list, int end)
 	}
 }
 
+/* 
+	The function frees the memory allocated for the linked list containing
+	information and user input concerning the here_doc redirections
+ */
 static void	st_cleanup_hd_list(t_heredoc **hd_list)
 {
 	t_heredoc	*temp;
@@ -75,6 +79,11 @@ static void	st_cleanup_hd_list(t_heredoc **hd_list)
 	}
 }
 
+/* 
+	This function prints an error message, closes the open file descriptors of 
+	pipes corresponding to the here_doc, and frees memory allocated for the 
+	symbol table, the here_doc linked list and exits the child process
+ */
 void	heredoc_error_and_exit(t_symtab **symtab, t_heredoc **hd_list, \
 t_heredoc *hd_node)
 {

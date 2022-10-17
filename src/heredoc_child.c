@@ -17,7 +17,7 @@
 #include <readline/readline.h>
 
 /* 
-	This function handles the SIGINT signal in the heredoc.
+	This function handles the SIGINT signal in the here_doc.
  */
 static void	st_heredoc_handler_sigint(int sig)
 {
@@ -55,7 +55,7 @@ static void	st_heredoc_init_signal_handling(struct sigaction *sa)
 }
 
 /* 
-	This function receives the user input for each heredoc line by line and 
+	This function receives the user input for each here_doc line by line and 
 	writes each line into the corresponding pipe's reading end fd. Upon success, 
 	it exits with exit code 0. If SIGINT was received, it exits with exit code 1.
  */
@@ -90,7 +90,7 @@ t_symtab **symtab)
 }
 
 /* 
-	This function manages the processing of the heredoc redirection.
+	This function manages the processing of the here_doc redirection.
  */
 void	heredoc_child_process_redir(t_heredoc **hd_list, t_symtab **symtab)
 {

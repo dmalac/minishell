@@ -42,7 +42,7 @@ t_token_lst	*ex_process_input_redir1(t_cmd_tools *tools, t_token_lst *node)
 
 /* 
 	This function sets the tools->input_fd to the fd of the read end of the pipe 
-	of the corresponding node of the heredoc linked list. It returns a 
+	of the corresponding node of the here_doc linked list. It returns a 
 	pointer to the next input node.
  */
 t_token_lst	*ex_process_input_redir2(t_cmd_tools *tools, t_token_lst *node)
