@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 12:13:15 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 12:59:04 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:33:42 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,24 @@ void	free_array(char **array)
 /* 
 	This function frees all memory allocated for the struct tools.
  */
-void	cleanup(t_cmd_tools *tools)
+void	cleanup_tools(t_cmd_tools **tools)
 {
 	t_heredoc	*node;
 	t_heredoc	*to_free;
 
 	if (tools)
 	{
-		free_array(tools->paths);
-		free_array(tools->env_var);
-		node = tools->heredoc;
+		free_array((*tools)->paths);
+		free_array((*tools)->env_var);
+		free((*tools)->cmd_args);
+		node = (*tools)->heredoc;
 		while (node)
 		{
 			to_free = node;
 			node = node->next;
 			free(to_free);
 		}
+		free(*tools);
 	}
 }
 
@@ -84,7 +86,7 @@ int	print_error_message(int error_no, char *name)
 	if (name)
 	{
 		ft_putstr_fd(name, 2);
-		write(2, ": ", 2);
+		write(STDERR_FILENO, ": ", 2);
 	}
 	if (error_no == CMD_ERROR && contains_char(name, '/') == FALSE)
 		ft_putstr_fd("Command not found", 2);
@@ -94,7 +96,7 @@ int	print_error_message(int error_no, char *name)
 		ft_putstr_fd ("Ambiguous redirect", STDERR_FILENO);
 	else
 		ft_putstr_fd(strerror(error_no), 2);
-	write(2, "\n", 1);
+	write(STDERR_FILENO, "\n", 1);
 	return (exit_code);
 }
 
@@ -110,8 +112,8 @@ char *name)
 	if ((error_code > 0 && name) || error_code == CMD_ERROR || error_code == \
 	REDIR_ERROR)
 		exit_code = print_error_message(error_code, name);
-	cleanup(tools);
-	if (error_code == 13)
+	cleanup_tools(&tools);
+	if (error_code == 13 || error_code == 21)
 		exit_code = 126;
 	if (error_code == CMD_ERROR)
 		exit_code = 127;

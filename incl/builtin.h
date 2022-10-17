@@ -18,6 +18,7 @@
 
 # define CHILD 0
 # define PARENT 1
+# define BI_EXITED 10000
 
 int		bi_cd(char *address, t_symtab *symtab);
 int		bi_echo(char **args);
@@ -25,10 +26,10 @@ int		bi_env(t_symtab *symtab);
 int		bi_export(char **args, t_symtab *symtab);
 int		bi_exit(char **args, int who);
 int		bi_pwd(void);
-int		bi_unset(char **args, t_symtab *symtab);
+int		bi_unset(char **args, t_symtab **symtab);
 /* builtin_utils.c */
 void	builtin_error(char *bi_name, char *error_cause, char *error_msg);
-int		execute_builtin(char **args, t_symtab *symtab, int who);
+int		execute_builtin(char **args, t_symtab **symtab, int who);
 int		is_builtin(char *cmd);
 int		is_valid_var_name(char *bi_name, char *var_name);
 /* builtin_export_lst.c */

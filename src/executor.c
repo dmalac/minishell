@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/10 15:02:25 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:26:56 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_token_lst	*st_goto_nxt_cmd(t_token_lst *node)
 	The function then returns the exit code.
  */
 static int	st_prepare_to_exit(t_cmd_tools *tools, t_token_lst *input, \
-t_symtab *symtab, int exit_code)
+t_symtab **symtab, int exit_code)
 {
 	if (exit_code == -1)
 		exit_code = parent_exec_builtin(tools, input, symtab);
@@ -67,14 +67,14 @@ t_symtab *symtab, int exit_code)
 	creates required output files and executes the commands either in a child 
 	process or in the parent process.
 */
-int	executor(t_token_lst *input, t_symtab *symtab)
+int	executor(t_token_lst *input, t_symtab **symtab)
 {
 	t_token_lst			*node;
 	t_cmd_tools			*tools;
 	int					pipe_end[2][2];
 	int					exit_code;
 
-	tools = tools_init(input, symtab);
+	tools = tools_init(input, *symtab);
 	if (!tools)
 		return (EXIT_FAILURE);
 	node = input;
@@ -91,6 +91,6 @@ int	executor(t_token_lst *input, t_symtab *symtab)
 		node = st_goto_nxt_cmd(node);
 	}
 	exit_code = st_prepare_to_exit(tools, input, symtab, exit_code);
-	cleanup(tools);
+	cleanup_tools(&tools);
 	return (exit_code);
 }

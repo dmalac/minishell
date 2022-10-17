@@ -43,16 +43,15 @@ int	heredoc_open_pipes(t_heredoc *hd_list)
 	This function closes specific file descriptors associated with the heredoc 
 	linked list in the parent process.
  */
-void	heredoc_close_pipes(t_heredoc *hd_list)
+void	heredoc_close_pipes(t_heredoc *hd_list, int exit_code)
 {
 	while (hd_list)
 	{
-		if (g_signal == SIGINT)
+		if (exit_code == EXIT_FAILURE)
 			close(hd_list->hd_pipe[R]);
 		close(hd_list->hd_pipe[W]);
 		hd_list = hd_list->next;
 	}
-	g_signal = 0;
 }
 
 /* 
@@ -80,9 +79,12 @@ void	cleanup_hd_list(t_heredoc **hd_list)
 	}
 }
 
-void	heredoc_error_and_exit(t_heredoc *hd_list)
+void	heredoc_error_and_exit(t_symtab **symtab, t_heredoc **hd_list, \
+t_heredoc *hd_node)
 {
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
-	cleanup_hd_list(&hd_list);	// close pipes also!
+	symtab_erase_and_free(symtab);
+	heredoc_child_close_pipes(hd_node, W);
+	cleanup_hd_list(hd_list);
 	exit(EXIT_FAILURE);
 }

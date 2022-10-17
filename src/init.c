@@ -58,7 +58,10 @@ t_symtab	*init_symbol_table(void)
 		}
 		symtab_add_back(&top, new);
 	}
-	new = symtab_add_node(&top, "PS1=minishell> ");
+	if (!symtab_get_node(top, "PS1"))
+		new = symtab_add_node(&top, "PS1=minishell> ");
+	else
+		symtab_change_value(top, "PS1", ft_strdup("minishell> "));
 	st_update_shlvl(top);
 	return (top);
 }
@@ -120,10 +123,10 @@ t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 	tools->cmd_args = NULL;
 	if (get_paths(symtab, tools) == EXIT_FAILURE || \
 	get_env_var(symtab, tools) == EXIT_FAILURE)
-		return (cleanup(tools), NULL);
+		return (cleanup_tools(&tools), NULL);
 	if (check_heredoc(input, tools) == EXIT_FAILURE || \
 	get_heredoc(tools->heredoc, symtab) == EXIT_FAILURE)
-		return (cleanup(tools), NULL);
+		return (cleanup_tools(&tools), NULL);
 	tools->builtin_only = st_check_if_only_builtin(input, tools);
 	tools->process_tokens[WORD] = process_word;
 	tools->process_tokens[GRT_TH] = process_output_redir1;

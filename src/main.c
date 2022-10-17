@@ -14,10 +14,10 @@
 #include "parser.h"
 #include <stdio.h>
 #include <readline/readline.h>
-#include <readline/history.h>
 #include <signal.h>
 #include "main_support.h"
 #include "error.h"
+#include "builtin.h"
 
 int	g_signal = 0;
 
@@ -41,22 +41,21 @@ int	main(void)
 
 	symtab = init_symbol_table();
 	exit_n = 0;
-	sigred_init(&sa);
-	while (1)
+	sigred_init(&sa, &token_head);
+	while (exit_n < BI_EXITED)
 	{
 		line = user_input(symtab);
-		if (!line && g_signal != SIGINT)
-			break ;
 		if (g_signal == SIGINT)
 			sig_init_action(&exit_n, &sa);
-		if (line && *line)
-			add_history(line);
+		if (!line && !g_signal)
+			break ;
 		if (line && *line)
 			parser(&token_head, line, symtab, &exit_n);
 		if (token_head)
-			execution(&sa, &token_head, symtab, &exit_n);
-		free(line);
+			execution(&sa, &token_head, &symtab, &exit_n);
+		if (exit_n < BI_EXITED)
+			free(line);
 	}
-	free_all_exit(&token_head, &symtab, line);
+	free_all_exit(&token_head, &symtab, line, &exit_n);
 	return (exit_n);
 }

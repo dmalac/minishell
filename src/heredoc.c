@@ -76,9 +76,9 @@ static void	st_heredoc_add_back(t_heredoc **top, t_heredoc *new)
  */
 int	get_heredoc(t_heredoc *hd_list, t_symtab *symtab)
 {
-	pid_t			id;
-	int				exit_code;
-	int				wait_status;
+	pid_t	id;
+	int		exit_code;
+	int		wait_status;
 
 	exit_code = EXIT_SUCCESS;
 	if (!hd_list)
@@ -89,13 +89,13 @@ int	get_heredoc(t_heredoc *hd_list, t_symtab *symtab)
 	if (id < 0)
 		return (ft_putendl_fd(strerror(errno), STDERR_FILENO), 1);
 	if (id == 0)
-		heredoc_child_process_redir(hd_list, symtab);
+		heredoc_child_process_redir(&hd_list, &symtab);
 	else
 	{
 		waitpid(id, &wait_status, 0);
 		if (WIFEXITED(wait_status))
 			exit_code = WEXITSTATUS(wait_status);
-		heredoc_close_pipes(hd_list);
+		heredoc_close_pipes(hd_list, exit_code);
 	}
 	return (exit_code);
 }

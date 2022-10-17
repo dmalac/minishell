@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/10 14:57:45 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:36:41 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ int	pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 	{
 		if (pipe(pipe_end[pipe_no]) < 0)
 		{
-			ft_putendl_fd(strerror(errno), STDERR_FILENO);
+			print_error_message(errno, "pipe");
 			return (1);
 		}
 	}
 	*id = fork();
 	if (*id < 0)
 	{
-		ft_putendl_fd(strerror(errno), STDERR_FILENO);
+		print_error_message(errno, "fork");
 		return (1);
 	}
 	return (0);
@@ -111,7 +111,7 @@ static int	st_get_tools(t_cmd_tools *tools, t_token_lst *input)
 	builtin function returned.
  */
 int	parent_exec_builtin(t_cmd_tools *tools, t_token_lst *input, \
-t_symtab *symtab)
+t_symtab **symtab)
 {
 	if (st_get_tools(tools, input) == EXIT_FAILURE || tools->input_fd < 0 || \
 	tools->output_fd < 0)

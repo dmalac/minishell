@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:58:01 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/11 17:31:35 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,16 @@ static int	st_print_export_list(t_symtab **export_list)
 	{
 		if (export_list[i]->value)
 		{
-			if (printf("declare -x %s=\"%s\"\n", export_list[i]->key, \
-			export_list[i]->value) < 0)
+			if (ft_putstr_fd("declare -x ", STDOUT_FILENO) < 0 || \
+			ft_putstr_fd(export_list[i]->key, STDOUT_FILENO) < 0 || \
+			ft_putstr_fd("=", STDOUT_FILENO) < 0 || \
+			ft_putendl_fd(export_list[i]->value, STDOUT_FILENO) < 0)
 				return (builtin_error("export", NULL, "Writing error"), 1);
 		}
 		else
 		{
-			if (printf("declare -x %s\n", export_list[i]->key) < 0)
+			if (ft_putstr_fd("declare -x ", STDOUT_FILENO) < 0 || \
+			ft_putendl_fd(export_list[i]->key, STDOUT_FILENO) < 0)
 				return (builtin_error("export", NULL, "Writing error"), 1);
 		}
 		i++;

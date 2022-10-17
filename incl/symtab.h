@@ -32,7 +32,6 @@ int			symtab_add_var(t_symtab *symtab, char *var_name, char *var_val);
 /* symtab_remove.c */
 t_symtab	*symtab_remove_node(t_symtab **top, char *key);
 void		symtab_erase_and_free(t_symtab **top);
-void	symtab_print(t_symtab *top);	// to be deleted
 /* symtab_operations.c */
 char		*symtab_get_value(t_symtab *symtab, char *key);
 t_symtab	*symtab_get_node(t_symtab *symtab, char *key);

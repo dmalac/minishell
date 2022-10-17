@@ -21,6 +21,9 @@
 #include <readline/readline.h>
 #include <sys/wait.h>
 
+/* 
+	
+ */
 static size_t	st_find_next_valid_var(char *line, size_t i)
 {
 	size_t	len;
@@ -82,8 +85,8 @@ static char	*st_get_var_value(char *line, size_t *i, t_symtab *symtab)
 	return (var_val);
 }
 
-char	*heredoc_expand_var(char *line, t_symtab *symtab, \
-t_heredoc *hd_list)
+char	*heredoc_expand_var(char *line, t_symtab **symtab, t_heredoc **hd_list, \
+t_heredoc *hd_node)
 {
 	size_t	i;
 	char	*new_line;
@@ -97,16 +100,16 @@ t_heredoc *hd_list)
 	{
 		if (line[i] == '$' && line[i + 1] && (line[i + 1] == '_' || \
 		ft_isalpha(line[i + 1]) == 1))
-			temp = st_get_var_value(line, &i, symtab);
+			temp = st_get_var_value(line, &i, *symtab);
 		else
 			temp = st_get_str_up_to_var(line, &i);
 		if (!temp)
-			heredoc_error_and_exit(hd_list);
+			heredoc_error_and_exit(symtab, hd_list, hd_node);
 		new_line = ft_strjoin(new_line, temp);
 		free (temp);
 	}
 	if (!new_line)
-		heredoc_error_and_exit(hd_list);
+		heredoc_error_and_exit(symtab, hd_list, hd_node);
 	free (line);
 	line = NULL;
 	return (new_line);

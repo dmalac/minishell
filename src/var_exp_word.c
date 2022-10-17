@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:08:37 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/06 16:42:59 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/11 13:29:59 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static char	*var_inclusion(char *var)
 		}
 		i++;
 	}
+	if (var[i - 1] == ' ')
+		return (new_var);
 	new_var = quote_join(new_var, var, i);
 	return (new_var);
 }
