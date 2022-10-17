@@ -15,13 +15,6 @@
 
 # include <stdlib.h>
 
-typedef struct s_symtab
-{
-	char			*key;
-	char			*value;
-	struct s_symtab	*next;
-}				t_symtab;
-
 /* init.c */
 t_symtab	*init_symbol_table(void);
 /* symtab_add.c */

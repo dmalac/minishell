@@ -13,13 +13,13 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
-# include "symtab.h"
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <sys/types.h>
-# include <sys/wait.h>
+// # include "libft.h"
+// # include "symtab.h"
+// # include <unistd.h>
+// # include <stdlib.h>
+// # include <stdio.h>
+// # include <sys/types.h>
+// # include <sys/wait.h>
 
 extern int	g_signal;
 
@@ -45,7 +45,11 @@ typedef struct s_token_lst{
 
 }	t_token_lst;
 
-t_token_lst	**parser(t_token_lst **head, char *string, t_symtab *symtab,
-				int *exit_n);
+typedef struct s_symtab
+{
+	char			*key;
+	char			*value;
+	struct s_symtab	*next;
+}	t_symtab;
 
 #endif

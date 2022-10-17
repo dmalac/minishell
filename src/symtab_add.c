@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
 #include "symtab.h"
+#include "minishell.h"
 #include "libft.h"
 
 /* 

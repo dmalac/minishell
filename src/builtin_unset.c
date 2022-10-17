@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "symtab.h"
-#include "builtin.h"
 #include "libft.h"
+#include "builtin.h"
 
 /* 
 	this function removes a node from the symbol table corresponding to the 

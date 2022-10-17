@@ -35,6 +35,8 @@ typedef enum e_t_state_t
 	st_trimmer,
 }	t_state_t;
 
+t_token_lst	**parser(t_token_lst **head, char *string, t_symtab *symtab, \
+int *exit_n);
 char		**raw_token_split(char *line, int *exit_n);
 void		create_token_list(char *token, t_token_lst **head, int *exit_n);
 t_token_lst	*create_token(char *buffer, t_state_t state);

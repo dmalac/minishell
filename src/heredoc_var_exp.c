@@ -11,15 +11,8 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "minishell.h"
 #include "libft.h"
-#include <stdio.h>
-#include <string.h>
-#include <signal.h>
-#include <errno.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <sys/wait.h>
+#include "symtab.h"
 
 /* 
 	The function locates the '$' character preceding a valid variable name in a 
@@ -112,7 +105,7 @@ t_heredoc *hd_node)
 	char	*new_line;
 	char	*temp;
 
-	if (contains_char(line, '$') == 0)
+	if (ex_contains_char(line, '$') == 0)
 		return (line);
 	i = 0;
 	new_line = ft_strdup("");

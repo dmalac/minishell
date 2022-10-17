@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "symtab.h"
-#include "builtin.h"
+#include "minishell.h"
 #include "libft.h"
-#include <stdio.h>
-#include <string.h>
+// #include "builtin.h"
+// #include <stdio.h>
+// #include <string.h>
 
 /* 
 	This function writes the correct error message corresponding to a builtin 

@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <errno.h>
-#include "symtab.h"
+// #include <stdio.h>
+// #include <errno.h>
 #include "libft.h"
 #include "builtin.h"
+#include "minishell.h"
 
 /* 
 	The function iterates over the array of arguments and ensures that arguments 
@@ -30,14 +30,14 @@ t_symtab *symtab)
 	exit_code = EXIT_SUCCESS;
 	while (args[i])
 	{
-		if (get_var_name(args[i], var_name) == EXIT_FAILURE)
+		if (bi_get_var_name(args[i], var_name) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		else if (is_valid_var_name("export", *var_name) == FALSE)
+		else if (bi_is_valid_var_name("export", *var_name) == FALSE)
 		{
 			free(*var_name);
 			exit_code = EXIT_FAILURE;
 		}
-		else if (export_variable(args[i], var_name, var_val, symtab) == \
+		else if (bi_export_variable(args[i], var_name, var_val, symtab) == \
 		EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		i++;
@@ -61,7 +61,7 @@ int	bi_export(char **args, t_symtab *symtab)
 
 	exit_code = 0;
 	if (args && !args[1])
-		exit_code = display_export_list(symtab);
+		exit_code = bi_display_export_list(symtab);
 	else if (args)
 		exit_code = st_perform_export(args, &var_name, &var_val, symtab);
 	return (exit_code);

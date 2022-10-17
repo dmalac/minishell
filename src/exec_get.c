@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #include "symtab.h"
-#include <stdlib.h>
-#include "libft.h"
 #include "executor.h"
+#include "libft.h"
 #include <errno.h>
 #include <string.h>
+#include <unistd.h>
 
 /* 
 	The function returns the number of commands in the input
@@ -42,7 +42,7 @@ static size_t	st_count_args(t_token_lst *input)
 	belonging to a particular command in the input. It returns 1 if an error 
 	occured when allocating memory or 0 upon successful completion.
  */
-int	get_args(t_cmd_tools *tools, t_token_lst *input)
+int	ex_get_args(t_cmd_tools *tools, t_token_lst *input)
 {
 	size_t	no_of_args;
 	size_t	i;
@@ -91,7 +91,7 @@ static int	st_add_slash_to_paths(t_cmd_tools *tools)
 	symbol table and stores them in the struct tools.
 	The function returns 1 if an error occured or 0 upon successful completion.
  */
-int	get_paths(t_symtab *symtab, t_cmd_tools *tools)
+int	ex_get_paths(t_symtab *symtab, t_cmd_tools *tools)
 {
 	char	*all_paths;
 
@@ -122,7 +122,7 @@ int	get_paths(t_symtab *symtab, t_cmd_tools *tools)
 	the array. 
 	The function returns 1 if an error occured or 0 upon successful completion.
  */
-int	get_env_var(t_symtab *symtab, t_cmd_tools *tools)
+int	ex_get_env_var(t_symtab *symtab, t_cmd_tools *tools)
 {
 	size_t		i;
 	t_symtab	*node;

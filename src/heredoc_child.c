@@ -11,15 +11,10 @@
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "minishell.h"
 #include "libft.h"
-#include <stdio.h>
-#include <string.h>
 #include <signal.h>
-#include <errno.h>
 #include <unistd.h>
 #include <readline/readline.h>
-#include <sys/wait.h>
 
 /* 
 	This function handles the SIGINT signal in the here_doc.

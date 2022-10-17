@@ -10,13 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+// #include <stdio.h>
+
 #include <errno.h>
-#include <unistd.h>
 #include <string.h>
-#include "symtab.h"
 #include "builtin.h"
+#include <unistd.h>
 #include "libft.h"
+#include "minishell.h"
+#include "symtab.h"
 
 /* 
 	The function sorts a 2D array containing the pointers to all nodes in the 

@@ -11,10 +11,10 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
+// #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-#include "minishell.h"
+// #include "minishell.h"
 #include "executor.h"
 #include "builtin.h"
 #include "symtab.h"
@@ -108,7 +108,7 @@ static int	st_check_if_only_builtin(t_token_lst *input, t_cmd_tools *tools)
 	This function initialises the struct tools to be used by the execution 
 	process.
  */
-t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
+t_cmd_tools	*ex_tools_init(t_token_lst *input, t_symtab *symtab)
 {
 	t_cmd_tools	*tools;
 
@@ -121,18 +121,18 @@ t_cmd_tools	*tools_init(t_token_lst *input, t_symtab *symtab)
 	tools->input_fd = STDIN_FILENO;
 	tools->output_fd = STDOUT_FILENO;
 	tools->cmd_args = NULL;
-	if (get_paths(symtab, tools) == EXIT_FAILURE || \
-	get_env_var(symtab, tools) == EXIT_FAILURE)
-		return (cleanup_tools(&tools), NULL);
+	if (ex_get_paths(symtab, tools) == EXIT_FAILURE || \
+	ex_get_env_var(symtab, tools) == EXIT_FAILURE)
+		return (ex_cleanup_tools(&tools), NULL);
 	if (check_heredoc(input, tools) == EXIT_FAILURE || \
 	get_heredoc(tools->heredoc, symtab) == EXIT_FAILURE)
-		return (cleanup_tools(&tools), NULL);
+		return (ex_cleanup_tools(&tools), NULL);
 	tools->builtin_only = st_check_if_only_builtin(input, tools);
-	tools->process_tokens[WORD] = process_word;
-	tools->process_tokens[GRT_TH] = process_output_redir1;
-	tools->process_tokens[SMLR_TH] = process_input_redir1;
-	tools->process_tokens[DGRT_TH] = process_output_redir2;
-	tools->process_tokens[DSML_TH] = process_input_redir2;
-	tools->process_tokens[EMPTY] = process_word;
+	tools->process_tokens[WORD] = ex_process_word;
+	tools->process_tokens[GRT_TH] = ex_process_output_redir1;
+	tools->process_tokens[SMLR_TH] = ex_process_input_redir1;
+	tools->process_tokens[DGRT_TH] = ex_process_output_redir2;
+	tools->process_tokens[DSML_TH] = ex_process_input_redir2;
+	tools->process_tokens[EMPTY] = ex_process_word;
 	return (tools);
 }
