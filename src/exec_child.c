@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/11 16:58:02 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/14 15:42:46 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,11 @@ static int	st_execute_cmd(t_cmd_tools *tools, t_symtab **symtab)
 	return (-1);
 }
 
+/* 
+	The function handles the correct exit of the child process in case 
+	(i) there was no command to execute, (ii) the command was a builtin function 
+	or (iii) the execution of a command using execve returned an error.
+ */
 static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 {
 	struct stat	buf;
@@ -140,15 +145,12 @@ static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 
 /* 
 	This function manages everything that is necessary for the correct execution 
-	of the command by a child process. It also handles the correct exit of the 
-	child process in case (i) there was no command to execute, (ii) the command 
-	was a builtin function or (iii) the execution of a command using execve 
-	returned an error.
+	of the command by a child process. 
  */
 void	perform_cmd(t_cmd_tools *tools, t_token_lst *input, int pipe_end[2][2], \
 t_symtab **symtab)
 {
-	int					exit_code;
+	int	exit_code;
 
 	exit_code = 0;
 	signal(SIGQUIT, SIG_DFL);
