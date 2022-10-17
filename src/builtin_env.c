@@ -14,8 +14,6 @@
 #include "libft.h"
 #include "builtin.h"
 #include <unistd.h>
-// #include "symtab.h"
-// #include <stdio.h>
 
 /* 
 	This function prints all variables included in the symbol table that have a 

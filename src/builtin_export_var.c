@@ -6,12 +6,9 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:42:04 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 13:59:48 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
-// #include <stdio.h>
-// #include "builtin.h"
 
 #include <string.h>
 #include <unistd.h>
@@ -43,7 +40,7 @@ int	bi_get_var_name(char *arg, char **var_name)
 	This function extracts the variable value part (i.e., the part following 
 	the '=' sign) from the argument string.
  */
-int	st_get_var_val(char *arg, char **var_val)
+static int	st_get_var_val(char *arg, char **var_val)
 {
 	size_t	len_var_name;
 

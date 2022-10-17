@@ -6,15 +6,13 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:48:38 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 13:59:37 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include "builtin.h"
-// #include <stdio.h>
-// #include <string.h>
 
 /* 
 	This function writes the correct error message corresponding to a builtin 

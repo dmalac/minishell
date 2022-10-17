@@ -6,20 +6,13 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/11 17:26:56 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 15:56:11 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "libft.h"	is in minishell.h
 #include "executor.h"
 #include <sys/wait.h>
-// #include "symtab.h"	is in minishell.h
-// #include "builtin.h"
-// #include <errno.h>
-// #include <readline/readline.h>
-// #include <signal.h>
-// #include <stdio.h>	is in minishell.h
-// #include <unistd.h>	is in minishell.h
+#include <unistd.h>
 
 /* 
 	The function returns the firs node of the following command (i.e., the first

@@ -6,12 +6,10 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/04 13:16:46 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 13:59:45 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <stdio.h>
-// #include <errno.h>
 #include "libft.h"
 #include "builtin.h"
 #include "minishell.h"
