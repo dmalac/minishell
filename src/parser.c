@@ -115,8 +115,6 @@ t_token_lst	**parser(t_token_lst **head, char *raw_string,
 	*head = NULL;
 	var_string = NULL;
 	add_history(raw_string);
-	if (raw_string == NULL)
-		return (head);
 	var_string = var_expantion(raw_string, symtab);
 	if (!var_string)
 	{
