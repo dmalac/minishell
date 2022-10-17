@@ -58,7 +58,11 @@ static void	st_error_check(t_token_lst **head, int *exit_n)
 		return ;
 	p_h = *head;
 	if (p_h->token_type == PIPE)
-		return (syntax_error(err_pip, exit_n));
+	{
+		syntax_error(err_pip, exit_n);
+		free_list(head);
+		return ;
+	}
 	while (p_h)
 	{	
 		if (st_right_value_err(p_h, exit_n) == ERROR)
