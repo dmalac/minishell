@@ -14,7 +14,7 @@
 # define BUILTIN_H
 
 # include <stdlib.h>
-# include "symtab.h"
+# include "minishell.h"
 
 # define CHILD 0
 # define PARENT 1

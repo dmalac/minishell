@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 
 void	**ft_free_mem(char **str_of_str, int count)
 {

@@ -6,13 +6,13 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/11 17:00:42 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 10:48:38 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-// #include "builtin.h"
+#include "builtin.h"
 // #include <stdio.h>
 // #include <string.h>
 
@@ -44,7 +44,7 @@ void	builtin_error(char *bi_name, char *error_cause, char *error_msg)
 	The function verifies whether the string given as a parameter concerns a 
 	valid variable name and returns 1 (TRUE) or 0 (FALSE).
  */
-int	is_valid_var_name(char *bi_name, char *identifier)
+int	bi_is_valid_var_name(char *bi_name, char *identifier)
 {
 	size_t	i;
 

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 
 static int	token_types(char *buffer, t_state_t state)
 {	

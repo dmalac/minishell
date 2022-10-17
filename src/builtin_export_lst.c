@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/11 17:31:35 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 10:48:14 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "builtin.h"
 #include <unistd.h>
 #include "libft.h"
-#include "minishell.h"
 #include "symtab.h"
 
 /* 
@@ -107,7 +106,7 @@ static t_symtab	**st_create_export_list(t_symtab *symtab, size_t count)
 	This function displays a list of all variables contained in the symbol table 
 	linked list sorted alphabetically.
  */
-int	display_export_list(t_symtab *symtab)
+int	bi_display_export_list(t_symtab *symtab)
 {
 	t_symtab	**export_list;
 	size_t		count;

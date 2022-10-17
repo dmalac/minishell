@@ -16,7 +16,6 @@
 #include <string.h>
 #include "builtin.h"
 #include "libft.h"
-#include "minishell.h"
 #include "symtab.h"
 
 /* 

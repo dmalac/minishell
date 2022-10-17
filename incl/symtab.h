@@ -14,6 +14,8 @@
 # define SYMTAB_H
 
 # include <stdlib.h>
+# include "minishell.h"
+
 
 /* init.c */
 t_symtab	*init_symbol_table(void);

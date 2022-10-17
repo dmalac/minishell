@@ -6,18 +6,21 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/11 17:41:37 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 10:47:11 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include "minishell.h"
 #include "parser.h"
 #include "builtin.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <unistd.h>
+#include "libft.h"
 #include "executor.h"
+#include "symtab.h"
 
 void	signal_handler(int signum)
 {

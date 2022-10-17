@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/10 15:13:31 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 10:42:04 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <unistd.h>
 #include <errno.h>
 #include "libft.h"
-#include "minishell.h"
 #include "symtab.h"
 
 /* 

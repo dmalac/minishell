@@ -6,11 +6,12 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:08:37 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/11 13:29:59 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/17 10:45:36 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "libft.h"
 
 static char	*quote_join(char *new_var, char *var, int i)
 {

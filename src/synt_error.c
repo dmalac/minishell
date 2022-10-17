@@ -13,6 +13,8 @@
 #include "error.h"
 #include "minishell.h"
 #include <errno.h>
+#include <unistd.h>
+#include <stdio.h>
 
 int	syntax_error(int error_type, int *exit_n)
 {

@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "symtab.h"
 #include "libft.h"
 #include "builtin.h"
@@ -28,7 +27,7 @@ int	bi_unset(char **args, t_symtab **symtab)
 	exit_code = EXIT_SUCCESS;
 	while (args && args[i])
 	{
-		if (is_valid_var_name("unset", args[i]) == FALSE)
+		if (bi_is_valid_var_name("unset", args[i]) == FALSE)
 			exit_code = EXIT_FAILURE;
 		else
 			*symtab = symtab_remove_node(symtab, args[i]);
