@@ -10,18 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parser.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <signal.h>
+#include <unistd.h>
+#include "parser.h"
+#include "symtab.h"
 #include "main_support.h"
 #include "error.h"
 #include "builtin.h"
 
 int	g_signal = 0;
 
-static char	*user_input(t_symtab *symtab)
+static char	*st_user_input(t_symtab *symtab)
 {
 	char	*shell_name;
 	char	*user_input;
@@ -44,7 +45,7 @@ int	main(void)
 	sigred_init(&sa, &token_head);
 	while (exit_n < BI_EXITED)
 	{
-		line = user_input(symtab);
+		line = st_user_input(symtab);
 		if (g_signal == SIGINT)
 			sig_init_action(&exit_n, &sa);
 		if (!line && !g_signal)

@@ -6,19 +6,20 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:07:08 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/04 16:13:04 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/17 11:18:13 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "parser.h"
 #include "error.h"
 
-int	ft_ispcnt(char c)
+static int	ft_ispcnt(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-static int	len_token(char *line, int i)
+static int	st_len_token(char *line, int i)
 {
 	char	c;
 
@@ -37,7 +38,7 @@ static int	len_token(char *line, int i)
 	return (i);
 }
 
-static void	create_arr_arr(char *line, char **tokens, int count)
+static void	st_create_arr_arr(char *line, char **tokens, int count)
 {
 	int	start;
 	int	end;
@@ -50,7 +51,7 @@ static void	create_arr_arr(char *line, char **tokens, int count)
 	{
 		while (line[start] && ft_ispcnt(line[start]))
 			start++;
-		end = len_token(line, start);
+		end = st_len_token(line, start);
 		tokens[i] = ft_substr(line, start, end - start);
 		if (!tokens[i])
 		{	
@@ -63,7 +64,7 @@ static void	create_arr_arr(char *line, char **tokens, int count)
 	}
 }
 
-static int	count_token(char *line)
+static int	st_count_token(char *line)
 {
 	int		i;
 	int		count;
@@ -72,7 +73,7 @@ static int	count_token(char *line)
 	count = 0;
 	while (line[i])
 	{
-		i = len_token(line, i);
+		i = st_len_token(line, i);
 		if (line[i] && ft_ispcnt(line[i]))
 		{
 			count++;
@@ -90,18 +91,16 @@ static int	count_token(char *line)
 	return (count);
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/* It splits a string into single tokens. A Token is separated by space, tab  */
-/* or newline. Does not consider space/tab inside quotes.                     */
-/*                                                                            */
-/* ************************************************************************** */
+/*
+    It splits a string into single tokens. A Token is separated by space, tab
+    or newline. Does not consider space/tab inside quotes.
+*/
 char	**raw_token_split(char *line, int *exit_n)
 {
 	char	**tokens;
 	int		token_n;
 
-	token_n = count_token(line);
+	token_n = st_count_token(line);
 	if (!token_n)
 		return (NULL);
 	tokens = malloc ((token_n + 1) * sizeof(char *));
@@ -111,7 +110,7 @@ char	**raw_token_split(char *line, int *exit_n)
 		return (NULL);
 	}
 	tokens[token_n] = NULL;
-	create_arr_arr(line, tokens, token_n);
+	st_create_arr_arr(line, tokens, token_n);
 	if (!tokens)
 		malloc_error(exit_n);
 	return (tokens);

@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "libft.h"
+#include "parser.h"
 
-static int	token_types(char *buffer, t_state_t state)
+static int	st_token_types(char *buffer, t_state_t state)
 {	
 	if (state == st_word)
 		return (WORD);
@@ -41,7 +41,7 @@ t_token_lst	*create_token(char *buffer, t_state_t state)
 	t_token_lst	*new_element;
 	int			token_type;
 
-	token_type = token_types(buffer, state);
+	token_type = st_token_types(buffer, state);
 	new_element = malloc(sizeof(t_token_lst));
 	if (!new_element)
 	{

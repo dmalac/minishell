@@ -6,17 +6,12 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:08:15 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:45:45 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 11:23:26 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "libft.h"
-
-int	ft_isvar(char c)
-{
-	return (ft_isalnum(c) || c == '_');
-}
 
 int	var_end_set(char *str, int *prev)
 {
@@ -66,4 +61,15 @@ char	*set_beginning(char c)
 	if (c == ' ')
 		return (ft_strdup(" \""));
 	return (ft_strdup("\""));
+}
+
+int	isallsp(char *var)
+{
+	while (*var)
+	{
+		if (*var != ' ')
+			return (FALSE);
+		var++;
+	}
+	return (TRUE);
 }

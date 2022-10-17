@@ -10,24 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
-#include "error.h"
 #include <stdio.h>
 #include <readline/history.h>
+#include "parser.h"
+#include "error.h"
+#include "libft.h"
 
-/* ************************************************************************** */
-/*                                                                            */
-/* This function is responsible to check the right token combinations,        */
-/* if some combinations are wrong it trow the right error and returns -1      */
-/* wrong combination:                                                         */
-/* redirect or pipe at the end of the list;                                   */
-/* different redirect type next to each other;                                */
-/* more than 1 pipe or more than 2 redirect next to each other;               */
-/* pipe and redirect next to each other;                                      */
-/*                                                                            */
-/* ************************************************************************** */
-
-static int	right_value_err(t_token_lst *elem, int *exit_n)
+/*
+    This function is responsible to check the right token combinations,
+    if some combinations are wrong it trow the right error and returns -1
+    wrong combination:
+    redirect or pipe at the end of the list;
+    different redirect type next to each other;
+    more than 1 pipe or more than 2 redirect next to each other;
+    pipe and redirect next to each other;
+*/
+static int	st_right_value_err(t_token_lst *elem, int *exit_n)
 {
 	if (elem->token_type == PIPE && ft_strlen(elem->content) > 1)
 		return (syntax_error(err_pip, exit_n));
@@ -52,7 +50,7 @@ static int	right_value_err(t_token_lst *elem, int *exit_n)
 	return (SUCCESS);
 }
 
-static void	error_check(t_token_lst **head, int *exit_n)
+static void	st_error_check(t_token_lst **head, int *exit_n)
 {
 	t_token_lst	*p_h;
 
@@ -61,7 +59,7 @@ static void	error_check(t_token_lst **head, int *exit_n)
 	p_h = *head;
 	while (p_h)
 	{	
-		if (right_value_err(p_h, exit_n) == ERROR)
+		if (st_right_value_err(p_h, exit_n) == ERROR)
 		{
 			free_list(head);
 			return ;
@@ -70,7 +68,7 @@ static void	error_check(t_token_lst **head, int *exit_n)
 	}
 }
 
-static void	unfold_token_list(char **tokens, t_token_lst **head, int *exit_n)
+static void	st_unfold_token_list(char **tokens, t_token_lst **head, int *exit_n)
 {
 	int	i;
 
@@ -82,17 +80,26 @@ static void	unfold_token_list(char **tokens, t_token_lst **head, int *exit_n)
 	}
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/* This function is responsible to start:                                     */
-/* the variable expansion;                                                    */
-/* the raw token separation;                                                  */
-/* the tokenization;                                                          */
-/* to check syntax error and gives a working list of token or an empty (NULL) */
-/* list in case of error;                                                     */
-/*                                                                            */
-/* ************************************************************************** */
+static int	st_str_strlen(char **tokens)
+{
+	int	count;
 
+	count = 0;
+	if (!tokens)
+		return (count);
+	while (tokens[count])
+		count++;
+	return (count);
+}
+
+/*
+    This function is responsible to start:
+    the variable expansion;
+    the raw token separation;
+    the tokenization;
+    to check syntax error and gives a working list of token or an empty (NULL)
+    list in case of error;
+*/
 t_token_lst	**parser(t_token_lst **head, char *raw_string,
 		t_symtab *symtab, int *exit_n)
 {
@@ -114,10 +121,10 @@ t_token_lst	**parser(t_token_lst **head, char *raw_string,
 	free_set_null(var_string);
 	if (!tokens || !*tokens)
 		return (head);
-	unfold_token_list(tokens, head, exit_n);
-	ft_free_mem(tokens, ft_str_strlen(tokens));
+	st_unfold_token_list(tokens, head, exit_n);
+	ft_free_mem(tokens, st_str_strlen(tokens));
 	if (!*head)
 		return (head);
-	error_check(head, exit_n);
+	st_error_check(head, exit_n);
 	return (head);
 }

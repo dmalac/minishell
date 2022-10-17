@@ -52,7 +52,7 @@ int			ft_str_strlen(char **tokens);
 int			ft_isvar(char c);
 void		double_free(char *str, t_token_lst **head);
 char		*free_set_null(char *str);
-int			ft_ispcnt(char c);
+//int			ft_ispcnt(char c);
 void		**ft_free_mem(char **str_of_str, int count);
 int			quote_end_set(char *string, int *i);
 char		*save_previus(char *string_alloc, char *string, int i);

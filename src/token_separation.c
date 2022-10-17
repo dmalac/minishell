@@ -10,8 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "parser.h"
 #include "error.h"
+#include "libft.h"
 
 int	type_of_state(char c)
 {
@@ -28,7 +30,7 @@ int	type_of_state(char c)
 	return (st_word);
 }
 
-static int	matching(int prev_var, int var)
+static int	st_matching(int prev_var, int var)
 {
 	if (prev_var == var || prev_var == blank)
 		return (SUCCESS);
@@ -38,7 +40,7 @@ static int	matching(int prev_var, int var)
 	return (0);
 }
 
-static int	key_word(char *token, t_state *st, int *exit_n)
+static int	st_key_word(char *token, t_state *st, int *exit_n)
 {
 	if (st->prv_state != st->state || !(st->buffer))
 		st->buffer = ft_substr(token, 0, 1);
@@ -52,7 +54,7 @@ static int	key_word(char *token, t_state *st, int *exit_n)
 	return (SUCCESS);
 }
 
-static int	processing(char *token, t_state *state, int *exit_n)
+static int	st_processing(char *token, t_state *state, int *exit_n)
 {
 	if (state->state == st_s_quote)
 		return (sin_quote(token + 1, state, exit_n));
@@ -60,7 +62,7 @@ static int	processing(char *token, t_state *state, int *exit_n)
 		return (dub_quote(token + 1, state, exit_n));
 	if (state->state == st_word)
 		return (word(token, state, exit_n));
-	return (key_word(token, state, exit_n));
+	return (st_key_word(token, state, exit_n));
 }
 
 void	create_token_list(char *token, t_token_lst **head, int *exit_n)
@@ -71,13 +73,13 @@ void	create_token_list(char *token, t_token_lst **head, int *exit_n)
 	while (token[st.pos])
 	{
 		st.state = type_of_state(token[st.pos]);
-		if (!matching(st.prv_state, st.state))
+		if (!st_matching(st.prv_state, st.state))
 		{	
 			if (!ft_lsttadd_back(head, create_token(st.buffer, st.prv_state)))
 				return ;
 			st.buffer = NULL;
 		}
-		if (processing(token + st.pos, &st, exit_n) == ERROR)
+		if (st_processing(token + st.pos, &st, exit_n) == ERROR)
 		{
 			free(st.buffer);
 			free_list(head);

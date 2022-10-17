@@ -6,14 +6,15 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:08:37 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:45:36 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 11:29:23 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "parser.h"
 #include "libft.h"
 
-static char	*quote_join(char *new_var, char *var, int i)
+static char	*st_quote_join(char *new_var, char *var, int i)
 {
 	char	*joined;
 
@@ -25,18 +26,7 @@ static char	*quote_join(char *new_var, char *var, int i)
 	return (joined);
 }
 
-int	isallsp(char *var)
-{
-	while (*var)
-	{
-		if (*var != ' ')
-			return (FALSE);
-		var++;
-	}
-	return (TRUE);
-}
-
-static char	*var_division(char *var)
+static char	*st_var_division(char *var)
 {
 	char	*new_var;
 	int		i;
@@ -60,7 +50,16 @@ static char	*var_division(char *var)
 	return (save_previus(new_var, var, i));
 }
 
-static char	*var_inclusion(char *var)
+static int	st_set(int *i)
+{
+	int	numb;
+
+	numb = *i + 1;
+	*i = -1;
+	return (numb);
+}
+
+static char	*st_var_inclusion(char *var)
 {
 	char	*new_var;
 	int		i;
@@ -75,20 +74,18 @@ static char	*var_inclusion(char *var)
 	{
 		if (var[i] == ' ')
 		{
-			new_var = quote_join(new_var, var, i);
+			new_var = st_quote_join(new_var, var, i);
 			if (!new_var)
 				return (NULL);
-			var += i + 1;
+			var += st_set(&i);
 			if (*var)
 				new_var = save_previus(new_var, "\"", 1);
-			i = -1;
 		}
 		i++;
 	}
 	if (var[i - 1] == ' ')
 		return (new_var);
-	new_var = quote_join(new_var, var, i);
-	return (new_var);
+	return (st_quote_join(new_var, var, i));
 }
 
 char	*var_fixing(char *var)
@@ -105,10 +102,10 @@ char	*var_fixing(char *var)
 	}
 	else
 	{
-		div_var = var_division(var);
+		div_var = st_var_division(var);
 		if (!div_var)
 			return (NULL);
-		new_var = var_inclusion(div_var);
+		new_var = st_var_inclusion(div_var);
 		free(div_var);
 	}
 	return (new_var);

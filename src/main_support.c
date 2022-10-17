@@ -6,18 +6,17 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:47:11 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 11:30:43 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
-#include "parser.h"
-#include "builtin.h"
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
 #include <unistd.h>
+#include "parser.h"
+#include "builtin.h"
 #include "libft.h"
 #include "executor.h"
 #include "symtab.h"
@@ -27,21 +26,19 @@ void	signal_handler(int signum)
 	if (signum == SIGINT)
 	{
 		rl_replace_line("", 0);
-		write(STDERR_FILENO, "\n", 1);
+		ft_putstr_fd("\n", STDERR_FILENO);
 		rl_on_new_line();
 		rl_redisplay();
 		g_signal = signum;
 	}
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/* this function set the value of readline and signal:                        */
-/* rl_cath_signal set to 0 doesn't allow readline to catch signal;            */
-/* rl_outstream set where readline diplay the output;                         */
-/* sa->sa_handler set the function where the signal is sent;                  */
-/*                                                                            */
-/* ************************************************************************** */
+/*
+    this function set the value of readline and signal:
+    rl_cath_signal set to 0 doesn't allow readline to catch signal;
+    rl_outstream set where readline diplay the output;
+    sa->sa_handler set the function where the signal is sent;
+*/
 void	sigred_init(struct sigaction *sa, t_token_lst **head)
 {
 	*head = NULL;
@@ -66,7 +63,7 @@ void	execution(struct sigaction *sa, t_token_lst **head, t_symtab **symtab,
 	signal(SIGINT, SIG_IGN);
 	*exit_n = executor(*head, symtab);
 	if (*exit_n == 130 || *exit_n == 131)
-		write(STDERR_FILENO, "\n", 1);
+		ft_putstr_fd("\n", STDERR_FILENO);
 	sigaction(SIGINT, sa, NULL);
 	free_list(head);
 }
@@ -79,7 +76,7 @@ int *exit_n)
 	rl_clear_history();
 	symtab_erase_and_free(symtab);
 	if (*exit_n < BI_EXITED)
-		write(STDERR_FILENO, "exit\n", 5);
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	else
 		*exit_n -= BI_EXITED;
 }

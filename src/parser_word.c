@@ -10,8 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "error.h"
+#include "parser.h"
+#include "libft.h"
 
 static char	*store_previous(char *token, char **str, int i)
 {

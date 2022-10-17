@@ -6,19 +6,18 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:45:10 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/17 11:16:19 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "parser.h"
 #include "libft.h"
 
-/* ************************************************************************** */
-/*                                                                            */
-/* This function looks for the variable in the symtab and returns an allocate */
-/* string with the content of the variable or an allocated empty string '\0'  */
-/*                                                                            */
-/* ************************************************************************** */
+/*
+    This function looks for the variable in the symtab and returns an allocate
+    string with the content of the variable or an allocated empty string '\0'
+*/
 static char	*var_search(char *variable, int sz, t_symtab *symtab)
 {
 	int		size;
@@ -45,13 +44,11 @@ static char	*var_search(char *variable, int sz, t_symtab *symtab)
 	return (ft_strdup(""));
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/* if the state is st_word and the variable is not inside the list or         */
-/* contains just spaces it returns an allocates string with the variable      */
-/* name ex: $not_exist                                                        */
-/*                                                                            */
-/* ************************************************************************** */
+/*
+    if the state is st_word and the variable is not inside the list or
+    contains just spaces it returns an allocates string with the variable
+    name ex: $not_exist
+*/
 char	*var_opening(char *var, t_state_t state, t_symtab *symtab)
 {
 	int		i;
@@ -72,7 +69,7 @@ char	*var_opening(char *var, t_state_t state, t_symtab *symtab)
 	return (content);
 }
 
-static char	*word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
+static char	*st_word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 {
 	char	*var;
 	char	*trans_var;
@@ -91,7 +88,7 @@ static char	*word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	return (ft_strjoinfree(new_str, trans_var));
 }
 
-static char	*quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
+static char	*st_quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 {
 	char	*var;
 
@@ -120,18 +117,16 @@ static char	*quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	return (save_previus(exp_str, str, i + 1));
 }
 
-/* ************************************************************************** */
-/*                                                                            */
-/* If there are variables inside the input they are going to be expanded:     */
-/* if the variable is inside the double quotes is gonna be expanded how it is */
-/* if it is alone it's going to be considered as a token or group of token    */
-/* and to avoid keywords such as > or | to consider keyword we include each   */
-/* token inside double quote es:                                              */
-/* word="    ls    -a  "                                                      */
-/* `hello $word`                                                              */
-/* `hello  "ls" "-a"                                                          */
-/*                                                                            */
-/* ************************************************************************** */
+/*
+    If there are variables inside the input they are going to be expanded:
+    if the variable is inside the double quotes is gonna be expanded how it is
+    if it is alone it's going to be considered as a token or group of token
+    and to avoid keywords such as > or | to consider keyword we include each
+    token inside double quote es:
+    word="    ls    -a  "
+    `hello $word`
+    `hello  "ls" "-a"
+*/
 char	*var_expantion(char *str, t_symtab *symtab)
 {
 	int		i;
@@ -143,7 +138,7 @@ char	*var_expantion(char *str, t_symtab *symtab)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 		{
-			exp_str = quote_var_exp(exp_str, str, i, symtab);
+			exp_str = st_quote_var_exp(exp_str, str, i, symtab);
 			if (!exp_str)
 				return (NULL);
 			str += quote_end_set(str, &i);
@@ -151,7 +146,7 @@ char	*var_expantion(char *str, t_symtab *symtab)
 		else if (str[i] == '$' && (ft_isvar(str[i + 1])
 				&& !ft_isdigit(str[i + 1])))
 		{
-			exp_str = word_var_exp(exp_str, str, i, symtab);
+			exp_str = st_word_var_exp(exp_str, str, i, symtab);
 			if (!exp_str)
 				return (NULL);
 			str += var_end_set(str, &i);

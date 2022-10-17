@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "parser.h"
 #include "libft.h"
 
@@ -61,18 +62,6 @@ char	*ft_strjoinfree(char *s1, char *s2)
 	return (nws);
 }
 
-int	ft_str_strlen(char **tokens)
-{
-	int	count;
-
-	count = 0;
-	if (!tokens)
-		return (count);
-	while (tokens[count])
-		count++;
-	return (count);
-}
-
 char	*free_set_null(char *str)
 {
 	if (!str)
@@ -85,4 +74,9 @@ char	*free_set_null(char *str)
 char	ft_isvar_empty(char *str)
 {
 	return (str[0] == '$' && (ft_isalpha(str[1]) || str[1] == '_'));
+}
+
+int	ft_isvar(char c)
+{
+	return (ft_isalnum(c) || c == '_');
 }
