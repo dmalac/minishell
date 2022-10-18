@@ -90,9 +90,7 @@ static int	st_cd_oldpwd(t_symtab *pwd, t_symtab *oldpwd, t_symtab *symtab)
 static int	st_cd_same_dir(t_symtab *pwd, t_symtab *oldpwd)
 {
 	if (chdir(pwd->value) < 0)
-		return (builtin_error("cd", \
-		"error retrieving current directory: getcwd", strerror(errno)), \
-		EXIT_FAILURE);
+		return (builtin_error("cd", "getcwd", strerror(errno)), EXIT_FAILURE);
 	symtab_update_value(oldpwd, ft_strdup(pwd->value));
 	return (EXIT_SUCCESS);
 }
@@ -114,7 +112,7 @@ int	bi_cd(char *address, t_symtab *symtab)
 	oldpwd = symtab_get_node(symtab, "OLDPWD");
 	if (address && ft_strncmp(address, "-", 2) == 0)
 		return (st_cd_oldpwd(pwd, oldpwd, symtab));
-	if (address && ft_strncmp(address, ".", 2) == 0)
+	if (address && ft_strncmp(address, ".", 2) == 0 && pwd && pwd->value)
 		return (st_cd_same_dir(pwd, oldpwd));
 	else
 	{

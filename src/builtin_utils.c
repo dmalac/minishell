@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/18 11:34:47 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 18:55:27 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,5 @@ int	execute_builtin(char **args, t_symtab **symtab, int who)
 		return (bi_export(args, *symtab));
 	else if (args[0][0] == 'e' && args[0][1] == 'x' && args[0][2] == 'i')
 		return (bi_exit(args, who));
-	return (0);
+	return (EXIT_SUCCESS);
 }

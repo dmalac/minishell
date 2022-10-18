@@ -36,7 +36,6 @@ int		bi_is_valid_var_name(char *bi_name, char *var_name);
 int		bi_display_export_list(t_symtab *symtab);
 /* builtin_export_var.c */
 int		bi_get_var_name(char *arg, char **var_name);
-// int		bi_get_var_val(char *arg, char **var_val);
 int		bi_export_variable(char *arg, char **var_name, char **var_val, \
 t_symtab *symtab);
 

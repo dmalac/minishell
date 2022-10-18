@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 10:22:41 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 17:42:15 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdlib.h>
 # include "minishell.h"
-// # include "symtab.h"
 
 typedef struct s_heredoc
 {
@@ -56,7 +55,6 @@ typedef struct s_cmd_tools
 /* init.c */
 t_cmd_tools	*ex_tools_init(t_token_lst *input, t_symtab *symtab);
 /* executor.c */
-// int	executor(t_token_lst *input, t_symtab *symtab, struct sigaction *sa);
 int			executor(t_token_lst *input, t_symtab **symtab);
 /* exec_parent.c */
 int			ex_pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2]);

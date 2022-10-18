@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:18:42 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 16:34:13 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 18:55:46 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ int	ex_pipe_and_fork(int *id, t_cmd_tools *tools, int (*pipe_end)[2])
 		if (pipe(pipe_end[pipe_no]) < 0)
 		{
 			ex_print_error_message(errno, "pipe");
-			return (1);
+			return (EXIT_FAILURE);
 		}
 	}
 	*id = fork();
 	if (*id < 0)
 	{
 		ex_print_error_message(errno, "fork");
-		return (1);
+		return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /* 

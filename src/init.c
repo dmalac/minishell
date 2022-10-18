@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-// #include <stdio.h>
 #include <errno.h>
 #include <string.h>
-// #include "minishell.h"
 #include "executor.h"
 #include "builtin.h"
 #include "symtab.h"

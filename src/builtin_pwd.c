@@ -14,6 +14,8 @@
 #include "builtin.h"
 #include "libft.h"
 #include "symtab.h"
+#include <errno.h>
+#include <string.h>
 
 /* 
 	This function returns the address of the current working dictionary. It 
@@ -29,7 +31,7 @@ int	bi_pwd(t_symtab *symtab)
 		pwd = symtab_get_value(symtab, "PWD");
 		if (!pwd)
 		{
-			builtin_error("pwd", NULL, "Permission denied");
+			builtin_error("pwd", NULL, strerror(errno));
 			return (EXIT_FAILURE);
 		}
 		ft_putendl_fd(pwd, STDOUT_FILENO);

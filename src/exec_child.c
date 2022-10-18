@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/18 12:24:10 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 16:33:17 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,13 @@ int when)
 		if (tools->cmd > 1)
 			close(pipe_end[(tools->cmd - 1) % 2 == 0][R]);
 	}
-	if (tools->heredoc)
+	if (tools->heredoc && when == AFTER)
 	{
 		node = tools->heredoc;
 		while (node)
 		{
-			if (when == BEFORE && node->cmd_no > tools->cmd)
-				close(node->hd_pipe[R]);
-			if (when == AFTER && node->cmd_no == tools->cmd)
+			if (node->cmd_no == tools->cmd && (!node->next || \
+			node->next->cmd_no > node->cmd_no))
 				close(node->hd_pipe[R]);
 			node = node->next;
 		}

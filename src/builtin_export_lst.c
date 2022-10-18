@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 13:59:52 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 18:55:08 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ static int	st_print_export_list(t_symtab **export_list)
 		{
 			if (ft_putstr_fd("declare -x ", STDOUT_FILENO) < 0 || \
 			ft_putstr_fd(export_list[i]->key, STDOUT_FILENO) < 0 || \
-			ft_putstr_fd("=", STDOUT_FILENO) < 0 || \
-			ft_putendl_fd(export_list[i]->value, STDOUT_FILENO) < 0)
+			ft_putstr_fd("=\"", STDOUT_FILENO) < 0 || \
+			ft_putstr_fd(export_list[i]->value, STDOUT_FILENO) < 0 || \
+			ft_putendl_fd("\"", STDOUT_FILENO) < 0)
 				return (builtin_error("export", NULL, "Writing error"), 1);
 		}
 		else
@@ -72,7 +73,7 @@ static int	st_print_export_list(t_symtab **export_list)
 		}
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /* 

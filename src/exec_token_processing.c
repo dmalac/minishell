@@ -52,6 +52,8 @@ t_token_lst	*ex_process_input_redir2(t_cmd_tools *tools, t_token_lst *node)
 	t_heredoc	*hd_node;
 
 	hd_node = tools->heredoc;
+	if (tools->input_fd > STDIN_FILENO)
+		close(tools->input_fd);
 	while (hd_node && ft_strncmp(hd_node->limiter, node->next->content, \
 	ft_strlen(hd_node->limiter) + 1) != 0)
 		hd_node = hd_node->next;

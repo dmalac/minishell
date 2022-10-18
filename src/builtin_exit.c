@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 15:00:27 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 18:56:20 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ static int	st_only_digits(char *str)
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
-			return (0);
+			return (EXIT_SUCCESS);
 		i++;
 	}
 	if (i > sign)
-		return (1);
+		return (EXIT_FAILURE);
 	else
-		return (0);
+		return (EXIT_SUCCESS);
 }
 
 /* 
@@ -85,24 +85,24 @@ int	bi_exit(char **args, int who)
 {
 	int	exit_code;
 
+	exit_code = EXIT_SUCCESS;
 	if (!args[1] || st_is_valid_num_arg(args[1]) == FALSE || !args[2])
 	{
 		if (who == PARENT)
 			ft_putendl_fd("exit", 2);
-		if (!args[1])
-			return (0 + BI_EXITED);
-		else if (st_is_valid_num_arg(args[1]) == FALSE)
+		if (args[1] && st_is_valid_num_arg(args[1]) == FALSE)
 		{
 			builtin_error("exit", args[1], "numeric argument required");
-			return (255 + BI_EXITED);
+			exit_code = 255;
 		}
-		else if (!args[2])
-		{
-			exit_code = ft_atol(args[1]);
-			return (((exit_code % 256 + 256) % 256) + BI_EXITED);
-		}
+		else if (args[1] && !args[2])
+			exit_code = (ft_atol(args[1]) % 256 + 256) % 256;
+		if (who == PARENT)
+			return (exit_code + BI_EXITED);
+		else
+			return (exit_code);
 	}
 	else
 		builtin_error("exit", NULL, "too many arguments");
-	return (1);
+	return (EXIT_FAILURE);
 }

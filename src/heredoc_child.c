@@ -40,7 +40,7 @@ static int	st_check_global_var(void)
 		g_signal = 1;
 		rl_done = 1;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 /* 
