@@ -65,7 +65,7 @@ char		*save_previus(char *string_alloc, char *string, int i);
 char		*set_beginning(char c);
 int			var_end_set(char *str, int *prev);
 /* var_exp_word.c */
-char		*var_fixing(char *var);
+char		*var_quote_incl(char *var);
 /* var_exp.c*/
 char		*var_expantion(char *str, t_symtab *symtab);
 
