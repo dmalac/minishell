@@ -78,7 +78,7 @@ static char	*st_word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	var = st_var_opening(str + i, st_word, symtab);
 	if (!var)
 		return (NULL);
-	trans_var = var_fixing(var);
+	trans_var = var_quote_incl(var);
 	free(var);
 	if (!trans_var)
 		return (NULL);
