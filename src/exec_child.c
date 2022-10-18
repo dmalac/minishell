@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 16:35:24 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 12:24:10 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int pipe_end[2][2], t_symtab **symtab)
 {
 	int	exit_code;
 
-	exit_code = 0;
+	exit_code = EXIT_SUCCESS;
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
 	st_get_tools(tools, input, pipe_end);
@@ -156,7 +156,7 @@ int pipe_end[2][2], t_symtab **symtab)
 	st_close_pipes_child(tools, pipe_end, BEFORE);
 	dup2(tools->input_fd, STDIN_FILENO);
 	dup2(tools->output_fd, STDOUT_FILENO);
-	if (tools->cmd_args)
+	if (tools->cmd_args && tools->cmd_args[0])
 		exit_code = st_execute_cmd(tools, symtab);
 	st_close_pipes_child(tools, pipe_end, AFTER);
 	if (tools->input_fd > STDERR_FILENO)

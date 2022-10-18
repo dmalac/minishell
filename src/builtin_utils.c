@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 12:35:01 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 13:59:37 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 11:34:47 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	execute_builtin(char **args, t_symtab **symtab, int who)
 	if (args[0][0] == 'c')
 		return (bi_cd(args[1], *symtab));
 	else if (args[0][0] == 'p')
-		return (bi_pwd());
+		return (bi_pwd(*symtab));
 	else if (args[0][0] == 'u')
 		return (bi_unset(args, symtab));
 	else if (args[0][0] == 'e' && args[0][1] == 'c')

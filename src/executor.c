@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 15:56:11 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/18 10:37:29 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ t_symtab **symtab, int exit_code)
 */
 int	executor(t_token_lst *input, t_symtab **symtab)
 {
-	t_token_lst			*node;
-	t_cmd_tools			*tools;
-	int					pipe_end[2][2];
-	int					exit_code;
+	t_token_lst	*node;
+	t_cmd_tools	*tools;
+	int			pipe_end[2][2];
+	int			exit_code;
 
 	tools = ex_tools_init(input, *symtab);
 	if (!tools)

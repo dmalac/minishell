@@ -84,6 +84,20 @@ static int	st_cd_oldpwd(t_symtab *pwd, t_symtab *oldpwd, t_symtab *symtab)
 }
 
 /* 
+	This function handles the change of directory to the same directory and 
+	updates the OLDPWD variable.
+ */
+static int	st_cd_same_dir(t_symtab *pwd, t_symtab *oldpwd)
+{
+	if (chdir(pwd->value) < 0)
+		return (builtin_error("cd", \
+		"error retrieving current directory: getcwd", strerror(errno)), \
+		EXIT_FAILURE);
+	symtab_update_value(oldpwd, ft_strdup(pwd->value));
+	return (EXIT_SUCCESS);
+}
+
+/* 
 	This function changes the directory to the address provided as argument and 
 	updates the values of the PWD and OLDPWD variables. 
 	If the address is '-', the address stored in the OLDPWD variable is used.
@@ -100,7 +114,13 @@ int	bi_cd(char *address, t_symtab *symtab)
 	oldpwd = symtab_get_node(symtab, "OLDPWD");
 	if (address && ft_strncmp(address, "-", 2) == 0)
 		return (st_cd_oldpwd(pwd, oldpwd, symtab));
-	if (chdir(address) < 0)
-		return (builtin_error("cd", address, strerror(errno)), EXIT_FAILURE);
-	return (st_symtab_update_pwd(symtab, oldpwd, pwd));
+	if (address && ft_strncmp(address, ".", 2) == 0)
+		return (st_cd_same_dir(pwd, oldpwd));
+	else
+	{
+		if (chdir(address) < 0)
+			return (builtin_error("cd", address, strerror(errno)), \
+			EXIT_FAILURE);
+		return (st_symtab_update_pwd(symtab, oldpwd, pwd));
+	}
 }

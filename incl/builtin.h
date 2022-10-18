@@ -25,7 +25,7 @@ int		bi_echo(char **args);
 int		bi_env(t_symtab *symtab);
 int		bi_export(char **args, t_symtab *symtab);
 int		bi_exit(char **args, int who);
-int		bi_pwd(void);
+int		bi_pwd(t_symtab *symtab);
 int		bi_unset(char **args, t_symtab **symtab);
 /* builtin_utils.c */
 void	builtin_error(char *bi_name, char *error_cause, char *error_msg);

@@ -118,14 +118,17 @@ t_token_lst	*ex_process_word(t_cmd_tools *tools, t_token_lst *node)
 {
 	int	i;
 
-	if (node->token_type == EMPTY)
-	{
-		free (node->content);
-		node->content = ft_strdup("");
-	}
 	i = 0;
 	while (tools->cmd_args[i])
 		i++;
+	if (node->token_type == EMPTY)
+	{
+		free (node->content);
+		if (i == 0)
+			node->content = NULL;
+		else
+			node->content = ft_strdup("");
+	}
 	tools->cmd_args[i] = node->content;
 	return (node->next);
 }
