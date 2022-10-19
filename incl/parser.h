@@ -68,7 +68,6 @@ int			var_end_set(char *str, int *prev);
 char		*var_quote_incl(char *var);
 char		*var_dquote_incl(char *var);
 char		*var_exclude(char *str, char *var);
-size_t		ft_varlen(char *var);
 /* var_exp.c*/
 char		*var_expantion(char *str, t_symtab *symtab);
 

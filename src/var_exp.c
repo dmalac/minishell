@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/19 13:25:56 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/19 13:56:51 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ static char	*st_var_opening(char *var, t_state_t state, t_symtab *symtab)
 	char	*content;
 
 	content = NULL;
-	i = ft_varlen(var);
+	i = 0;
+	while (var[i + 1] && ft_isvar(var[i + 1]))
+		i++;
 	content = var_search(var + 1, i, symtab);
 	if (!content)
 		return (NULL);
@@ -82,8 +84,7 @@ static char	*st_word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	var = st_var_opening(str + i, st_word, symtab);
 	if (!var)
 		return (NULL);
-	if (!ft_strncmp(var, str + i, ft_strlen(var)) && (ft_strlen(var)
-			== ft_varlen(str + i) + 1) && !symtab_get_value(symtab, var + 1))
+	if (*var == '$' && !symtab_get_value(symtab, var + 1))
 		trans_var = var_dquote_incl(var);
 	else
 		trans_var = var_quote_incl(var);
