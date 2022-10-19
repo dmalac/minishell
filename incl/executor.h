@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 15:33:56 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/18 17:42:15 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/19 12:31:39 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_cmd_tools
 # define CMD_ERROR -1
 # define IO_FD_ERROR -2
 # define REDIR_ERROR -3
+# define CMD_DIR_ERROR 21
 
 # define R 0
 # define W 1

@@ -76,12 +76,12 @@ t_token_lst	*ex_process_output_redir1(t_cmd_tools *tools, t_token_lst *node)
 	if (filename[0] == '$')
 	{
 		ex_print_error_message(REDIR_ERROR, filename);
-		tools->input_fd = -1;
+		tools->output_fd = -1;
 	}
 	else
 	{
 		tools->output_fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		if (tools->input_fd < 0)
+		if (tools->output_fd < 0)
 			ex_print_error_message(errno, filename);
 	}
 	return (node->next->next);
@@ -101,12 +101,12 @@ t_token_lst	*ex_process_output_redir2(t_cmd_tools *tools, t_token_lst *node)
 	if (filename[0] == '$')
 	{
 		ex_print_error_message(REDIR_ERROR, filename);
-		tools->input_fd = -1;
+		tools->output_fd = -1;
 	}
 	else
 	{
 		tools->output_fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0644);
-		if (tools->input_fd < 0)
+		if (tools->output_fd < 0)
 			ex_print_error_message(errno, filename);
 	}
 	return (node->next->next);

@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/08 14:27:06 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/18 10:37:29 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/19 12:25:17 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	executor(t_token_lst *input, t_symtab **symtab)
 			exit_code = ex_pipe_and_fork(&tools->id, tools, pipe_end);
 		if (tools->id == 0)
 			ex_perform_cmd(tools, node, pipe_end, symtab);
-		if (tools->id > 0 && tools->total_cmds > 1)
+		if (tools->id > 0 && (tools->total_cmds > 1 || tools->heredoc))
 			ex_close_unnecessary_pipes(tools, pipe_end);
 		tools->cmd++;
 		node = st_goto_nxt_cmd(node);
