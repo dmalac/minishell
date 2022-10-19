@@ -6,13 +6,15 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:09:02 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 11:45:57 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/19 13:25:56 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "parser.h"
 #include "libft.h"
+#include <stdio.h>
+#include "symtab.h"
 
 /*
     This function looks for the variable in the symtab and returns an allocate
@@ -55,9 +57,7 @@ static char	*st_var_opening(char *var, t_state_t state, t_symtab *symtab)
 	char	*content;
 
 	content = NULL;
-	i = 0;
-	while (var[i + 1] && ft_isvar(var[i + 1]))
-		i++;
+	i = ft_varlen(var);
 	content = var_search(var + 1, i, symtab);
 	if (!content)
 		return (NULL);
@@ -69,6 +69,10 @@ static char	*st_var_opening(char *var, t_state_t state, t_symtab *symtab)
 	return (content);
 }
 
+/*
+    The function expand the variable, it create differen inclusion base on if
+    the variable is empty or not
+*/
 static char	*st_word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 {
 	char	*var;
@@ -78,7 +82,11 @@ static char	*st_word_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 	var = st_var_opening(str + i, st_word, symtab);
 	if (!var)
 		return (NULL);
-	trans_var = var_quote_incl(var);
+	if (!ft_strncmp(var, str + i, ft_strlen(var)) && (ft_strlen(var)
+			== ft_varlen(str + i) + 1) && !symtab_get_value(symtab, var + 1))
+		trans_var = var_dquote_incl(var);
+	else
+		trans_var = var_quote_incl(var);
 	free(var);
 	if (!trans_var)
 		return (NULL);
@@ -107,7 +115,7 @@ static char	*st_quote_var_exp(char *exp_str, char *str, int i, t_symtab *symtab)
 			if (!var)
 				return (NULL);
 			exp_str = save_previus(exp_str, str, i);
-			exp_str = ft_strjoinfree(exp_str, var);
+			exp_str = var_exclude(exp_str, var);
 			if (!exp_str)
 				return (NULL);
 			str += var_end_set(str, &i);
