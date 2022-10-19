@@ -4,7 +4,7 @@ INCLDIR = incl
 OBJDIR = obj
 SRCDIR = src
 LIBFTDIR = libft
-CFLAGS = -Wall -Wextra -Werror -I ${INCLDIR} -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I ${INCLDIR}
 
 RM = rm -f
 

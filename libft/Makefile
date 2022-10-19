@@ -25,7 +25,7 @@ OBJDIR = obj
 OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
 
 CC = gcc
-CC_FLAGS = -Wall -Wextra -Werror -I $(INCLDIR) #-g -fsanitize=address
+CC_FLAGS = -Wall -Wextra -Werror -I $(INCLDIR)
 
 all: $(NAME)
 

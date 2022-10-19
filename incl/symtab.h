@@ -16,7 +16,6 @@
 # include <stdlib.h>
 # include "minishell.h"
 
-
 /* init.c */
 t_symtab	*init_symbol_table(void);
 /* symtab_add.c */
@@ -30,7 +29,6 @@ void		symtab_erase_and_free(t_symtab **top);
 /* symtab_operations.c */
 char		*symtab_get_value(t_symtab *symtab, char *key);
 t_symtab	*symtab_get_node(t_symtab *symtab, char *key);
-void		symtab_change_value(t_symtab *symtab, char *key, char *new_value);
 size_t		symtab_count_nodes(t_symtab *node);
 void		symtab_update_value(t_symtab *node, char *new_value);
 

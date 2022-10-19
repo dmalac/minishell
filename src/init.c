@@ -41,6 +41,7 @@ t_symtab	*init_symbol_table(void)
 	extern char	**environ;
 	t_symtab	*top;
 	t_symtab	*new;
+	t_symtab	*tmp;
 	size_t		i;
 
 	i = 0;
@@ -51,15 +52,15 @@ t_symtab	*init_symbol_table(void)
 		if (!new)
 		{
 			symtab_erase_and_free(&top);
-			ft_putendl_fd(strerror(errno), STDERR_FILENO);
-			return (NULL);
+			return (ft_putendl_fd(strerror(errno), STDERR_FILENO), NULL);
 		}
 		symtab_add_back(&top, new);
 	}
-	if (!symtab_get_node(top, "PS1"))
+	tmp = symtab_get_node(top, "PS1");
+	if (!tmp)
 		new = symtab_add_node(&top, "PS1=minishell> ");
 	else
-		symtab_change_value(top, "PS1", ft_strdup("minishell> "));
+		symtab_update_value(tmp, ft_strdup("minishell> "));
 	st_update_shlvl(top);
 	return (top);
 }
