@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/09 11:24:16 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/18 16:33:17 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/19 12:31:47 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ static void	st_handle_exit(t_cmd_tools *tools, int exit_code)
 		exit(exit_code);
 	}
 	if (stat(tools->cmd_args[0], &buf) >= 0 && S_ISDIR(buf.st_mode) == TRUE)
-		ex_child_error_and_exit(21, tools, tools->cmd_args[0]);
+		ex_child_error_and_exit(CMD_DIR_ERROR, tools, tools->cmd_args[0]);
 	if (access(tools->cmd_args[0], F_OK) < 0 || \
 	ex_contains_char(tools->cmd_args[0], '/') == 0)
 		ex_child_error_and_exit(CMD_ERROR, tools, tools->cmd_args[0]);
