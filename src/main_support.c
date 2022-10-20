@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/20 15:09:55 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/20 15:33:09 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "libft.h"
 #include "executor.h"
 #include "symtab.h"
+#include <termios.h>
 
 void	signal_handler(int signum)
 {
@@ -60,8 +61,10 @@ void	sig_init_action(int *exit_n, struct sigaction *sa)
 void	execution(struct sigaction *sa, t_token_lst **head, t_symtab **symtab,
 		int *exit_n)
 {
-	int	exit_n_prev;
+	int				exit_n_prev;
+	struct termios	termios_p;
 
+	tcgetattr(STDIN_FILENO, &termios_p);
 	signal(SIGINT, SIG_IGN);
 	exit_n_prev = *exit_n;
 	*exit_n = executor(*head, symtab);
@@ -73,6 +76,7 @@ void	execution(struct sigaction *sa, t_token_lst **head, t_symtab **symtab,
 		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
 	sigaction(SIGINT, sa, NULL);
 	free_list(head);
+	tcsetattr(STDIN_FILENO, TCSANOW, &termios_p);
 }
 
 void	free_all_exit(t_token_lst **head, t_symtab **symtab, char *rline, \
