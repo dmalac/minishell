@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/20 14:44:53 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/20 15:14:45 by dmonfrin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,17 +61,16 @@ void	sig_init_action(int *exit_n, struct sigaction *sa)
 void	execution(struct sigaction *sa, t_token_lst **head, t_symtab **symtab,
 		int *exit_n)
 {
-	struct termios	*termios_p;
+	struct termios	termios_p;
 
-	termios_p = NULL;
-	tcsetattr(STDIN_FILENO, IGNBRK, termios_p);
+	tcgetattr(STDIN_FILENO, &termios_p);
 	signal(SIGINT, SIG_IGN);
 	*exit_n = executor(*head, symtab);
 	if (*exit_n == 130 || *exit_n == 131)
 		ft_putstr_fd("\n", STDERR_FILENO);
 	sigaction(SIGINT, sa, NULL);
 	free_list(head);
-	tcgetattr(STDIN_FILENO, termios_p);
+	tcsetattr(STDIN_FILENO, TCSANOW, &termios_p);
 }
 
 void	free_all_exit(t_token_lst **head, t_symtab **symtab, char *rline, \
