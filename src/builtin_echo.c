@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:12:08 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 14:00:19 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/20 15:30:44 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	st_skip_n_option(char **args, size_t *i)
 	while (args && args[*i])
 	{
 		j = 0;
-		if (args[*i][j] != '-')
+		if (args[*i][j] != '-' || args[*i][j + 1] != 'n')
 			return (nl);
 		j++;
 		while (args[*i][j] == 'n')

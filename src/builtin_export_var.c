@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/14 18:03:18 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/17 13:59:48 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/20 15:23:17 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ t_symtab *symtab)
 		EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	else if (node && *var_val)
+	{
 		symtab_update_value(node, *var_val);
+		free(*var_name);
+	}
 	return (EXIT_SUCCESS);
 }

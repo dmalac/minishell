@@ -6,7 +6,7 @@
 /*   By: dmonfrin <dmonfrin@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/04 15:03:18 by dmonfrin      #+#    #+#                 */
-/*   Updated: 2022/10/17 11:30:43 by dmonfrin      ########   odam.nl         */
+/*   Updated: 2022/10/20 15:09:55 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,17 @@ void	sig_init_action(int *exit_n, struct sigaction *sa)
 void	execution(struct sigaction *sa, t_token_lst **head, t_symtab **symtab,
 		int *exit_n)
 {
+	int	exit_n_prev;
+
 	signal(SIGINT, SIG_IGN);
+	exit_n_prev = *exit_n;
 	*exit_n = executor(*head, symtab);
-	if (*exit_n == 130 || *exit_n == 131)
+	if (*exit_n == BI_EXITED * 2)
+		*exit_n = exit_n_prev + BI_EXITED;
+	if (*exit_n == 130)
 		ft_putstr_fd("\n", STDERR_FILENO);
+	if (*exit_n == 131)
+		ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
 	sigaction(SIGINT, sa, NULL);
 	free_list(head);
 }

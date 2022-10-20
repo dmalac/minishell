@@ -6,7 +6,7 @@
 /*   By: dmalacov <dmalacov@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/13 18:02:40 by dmalacov      #+#    #+#                 */
-/*   Updated: 2022/10/18 18:56:20 by dmalacov      ########   odam.nl         */
+/*   Updated: 2022/10/20 15:08:16 by dmalacov      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int	bi_exit(char **args, int who)
 		}
 		else if (args[1] && !args[2])
 			exit_code = (ft_atol(args[1]) % 256 + 256) % 256;
+		else
+			exit_code = BI_EXITED;
 		if (who == PARENT)
 			return (exit_code + BI_EXITED);
 		else
