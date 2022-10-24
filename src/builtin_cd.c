@@ -87,10 +87,12 @@ static int	st_cd_oldpwd(t_symtab *pwd, t_symtab *oldpwd, t_symtab *symtab)
 	This function handles the change of directory to the same directory and 
 	updates the OLDPWD variable.
  */
-static int	st_cd_same_dir(t_symtab *pwd, t_symtab *oldpwd)
+static int	st_cd_same_dir(t_symtab *pwd, t_symtab *oldpwd, t_symtab *symtab)
 {
 	if (chdir(pwd->value) < 0)
 		return (builtin_error("cd", "getcwd", strerror(errno)), EXIT_FAILURE);
+	if (!oldpwd)
+		oldpwd = symtab_add_node(&symtab, "OLDPWD");
 	symtab_update_value(oldpwd, ft_strdup(pwd->value));
 	return (EXIT_SUCCESS);
 }
@@ -113,7 +115,7 @@ int	bi_cd(char *address, t_symtab *symtab)
 	if (address && ft_strncmp(address, "-", 2) == 0)
 		return (st_cd_oldpwd(pwd, oldpwd, symtab));
 	if (address && ft_strncmp(address, ".", 2) == 0 && pwd && pwd->value)
-		return (st_cd_same_dir(pwd, oldpwd));
+		return (st_cd_same_dir(pwd, oldpwd, symtab));
 	else
 	{
 		if (chdir(address) < 0)
