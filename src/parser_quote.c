@@ -82,7 +82,7 @@ static char	*st_extract_d_quote(char *tokn, int *exit_n)
 			str = st_exit_n_proc(tokn, &str, i, exit_n);
 			if (!str)
 				return (NULL);
-			tokn += 2;
+			tokn += i + 2;
 			i = -1;
 		}
 		i++;
