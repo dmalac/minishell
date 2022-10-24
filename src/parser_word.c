@@ -14,30 +14,29 @@
 #include "parser.h"
 #include "libft.h"
 
-static char	*st_store_previous(char *token, char **str, int i)
-{
-	char	*new_str;
-
-	if (*str == NULL)
-		new_str = ft_substr(token, 0, i);
-	new_str = ft_strjoinfree(*str, ft_substr(token, 0, i));
-	*str = new_str;
-	return (*str);
-}
-
 static char	*st_exit_num_exp(char *token, char **str, int i, int *exit_n)
 {
 	char	*exit_code;
+	char	*new_str;
 
+	new_str = NULL;
 	exit_code = ft_itoa(*exit_n);
 	if (!exit_code)
 		return (free_set_null(*str));
 	if (i > 0)
-		if (!st_store_previous(token, str, i))
+	{
+		if (*str != NULL)
+			new_str = ft_strjoinfree(*str, ft_substr(token, 0, i));
+		else
+			new_str = ft_substr(token, 0, i);
+		if (!new_str)
 			return (free_set_null(exit_code));
-	if (*str == NULL)
+	}
+	if (new_str == NULL)
 		return (exit_code);
-	return (ft_strjoinfree(*str, exit_code));
+	else
+		return (ft_strjoinfree(new_str, exit_code));
+	return (new_str);
 }
 
 static char	*st_extract_word(char *tokn, int *exit_n)
